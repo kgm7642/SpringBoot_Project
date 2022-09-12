@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 상세보기</title>
+</head>
+<body>
+	<table>
+		<tr>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>내용</th>
+		</tr>
+		<tr>
+			<td th:text="${board.boardTitle}"></td>
+			<td th:text="${board.boardName}"></td>
+			<td th:text="${board.boardContent}"></td>
+		</tr>
+	</table>
+</body>
+</html>

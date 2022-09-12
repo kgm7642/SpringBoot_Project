@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.repository.BoardMapper">
+	<sql id="cri">
+		<if test="keyword != null and type != null">
+			<trim prefixOverrides="or" prefix="(" suffix=") and">
+				<foreach item="type" collection="typeArr">
+					<trim prefix="or">
+						<choose>
+							<when test="type == 'T'.toString()">
+								(BOARDTITLE LIKE '%${keyword}%')
+							</when>
+							<when test="type == 'C'.toString()">
+								(BOARDCONTENT LIKE '%${keyword}%')
+							</when>
+							<when test="type == 'W'.toString()">
+								(BOARDWRITER LIKE '%${keyword}%')
+							</when>
+						</choose>					
+					</trim>
+				</foreach>
+			</trim>
+		</if>
+	</sql>
+
+	<select id="boardList" resultType="Board">
+		<![CDATA[
+			SELECT BOARDNUMBER, BOARDWRITER, BOARDTITLE, BOARDCONTENT, BOARDDATE
+			FROM
+				(SELECT ROWNUM rn, BOARDNUMBER, BOARDWRITER, BOARDTITLE, BOARDCONTENT, BOARDDATE 
+				FROM BOARD WHERE
+		]]>
+		<include refid="cri"></include>
+		<![CDATA[
+				ROWNUM<=#{pageNum}*#{amount} ORDER BY BOARDNUMBER DESC)
+			WHERE RN>(#{pageNum}-1)*#{amount}
+		]]>
+	</select>
+	
+	<select id="getTotal" resultType="_int">
+		SELECT COUNT(*) FROM BOARD WHERE
+		<include refid="cri"></include>
+		BOARDNUMBER > 0
+	</select>
+	
+	<select id="getBoard" resultType="Board">
+		SELECT * FROM BOARD WHERE BOARDNUMBER = #{boardnumber}
+	</select>
+</mapper>
