@@ -11,6 +11,7 @@ public interface UsersMapper {
 
 	public int login(Users users);
 	public Users getUsers(String userid);
-	public void join(UsersJoin usersJoin);
+	public void join(Users users);
+	public void joinOAuth(Users users);
 
 }

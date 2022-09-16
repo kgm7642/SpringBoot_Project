@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>설정</title>
+</head>
+<body>
+	<form th:action="@{/loginFinish}" method="post">
+		<span>닉네임 : </span><input type="text" name="usersnickname"/>
+		<input type="submit" value="시작하기"/>
+	</form>
+</body>
+</html>

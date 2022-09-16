@@ -12,7 +12,7 @@ public class UsersJoin {
 	private String usersemail; // 이메일
     private boolean emailVerified;	//이메일 인증 여부
 	private boolean userslock; // 계정 잠김 여부
-	private String auth; // 유저 역할
+	private String role; // 유저 역할
 	private String createdate; // 계정 생성 날짜
 	private String modifydate; // 계정 수정 날짜
 	
