@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.domain.PrincipalDetails;
+import com.project.domain.Skill;
 import com.project.domain.Users;
 import com.project.domain.UsersJoin;
 import com.project.repository.UsersMapper;
@@ -41,12 +42,23 @@ public class UsersService implements UserDetailsService{
 	
 	@Transactional
 	public void joinOAuth(Users users) {
+		String skill = "";
+		for(int i=0; i<users.getSkillarry().length; i++) {
+			skill+=users.getSkillarry()[i]+",";
+		}
+		users.setSkill(skill.substring(0, skill.length()-1));
+		System.out.println("서비스에서의 유저 : " + users);
 		mapper.joinOAuth(users);
 	}
 	
 	@Transactional
 	public Users getUsers(String userid) {
 		return mapper.getUsers(userid);
+	}
+	
+	@Transactional
+	public ArrayList<Skill> skill() {
+		return mapper.skill();
 	}
 		
 	@Override
@@ -58,4 +70,6 @@ public class UsersService implements UserDetailsService{
 		}
 		return null;
 	}
+	
+	
 }

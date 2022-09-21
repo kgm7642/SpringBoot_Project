@@ -1,5 +1,7 @@
 package com.project.config.oauth;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
  
 	private final UsersService usersService;
+	private final HttpServletRequest httpServletRequest;
 	
 	// 구글 로그인 시 구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
 	@Override
@@ -47,12 +50,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 			users.setUserspw(password);
 			users.setUsersemail(email);
 			users.setRole(role);
-			users.setUsersnickname("ㅇㅇㅇ1");
 			users.setProvider(provider);
 			users.setProviderid(providerId);
-			usersService.joinOAuth(users);
-			System.out.println("구글 로그인을 처음 시도했습니다. 회원가입이 완료되었습니다.");
+			httpServletRequest.setAttribute("users", users);
+			System.out.println("구글 로그인을 처음 시도했습니다.");
 		} else {
+			httpServletRequest.setAttribute("users", users);
 			System.out.println("이미 구글 로그인을 진행한 적이 있습니다.");
 		}
 		return new PrincipalDetails(users, oauth2User.getAttributes());

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>설정</title>
+<style type="text/css">
+	.pTag{
+	  color: purple;
+	  font-size: 15px;
+	}
+</style>
+</head>
+<body>
+	<form th:action="@{/loginSkill}" th:object="${users}" method="post">
+		<span>닉네임 : </span><input type="text" th:field=*{usersnickname}/>
+		<input type="hidden" th:field="*{username}" name="username"/>
+		<input type="hidden" th:field="*{userspw}" name="userspw"/>
+		<input type="hidden" th:field="*{usersemail}" name="usersemail"/>
+		<input type="hidden" th:field="*{Role}" name="Role"/>
+		<input type="hidden" th:field="*{provider}" name="provider"/>
+		<input type="hidden" th:field="*{providerid}" name="providerid"/>
+		<input type="submit" value="다음"/>
+	</form>
+		
+	<div id = "tagArea">
+	</div>
+	<input type="button" value="add_pTag" onclick="create_pTag();">
+	
+</body>
+<script type="text/javascript">
+	let pTagCount = 1;
+	function create_pTag(){
+	  let tagArea = document.getElementById('tagArea');
+	  let new_pTag = document.createElement('p');
+	  
+	  new_pTag.setAttribute('class', 'pTag');
+	  new_pTag.innerHTML = pTagCount+". 추가된 p태그";
+	  
+	  tagArea.appendChild(new_pTag);
+	  
+	  pTagCount++;
+	}
+</script>
+</html>

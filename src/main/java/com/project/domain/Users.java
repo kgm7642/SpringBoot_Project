@@ -15,4 +15,7 @@ public class Users {
 	private String modifydate; // 계정 수정 날짜
 	private String provider; // google
 	private String providerid; // sub값
+	private String[] skillarry;	// 기술 스택
+	private String skill;
+
 }

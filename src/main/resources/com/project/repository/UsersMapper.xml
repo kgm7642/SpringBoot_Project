@@ -13,13 +13,17 @@
 	
 	<insert id="join">
 		INSERT INTO USERS
-		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE)
-		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role})
+		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE, SKILL)
+		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role}, #{skill})
 	</insert>
 	
 	<insert id="joinOAuth">
 		INSERT INTO USERS
-		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE, PROVIDER, PROVIDERID)
-		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role}, #{provider}, #{providerid})
+		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE, PROVIDER, PROVIDERID, SKILL)
+		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role}, #{provider}, #{providerid}, #{skill})
 	</insert>
+	
+	<select id="skill" resultType="Skill">
+		SELECT SKILLNAME FROM SKILL
+	</select>
 </mapper>

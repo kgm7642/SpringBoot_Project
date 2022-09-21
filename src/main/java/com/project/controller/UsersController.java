@@ -12,12 +12,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.domain.PrincipalDetails;
+import com.project.domain.Skill;
 import com.project.domain.Users;
 import com.project.domain.UsersJoin;
 import com.project.service.UsersService;
@@ -65,9 +67,41 @@ public class UsersController {
 		return "/users/login";
 	}
 	
-	@GetMapping("/loginConfig")
-	public String loginConfig() {
-		return "/users/loginConfig";
+	@GetMapping("/loginNickname")
+	public String loginNickname(HttpServletRequest request, Model model) {
+		Users users = (Users) request.getSession().getAttribute("users");
+		System.out.println("loginNickname"+users);
+		if(users.getUsersnickname()==null) {
+//			닉네임이 null임(처음 접속한 유저)
+			model.addAttribute("users", users);
+			return "/users/loginNickname";
+		} else {
+			return "redirect:/";
+		}
+	}
+	
+	@GetMapping("/loginSkill")
+	public String loginSkill() {
+		return "redirect:/";
+	}
+	
+	@PostMapping("/loginSkill")
+	public String loginSkill(HttpServletRequest request, Model model, Users users) {
+		if(users.getSkill()!=null) {
+			return "redirect:/";
+		}
+		model.addAttribute("skillList", service.skill());
+		model.addAttribute("users", users);
+		return "/users/loginSkill";
+
+	}
+	
+	@PostMapping("/loginFinish")
+	public String loginFinish(Users users) {
+		System.out.println("스킬 입력까지 끝난 유저 정보"+users);
+		System.out.println(users.getSkill());
+		service.joinOAuth(users);
+		return "redirect:/";
 	}
 	
 	@GetMapping("/join")

@@ -1,5 +1,11 @@
 package com.project.config;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,8 +13,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.project.config.oauth.PrincipalOauth2UserService;
 import com.project.service.UsersService;
@@ -43,11 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.anyRequest().permitAll()
 				.and()
 				.formLogin()
+				.successHandler(new LoginSuccessHandler(userService))
 				.loginPage("/login") // 로그인 페이지 주소
 				.loginProcessingUrl("/loginDo") // 로그인 확인을 실행 할 주소
 				.defaultSuccessUrl("/") // 로그인 성공 후 처음 접
 				.and()
 				.oauth2Login()
+				.successHandler(new LoginSuccessHandler(userService))
 				.loginPage("/login") // 로그인 페이지 주소
 				.userInfoEndpoint()
 				.userService(principalOauth2UserService); // 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip. 코드x, (액세스토큰 + 사용자프로필정보 O)
