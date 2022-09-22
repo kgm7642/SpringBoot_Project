@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+.title {
+	text-align: center;
+	width: 100%;
+	height: 50px;
+}
+
+.skillContainer {
+	border: 1px solid black;
+	width: 80%;
+	height: 800px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0 auto;
+	border-radius: 50px;
+}
+
+.skillList {
+	border: 1px solid black;
+	width: 150px;
+	border-radius: 50px;
+	text-align: center;
+	margin: 15px 15px;
+	cursor: pointer;
+}
+
+#skillChoiceContainer {
+	border: 1px solid black;
+	width: 80%;
+	height: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.select {
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+	width: 150px;
+	height: 30px;
+	text-align: left;
+	border-radius: 50px;
+	padding-left: 20px;
+	padding-top: 5px;
+	background-color: silver;
+	cursor: pointer;
+	margin: 20px;
+}
+
+.cancel_PTag {
+	position: absolute;
+	right: 2px;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	margin: 0px;
+	padding-top: 5px;
+	border-radius: 50px;
+	background-color: white;
+	cursor: pointer;
+}
