@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Skill;
 import com.project.domain.Users;
-import com.project.domain.UsersJoin;
+import com.project.domain.GoogleUsers;
 import com.project.repository.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -26,19 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class UsersService implements UserDetailsService{
 
 	private final UsersMapper mapper;
-	
-	@Transactional
-	public int login(Users users) {
-		return mapper.login(users);
-	}
-	
-	@Transactional
-	public void join(Users users) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		users.setUserspw(encoder.encode(users.getUserspw()));
-		users.setRole(users.getRole());
-		mapper.join(users);
-	}
 	
 	@Transactional
 	public void joinOAuth(Users users) {

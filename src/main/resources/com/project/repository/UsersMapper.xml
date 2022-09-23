@@ -3,19 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.repository.UsersMapper">
-	<select id="login" resultType="_int">
-		SELECT COUNT(*) FROM USERS WHERE USERNAME=#{username} AND USERSPASSWORD=#{userspw}
-	</select>
 		
 	<select id="getUsers" resultType="Users">
 		SELECT * FROM USERS WHERE USERNAME=#{username}
 	</select>
-	
-	<insert id="join">
-		INSERT INTO USERS
-		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE, SKILL)
-		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role}, #{skill})
-	</insert>
 	
 	<insert id="joinOAuth">
 		INSERT INTO USERS

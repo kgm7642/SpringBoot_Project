@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Skill;
 import com.project.domain.Users;
-import com.project.domain.UsersJoin;
+import com.project.domain.GoogleUsers;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
@@ -98,8 +98,6 @@ public class UsersController {
 	
 	@PostMapping("/loginFinish")
 	public String loginFinish(Users users) {
-		System.out.println("스킬 입력까지 끝난 유저 정보"+users);
-		System.out.println(users.getSkill());
 		service.joinOAuth(users);
 		return "redirect:/";
 	}
@@ -107,12 +105,6 @@ public class UsersController {
 	@GetMapping("/join")
 	public String join() {
 		return "/users/join";
-	}
-	
-	@PostMapping("/joinDo")
-	public String joinDo(Users users) {
-		service.join(users);
-		return "redirect:/login";
 	}
 	
 	@GetMapping("/logout")
