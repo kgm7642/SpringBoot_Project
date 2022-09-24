@@ -49,7 +49,10 @@ public class BoardController {
 	
 	@GetMapping("/view")
 	public String boardView(Model model, int boardnumber) {
+		System.out.println("boardnumber"+boardnumber);
 		model.addAttribute("board",boardService.getBoard(boardnumber));
+		System.out.println("board"+boardService.getBoard(boardnumber));
+		System.out.println("boardcontent"+boardService.getBoard(boardnumber).getBoardcontent());
 		return "/board/boardView";
 	}
 	

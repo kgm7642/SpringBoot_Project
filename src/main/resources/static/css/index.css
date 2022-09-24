@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.headerBox {
+	padding: 5px;
+	height: 100px;
+}
+
+.leftBox {
+	float: left;
+}
+
+.rightBox {
+	float: right;
+	padding-right: 10px;
+}

@@ -3,19 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <title>★SPACE★</title>
+<style>
+	#boardContent {
+		width: 80%;
+		height: 100%;
+		border: 1px solid black;
+		margin: 0 auto;
+	}
+</style>
 </head>
 <body>
 	<table>
 		<tr>
-			<th>제목</th>
 			<th>작성자</th>
-			<th>내용</th>
+			<th>모집구분</th>
+			<th>모집인원</th>
+			<th>진행방식</th>
+			<th>예상기간</th>
+			<th>사용기술</th>
+			<th>시작예정</th>
+			<th>연락방법</th>
+			<th>연락주소</th>
+			<th>제목</th>
 		</tr>
 		<tr>
-			<td th:text="${board.boardTitle}"></td>
-			<td th:text="${board.boardName}"></td>
-			<td th:text="${board.boardContent}"></td>
+			<td th:text="${board.boardwriter}"></td>
+			<td th:text="${board.boardcategory}"></td>
+			<td th:text="${board.boardmembers}"></td>
+			<td th:text="${board.boardmeet}"></td>
+			<td th:text="${board.boardperiod}"></td>
+			<td th:text="${board.boardskill}"></td>
+			<td th:text="${board.boardstart}"></td>
+			<td th:text="${board.boardcommunication}"></td>
+			<td th:text="${board.boardway}"></td>
+			<td th:text="${board.boardtitle}"></td>
 		</tr>
 	</table>
+	<div id="boardContent">
+		
+	</div>
 </body>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+		let boardContent = document.getElementById("boardContent");
+		boardContent.innerHTML = /*[[${board.boardcontent}]]*/;
+	/*]]>*/
+</script>
 </html>
