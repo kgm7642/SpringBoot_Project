@@ -48,4 +48,10 @@
 	<select id="getBoard" resultType="Board">
 		SELECT * FROM BOARD WHERE BOARDNUMBER = #{boardnumber}
 	</select>
+	
+	<insert id="writeBoard">
+		INSERT INTO BOARD
+		(BOARDNUMBER, BOARDWRITER, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT)
+		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent})
+	</insert>
 </mapper>

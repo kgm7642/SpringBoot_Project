@@ -28,5 +28,9 @@ public class BoardService {
 	public Board getBoard(int boardnumber) {
 		return mapper.getBoard(boardnumber);
 	}
+	
+	public void writeBoard(Board board) {
+		mapper.writeBoard(board);
+	}
 
 }

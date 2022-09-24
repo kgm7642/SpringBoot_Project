@@ -2,13 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>★SPACE★</title>
 </head>
 <body>
-	<form th:action="@{/loginDo}" method="post">
-		<span>아이디 : </span><input type="text" name="username"/>
-		<span>비밀번호 : </span><input type="password" name="password"/>
-		<input type="submit" value="로그인"/>
-	</form>
+	<a href="/oauth2/authorization/google">구글 로그인</a>
+	<a href="/oauth2/authorization/kakao">카카오 로그인</a>
+	<a href="/oauth2/authorization/naver">네이버 로그인</a>
 </body>
 </html>

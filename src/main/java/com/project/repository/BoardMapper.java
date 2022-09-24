@@ -15,5 +15,7 @@ public interface BoardMapper {
 	public int getTotal(Criteria cri);
 
 	public Board getBoard(int boardnumber);
+	
+	public void writeBoard(Board board);
 
 }

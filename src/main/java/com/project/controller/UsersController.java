@@ -36,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsersController {
 
-	private final UsersService service;
+	private final UsersService usersService;
 	
 	@GetMapping("/test/login")
 	public @ResponseBody String loginTest(
@@ -70,7 +70,6 @@ public class UsersController {
 	@GetMapping("/loginNickname")
 	public String loginNickname(HttpServletRequest request, Model model) {
 		Users users = (Users) request.getSession().getAttribute("users");
-		System.out.println("loginNickname"+users);
 		if(users.getUsersnickname()==null) {
 //			닉네임이 null임(처음 접속한 유저)
 			model.addAttribute("users", users);
@@ -90,7 +89,7 @@ public class UsersController {
 		if(users.getSkill()!=null) {
 			return "redirect:/";
 		}
-		model.addAttribute("skillList", service.skill());
+		model.addAttribute("skillList", usersService.skill());
 		model.addAttribute("users", users);
 		return "/users/loginSkill";
 
@@ -98,7 +97,7 @@ public class UsersController {
 	
 	@PostMapping("/loginFinish")
 	public String loginFinish(Users users) {
-		service.joinOAuth(users);
+		usersService.joinOAuth(users);
 		return "redirect:/";
 	}
 	
