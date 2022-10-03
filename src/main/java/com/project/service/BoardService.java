@@ -5,32 +5,22 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import com.project.domain.Board;
+import com.project.domain.BoardSaveForm;
+import com.project.domain.BoardView;
 import com.project.domain.Criteria;
 import com.project.repository.BoardMapper;
 
 import ch.qos.logback.core.util.SystemInfo;
 import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
-public class BoardService {
+public interface BoardService {
+	
+	public ArrayList<BoardView> boardList(Criteria cri);
 
-	private final BoardMapper mapper;
+	public int getTotal(Criteria cri);
 	
-	public ArrayList<Board> boardList(Criteria cri){
-		return mapper.boardList(cri);
-	}
-
-	public int getTotal(Criteria cri) {
-		return mapper.getTotal(cri);
-	}
+	public BoardView getBoard(int boardnumber);
 	
-	public Board getBoard(int boardnumber) {
-		return mapper.getBoard(boardnumber);
-	}
-	
-	public void writeBoard(Board board) {
-		mapper.writeBoard(board);
-	}
+	public void writeBoard(BoardSaveForm boardSaveForm);
 
 }

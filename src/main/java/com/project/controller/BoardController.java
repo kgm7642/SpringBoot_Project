@@ -16,14 +16,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import com.project.domain.Board;
+import com.project.domain.BoardSaveForm;
+import com.project.domain.BoardView;
 import com.project.domain.Criteria;
 import com.project.domain.Page;
 import com.project.domain.Smarteditor;
@@ -31,7 +37,10 @@ import com.project.service.BoardService;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -40,34 +49,47 @@ public class BoardController {
 	private final BoardService boardService;
 	private final UsersService usersService;
 	
+	
 	@GetMapping("/list")
 	public String boardList(Model model, Criteria cri) {
-		model.addAttribute("boardList", boardService.boardList(cri));
+		model.addAttribute("boardList", boardService.boardList(cri));		
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri));
+		model.addAttribute("skillList", usersService.skill());
 		return "/board/boardList";
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "/getList", consumes = "application/json")
+	public String getList(Model model, Criteria cri) {
+		log.info("cri={}",cri);
+		model.addAttribute("boardList", boardService.boardList(cri));		
+		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri));
+		model.addAttribute("skillList", usersService.skill());
+		return "/board/boardList";
+	}
+	
+//	게시글 상세보기
 	@GetMapping("/view")
 	public String boardView(Model model, int boardnumber) {
-		System.out.println("boardnumber"+boardnumber);
+		log.info("게시글 확인"+boardService.getBoard(boardnumber));
 		model.addAttribute("board",boardService.getBoard(boardnumber));
-		System.out.println("board"+boardService.getBoard(boardnumber));
-		System.out.println("boardcontent"+boardService.getBoard(boardnumber).getBoardcontent());
 		return "/board/boardView";
 	}
 	
+//	게시글 작성하기 페이지 이동
 	@GetMapping("/write")
-	public String write(Board board, Model model) {
+	public String write(@ModelAttribute Board board, Model model) {
 		model.addAttribute("skillList", usersService.skill());
 		return "/board/boardWrite";
 	}
 	
+//	게시글 작성 완료
 	@PostMapping("/write")
-	public String writeFinish(Board board, Principal principal) {
-		board.setBoardwriter(principal.getName());
-		System.out.println("board확인 : " + board);
-		boardService.writeBoard(board);
-		System.out.println("게시글 저장 완료");
+	public String writeFinish(BoardSaveForm form, Principal principal, Model model) {
+		form.setBoardwriter(principal.getName());
+		log.info("BoardSaveForm을 확인해보자"+form);
+		
+		boardService.writeBoard(form);
 		return "redirect:/";
 	}
 	

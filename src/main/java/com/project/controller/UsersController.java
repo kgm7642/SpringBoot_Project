@@ -1,8 +1,12 @@
 package com.project.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Skill;
@@ -25,6 +30,7 @@ import com.project.domain.GoogleUsers;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 //스프링 시큐리티는 기본 세션말고도 시큐리티가 관리하는 세션이 존재한다.
@@ -32,10 +38,14 @@ import lombok.RequiredArgsConstructor;
 //Authentication에는 UserDetails와 OAuth2User 타입이 들어갈 수 있다.
 //UserDetails 타입은 일반 로그인, OAuth2User 타입은 간편 로그인 일 경우
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UsersController {
 
+	@Value("${file.dir}")
+	private String fileDir;
+	
 	private final UsersService usersService;
 	
 	@GetMapping("/test/login")
@@ -95,8 +105,9 @@ public class UsersController {
 
 	}
 	
+	
 	@PostMapping("/loginFinish")
-	public String loginFinish(Users users) {
+	public String loginFinish(Users users) {		
 		usersService.joinOAuth(users);
 		return "redirect:/";
 	}
@@ -135,5 +146,13 @@ public class UsersController {
 	@GetMapping("/data")
 	public @ResponseBody String data() {
 		return "개인정보";
+	}
+	
+	public String getFullPath(Users users, String orgName) {
+		int idx = orgName.indexOf(".");
+		String imgName = orgName.substring(idx);
+		String fullPath = fileDir + users.getProviderid() + imgName;
+		users.setImagename(users.getProviderid() + imgName);
+		return fullPath;
 	}
 }

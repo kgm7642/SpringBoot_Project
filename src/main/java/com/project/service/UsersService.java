@@ -21,45 +21,15 @@ import com.project.repository.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
-public class UsersService implements UserDetailsService{
+public interface UsersService extends UserDetailsService{
 
-	private final UsersMapper mapper;
+	public void joinOAuth(Users users);
 	
-	@Transactional
-	public void joinOAuth(Users users) {		
-		String skill = "";
-		if(users.getSkillarry()==null) {
-			users.setSkill("선택안함");
-		} else {			
-			for(int i=0; i<users.getSkillarry().length; i++) {
-				skill+=users.getSkillarry()[i]+",";
-			}
-			users.setSkill(skill.substring(0, skill.length()-1));
-		}
-		mapper.joinOAuth(users);
-	}
+	public Users getUsers(String userid);
 	
-	@Transactional
-	public Users getUsers(String userid) {
-		return mapper.getUsers(userid);
-	}
-	
-	@Transactional
-	public ArrayList<Skill> skill() {
-		return mapper.skill();
-	}
+	public ArrayList<Skill> skill();
 		
-	@Override
-	public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
-		Users users =  mapper.getUsers(userid);
-		System.out.println("=== UserDetails ===");
-		if(users != null) {			
-			return new PrincipalDetails(users);
-		}
-		return null;
-	}
+	public UserDetails loadUserByUsername(String userid);
 	
 	
 }

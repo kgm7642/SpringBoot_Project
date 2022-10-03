@@ -8,7 +8,7 @@
 </style>
 </head>
 <body>
-	<form action="/board/write" method="post" id="form" enctype="multipart/form-data">
+	<form action="/board/write" th:object="${board}" method="post" id="form" enctype="multipart/form-data">
 		<p><span>1</span><span>프로젝트의 정보를 입력하세요.</span></p>
 		<div class="setContainer">
 			<select name="boardcategory">
@@ -43,19 +43,19 @@
 			<select name="boardskill">
 				<option th:each="list : ${skillList}" th:text="${list.skillname}" th:value="${list.skillname}"></option>
 			</select>
-			<input type="date" name="boardstart"/>
+			<input type="date" name="boardstart" th:field="*{boardstart}"/>
 			<select name="boardcommunication">
 				<option value="kakao">오픈채팅</option>
 				<option value="email">이메일</option>
 				<option value="phone">전화or문자</option>
 			</select>
-			<input type="text" name="boardway"/>
+			<input type="text" name="boardway" th:field="*{boardway}"/>
 		</div>
 
 
     	<p><span>2</span><span>프로젝트 또는 자신을 소개해주세요.</span></p>
     
-    	제목 : <input type="text" name="boardtitle"/>
+    	제목 : <input type="text" name="boardtitle" th:field="*{boardtitle}"/>
       	<div id="smarteditor">
         	<textarea name="editorTxt" id="editorTxt" 
                   rows="20" cols="10" 

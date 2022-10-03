@@ -3,14 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>★SPACE★</title>
-<style>
-	#boardContent {
-		width: 80%;
-		height: 100%;
-		border: 1px solid black;
-		margin: 0 auto;
-	}
-</style>
+<link rel="stylesheet" href="../css/board/boardView.css">
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 	<table>
@@ -27,7 +21,7 @@
 			<th>제목</th>
 		</tr>
 		<tr>
-			<td th:text="${board.boardwriter}"></td>
+			<td th:text="${board.usersnickname}"></td>
 			<td th:text="${board.boardcategory}"></td>
 			<td th:text="${board.boardmembers}"></td>
 			<td th:text="${board.boardmeet}"></td>
@@ -44,9 +38,8 @@
 	</div>
 </body>
 <script th:inline="javascript">
-	/*<![CDATA[*/
 		let boardContent = document.getElementById("boardContent");
-		boardContent.innerHTML = /*[[${board.boardcontent}]]*/;
-	/*]]>*/
+		boardContent.innerHTML = [[${board.boardcontent}]];
+		console.log(boardContent.innerHTML);
 </script>
 </html>

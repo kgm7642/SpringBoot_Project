@@ -18,6 +18,9 @@
 							<when test="type == 'W'.toString()">
 								(BOARDWRITER LIKE '%${keyword}%')
 							</when>
+							<when test="type == 'S'.toString()">
+								(BOARDWRITER LIKE '%${keyword}%')
+							</when>
 						</choose>					
 					</trim>
 				</foreach>
@@ -25,12 +28,12 @@
 		</if>
 	</sql>
 
-	<select id="boardList" resultType="Board">
+	<select id="boardList" resultType="BoardView">
 		<![CDATA[
-			SELECT BOARDNUMBER, BOARDWRITER, BOARDTITLE, BOARDCONTENT, BOARDDATE
+			SELECT USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
 			FROM
-				(SELECT ROWNUM rn, BOARDNUMBER, BOARDWRITER, BOARDTITLE, BOARDCONTENT, BOARDDATE 
-				FROM BOARD WHERE
+				(SELECT ROWNUM RN, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
+				FROM USERS U, BOARD B WHERE
 		]]>
 		<include refid="cri"></include>
 		<![CDATA[
@@ -45,13 +48,16 @@
 		BOARDNUMBER > 0
 	</select>
 	
-	<select id="getBoard" resultType="Board">
-		SELECT * FROM BOARD WHERE BOARDNUMBER = #{boardnumber}
+	<select id="getBoard" resultType="BoardView">
+		SELECT USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD,
+		BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
+		FROM USERS U, BOARD B
+		WHERE U.USERNAME = B.BOARDWRITER AND BOARDNUMBER= #{boardnumber}
 	</select>
 	
 	<insert id="writeBoard">
 		INSERT INTO BOARD
-		(BOARDNUMBER, BOARDWRITER, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT)
-		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent})
+		(BOARDNUMBER, BOARDWRITER, BOARDDATE, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT)
+		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, SYSDATE, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent})
 	</insert>
 </mapper>

@@ -5,36 +5,111 @@
 <title>★SPACE★</title>
 <link rel="stylesheet" href="/css/main.css" />
 <link rel="stylesheet" href="/css/board/boardList.css" />
+<style>
+.title {
+	text-align: center;
+	width: 100%;
+	height: 50px;
+}
+
+.skillContainer {
+	border: 1px solid black;
+	width: 80%;
+	height: 800px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0 auto;
+	border-radius: 50px;
+}
+
+.skillList {
+	border: 1px solid black;
+	width: 150px;
+	border-radius: 50px;
+	text-align: center;
+	margin: 15px 15px;
+	cursor: pointer;
+	opacity: 0.2;
+}
+
+.choice {
+	opacity: 1;
+}
+
+#skillChoiceContainer {
+	border: 1px solid black;
+	width: 80%;
+	height: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.select {
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+	width: 150px;
+	height: 30px;
+	text-align: left;
+	border-radius: 50px;
+	padding-left: 20px;
+	padding-top: 5px;
+	background-color: silver;
+	cursor: pointer;
+	margin: 20px;
+}
+
+.cancel_PTag {
+	position: absolute;
+	right: 2px;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	margin: 0px;
+	padding-top: 5px;
+	border-radius: 50px;
+	background-color: white;
+	cursor: pointer;
+}
+</style>
 </head>
 <body>
 	<table>
 		<tr>
 			<th>제목</th>
-			<th>내용</th>
+			<th>작성자</th>
 		</tr>
 		<th:block th:if="${boardList != null}">
 			<tr th:each="board : ${boardList}">
-				<td><a th:href="@{/board/view(boardnumber=${board.boardnumber})}"><span th:text="${board.boardTitle}"></span></a></td>
-				<td th:text="${board.boardContent}"></td>
+				<td><a th:href="@{/board/view(boardnumber=${board.boardnumber})}"><span th:text="${board.boardtitle}"></span></a></td>
+				<td><span th:text="${board.usersnickname}"></span></td>
 			</tr>
 		</th:block>
 		<th:block th:if="${boardList == null}">
 			<div>게시글이 없음</div>
 		</th:block>
 	</table>
+	
+	<div class="listBox">
+		<div></div>
+		
+	</div>
+	
+	
+	
 	<form action="/board/list" id="searchForm" method="get">
 		<div>
-			<select name="type">
-				<option>검색</option>
-				<option th:value="T" th:selected="${pageMaker.cri.type == 'T'}">제목</option>
-				<option th:value="C" th:selected="${pageMaker.cri.type == 'C'}">내용</option>
-				<option th:value="W" th:selected="${pageMaker.cri.type == 'W'}">작성자</option>
-				<option th:value="TC" th:selected="${pageMaker.cri.type == 'TC'}">제목 또는 내용</option>
-				<option th:value="TW" th:selected="${pageMaker.cri.type == 'TW'}">제목 또는 작성자</option>
-				<option th:value="TCW" th:selected="${pageMaker.cri.type == 'TCW'}">제목 또는 내용 또는 작성자</option>
-			</select>
-			<input type="text" name="keyword" id="keyword"/>
-			<a id="searchFormInA" href="#">검색</a>
+		
+		<div class="skillContainer">
+			<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList choice"></div>
+		</div>
+		<div id="skillChoiceContainer"></div>
+		<div id="reset">필터 초기화</div>				
+
+
 		</div>
 		<input type="hidden" name="pageNum" th:value="1"/>
 		<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}"/>
@@ -62,5 +137,117 @@
 		<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}"/>
 	</form>
 </body>
-<script src="/js/board/board.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/js/board/boardList.js"></script>
+<script>
+let skillList = document.getElementsByClassName("skillList");
+let skillChoiceContainer = document.getElementById("skillChoiceContainer");
+let reset = document.getElementById("reset");
+let cnt = 0;
+let check = 0;
+let arryCnt = 0;
+let selectArry = [];
+
+
+// for문을 통해 필터를 모두 확인
+for(let i=0; i<skillList.length; i++){
+	skillList[i].onclick = function () {
+		// 만약 처음 필터를 선택한 것이라면 (cnt가 0 이라면)
+		if(cnt == 0){
+			cnt++;
+			// 선택된 요소를 제외한 모든 요소의 choice 클래스를 제거함(그러면 요소의 opacity속성이 0.2가 됨)
+			for(let j=0; j<skillList.length; j++){
+				if(j!=i) {
+					skillList[j].classList.remove("choice");
+				}
+			}
+			selectArry[i] = skillList[i].innerHTML;
+			console.log("value 값 가져오기 : "+selectArry);
+//			let choice_HiddenTag = document.createElement("input");
+//			choice_HiddenTag.setAttribute("type", "hidden");
+//			choice_HiddenTag.setAttribute("value", skillList[i].innerHTML);
+//			choice_HiddenTag.setAttribute("name", "type");
+//			choice_HiddenTag.setAttribute("class", "skillHidden");
+//			skillChoiceContainer.appendChild(choice_HiddenTag);
+		// 만약 선택된 요소에 choice 클래스가 포함되어 있지 않으면
+		} else if(!skillList[i].classList.contains("choice")){
+			// choice 클래스를 포함해 줌
+			skillList[i].classList += " choice";
+			selectArry[i] = skillList[i].innerHTML;
+			console.log("value 값 가져오기 : "+selectArry);
+//			let choice_HiddenTag = document.createElement("input");
+//			choice_HiddenTag.setAttribute("type", "hidden");
+//			choice_HiddenTag.setAttribute("value", skillList[i].innerHTML);
+//			choice_HiddenTag.setAttribute("name", "type");
+//			choice_HiddenTag.setAttribute("class", "skillHidden");
+//			skillChoiceContainer.appendChild(choice_HiddenTag);
+		// 만약 선택된 요소에 choice 클래스가 포함되어 있다면 
+		} else if(skillList[i].classList.contains("choice")){
+			// choice 클래스를 제거해 줌
+			skillList[i].classList.remove("choice");
+//			let removeHidden = document.querySelector("input[value='"+skillList[i].innerHTML+"']");
+//			removeHidden.remove();
+			selectArry[i] = '';
+			console.log("value 값 가져오기 : "+selectArry);
+			// choice 클래스 제거 후 모든 요소를 돌아봄
+			for(let j=0; j<skillList.length; j++){
+				// 만약 choice 클래스를 가진 요소가 없다면
+				console.log("선택된 요소에 choice 클래스가 없음");
+				if(!skillList[j].classList.contains("choice")){
+					// check 1 증가
+					check++;
+				// 만약 choice 클래스를 가진 요소가 있다면
+				} else {
+					return;
+				}
+			}
+			console.log("check의 수 : "+check);
+			// 만약 check가 47이라면 (모든 요소에 choice 클래스가 없었다면)
+			if(check>=47){
+				// 모든 요소를 돌며 
+				for(let j=0; j<skillList.length; j++){
+					// choice 클래스를 추가해 줌
+					skillList[j].classList += " choice";
+				}
+				check = 0;
+				cnt = 0;
+				console.log("카운트 0으로 초기화");
+			}			
+		}
+			
+//		let skillHidden = document.getElementsByClassName("skillHidden");
+		console.log("ajax에서 value 값 가져오기 : "+selectArry);
+		let json = {"skill":selectArry, "amount":30};
+		$.ajax(
+			{
+				type:"POST",
+				url:"/board/getList",
+				data:JSON.stringify(json),
+				contentType: "application/json",
+				success:function(result,status,xhr){
+					console.log(result);
+					if(result == "fail"){						
+						
+					}else{
+						
+					}
+				},
+				error:function(xhr,status,e){
+				}
+			}		
+		)
+	};
+}
+reset.addEventListener('click', function(){
+	cnt = 0;
+	check = 0;
+	selectArry.length = 0;
+	while(skillChoiceContainer.hasChildNodes()) {			
+		skillChoiceContainer.removeChild(skillChoiceContainer.firstChild);
+	}
+	for(let i=0; i<skillList.length; i++){
+		skillList[i].className += " choice";
+	}
+});
+</script>
 </html>
