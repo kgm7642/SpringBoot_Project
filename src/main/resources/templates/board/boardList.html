@@ -79,16 +79,20 @@
 <body>
 	<table>
 		<tr>
+			<th>번호</th>
 			<th>제목</th>
 			<th>작성자</th>
+			<th>스킬</th>
 		</tr>
-		<th:block th:if="${boardList != null}">
-			<tr th:each="board : ${boardList}">
+		<th:block th:if="${pageMaker != null}">
+			<tr th:each="board : ${pageMaker.boardList}">
+				<td><span th:text="${board.boardnumber}"></span></td>
 				<td><a th:href="@{/board/view(boardnumber=${board.boardnumber})}"><span th:text="${board.boardtitle}"></span></a></td>
 				<td><span th:text="${board.usersnickname}"></span></td>
+				<td><span th:text="${board.boardskill}"></span></td>
 			</tr>
 		</th:block>
-		<th:block th:if="${boardList == null}">
+		<th:block th:if="${pageMaker == null}">
 			<div>게시글이 없음</div>
 		</th:block>
 	</table>
@@ -133,8 +137,6 @@
 	<form id="pageForm" name="pageForm" action="/board/list" method="get">
 		<input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}">
 		<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}"/>
-		<input type="hidden" name="type" th:value="${pageMaker.cri.type}"/>
-		<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}"/>
 	</form>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -145,15 +147,14 @@ let skillChoiceContainer = document.getElementById("skillChoiceContainer");
 let reset = document.getElementById("reset");
 let cnt = 0;
 let check = 0;
-let arryCnt = 0;
 let selectArry = [];
-
 
 // for문을 통해 필터를 모두 확인
 for(let i=0; i<skillList.length; i++){
 	skillList[i].onclick = function () {
 		// 만약 처음 필터를 선택한 것이라면 (cnt가 0 이라면)
 		if(cnt == 0){
+			selectArry.shift();
 			cnt++;
 			// 선택된 요소를 제외한 모든 요소의 choice 클래스를 제거함(그러면 요소의 opacity속성이 0.2가 됨)
 			for(let j=0; j<skillList.length; j++){
@@ -161,34 +162,76 @@ for(let i=0; i<skillList.length; i++){
 					skillList[j].classList.remove("choice");
 				}
 			}
-			selectArry[i] = skillList[i].innerHTML;
-			console.log("value 값 가져오기 : "+selectArry);
-//			let choice_HiddenTag = document.createElement("input");
-//			choice_HiddenTag.setAttribute("type", "hidden");
-//			choice_HiddenTag.setAttribute("value", skillList[i].innerHTML);
-//			choice_HiddenTag.setAttribute("name", "type");
-//			choice_HiddenTag.setAttribute("class", "skillHidden");
-//			skillChoiceContainer.appendChild(choice_HiddenTag);
+			selectArry.push(skillList[i].innerHTML);
+			console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);	
+
+			// 서버에 데이터 전달
+			let json = {"selectArry":selectArry};
+			$.ajax(
+				{
+					type:"POST",
+					url:"/board/getList",
+					data:JSON.stringify(json),
+					contentType: "application/json",
+					success:function(result,status,xhr){
+						console.log(result);
+						if(result == "fail"){						
+							
+						}else{
+							
+						}
+					},
+					error:function(xhr,status,e){
+					}
+				}		
+			)			
+			
+			
 		// 만약 선택된 요소에 choice 클래스가 포함되어 있지 않으면
 		} else if(!skillList[i].classList.contains("choice")){
 			// choice 클래스를 포함해 줌
 			skillList[i].classList += " choice";
-			selectArry[i] = skillList[i].innerHTML;
-			console.log("value 값 가져오기 : "+selectArry);
-//			let choice_HiddenTag = document.createElement("input");
-//			choice_HiddenTag.setAttribute("type", "hidden");
-//			choice_HiddenTag.setAttribute("value", skillList[i].innerHTML);
-//			choice_HiddenTag.setAttribute("name", "type");
-//			choice_HiddenTag.setAttribute("class", "skillHidden");
-//			skillChoiceContainer.appendChild(choice_HiddenTag);
+			selectArry.push(skillList[i].innerHTML);
+			
+			console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);
+			
+			// 서버에 데이터 전달
+			let json = {"selectArry":selectArry};
+			$.ajax(
+				{
+					type:"POST",
+					url:"/board/getList",
+					data:JSON.stringify(json),
+					contentType: "application/json",
+					success:function(result,status,xhr){
+						console.log(result);
+						if(result == "fail"){						
+							
+						}else{
+							
+						}
+					},
+					error:function(xhr,status,e){
+					}
+				}		
+			)			
+			
+			
 		// 만약 선택된 요소에 choice 클래스가 포함되어 있다면 
 		} else if(skillList[i].classList.contains("choice")){
 			// choice 클래스를 제거해 줌
 			skillList[i].classList.remove("choice");
 //			let removeHidden = document.querySelector("input[value='"+skillList[i].innerHTML+"']");
 //			removeHidden.remove();
-			selectArry[i] = '';
-			console.log("value 값 가져오기 : "+selectArry);
+			
+			// 체크 해제한 요소와 같은 값을 가지고 있는 배열의 값을 제거함
+			let isEven = function(value){
+				return value != skillList[i].innerHTML;
+			}
+		
+			selectArry = selectArry.filter(isEven);
+			console.log("selectArry 값 서버에 보내기 전 확인해보기(요소 하나 체크 해제함) : "+selectArry);
+			
 			// choice 클래스 제거 후 모든 요소를 돌아봄
 			for(let j=0; j<skillList.length; j++){
 				// 만약 choice 클래스를 가진 요소가 없다면
@@ -198,6 +241,25 @@ for(let i=0; i<skillList.length; i++){
 					check++;
 				// 만약 choice 클래스를 가진 요소가 있다면
 				} else {
+					let json = {"selectArry":selectArry};
+					$.ajax(
+						{
+							type:"POST",
+							url:"/board/getList",
+							data:JSON.stringify(json),
+							contentType: "application/json",
+							success:function(result,status,xhr){
+								console.log(result);
+								if(result == "fail"){						
+									
+								}else{
+									
+								}
+							},
+							error:function(xhr,status,e){
+							}
+						}		
+					)
 					return;
 				}
 			}
@@ -212,30 +274,30 @@ for(let i=0; i<skillList.length; i++){
 				check = 0;
 				cnt = 0;
 				console.log("카운트 0으로 초기화");
+				selectArry = [];
+				selectArry[0] = "nothing";
+				console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);
+				let json = {"selectArry":selectArry};
+				$.ajax(
+					{
+						type:"POST",
+						url:"/board/getList",
+						data:JSON.stringify(json),
+						contentType: "application/json",
+						success:function(result,status,xhr){
+							console.log(result);
+							if(result == "fail"){						
+								
+							}else{
+								
+							}
+						},
+						error:function(xhr,status,e){
+						}
+					}		
+				)				
 			}			
 		}
-			
-//		let skillHidden = document.getElementsByClassName("skillHidden");
-		console.log("ajax에서 value 값 가져오기 : "+selectArry);
-		let json = {"skill":selectArry, "amount":30};
-		$.ajax(
-			{
-				type:"POST",
-				url:"/board/getList",
-				data:JSON.stringify(json),
-				contentType: "application/json",
-				success:function(result,status,xhr){
-					console.log(result);
-					if(result == "fail"){						
-						
-					}else{
-						
-					}
-				},
-				error:function(xhr,status,e){
-				}
-			}		
-		)
 	};
 }
 reset.addEventListener('click', function(){

@@ -4,23 +4,58 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.repository.BoardMapper">
 	<sql id="cri">
-		<if test="keyword != null and type != null">
+		<if test="skill != null">
 			<trim prefixOverrides="or" prefix="(" suffix=") and">
-				<foreach item="type" collection="typeArr">
+				<foreach item="type" collection="selectArry">
 					<trim prefix="or">
 						<choose>
-							<when test="type == 'T'.toString()">
-								(BOARDTITLE LIKE '%${keyword}%')
-							</when>
-							<when test="type == 'C'.toString()">
-								(BOARDCONTENT LIKE '%${keyword}%')
-							</when>
-							<when test="type == 'W'.toString()">
-								(BOARDWRITER LIKE '%${keyword}%')
-							</when>
-							<when test="type == 'S'.toString()">
-								(BOARDWRITER LIKE '%${keyword}%')
-							</when>
+							<when test="type == 'C'.toString()">(BOARDSKILL LIKE '%C')</when>
+							<when test="type == 'C++'.toString()">(BOARDSKILL LIKE '%C++%')</when>
+							<when test="type == 'C#'.toString()">(BOARDSKILL LIKE '%C#%')</when>
+							<when test="type == 'Java'.toString()">(BOARDSKILL LIKE '%Java%')</when>
+							<when test="type == 'HTML'.toString()">(BOARDSKILL LIKE '%HTML%')</when>
+							<when test="type == 'CSS'.toString()">(BOARDSKILL LIKE '%CSS%')</when>
+							<when test="type == 'JavaScript'.toString()">(BOARDSKILL LIKE '%JavaScript%')</when>
+							<when test="type == 'TypeScript'.toString()">(BOARDSKILL LIKE '%TypeScript%')</when>
+							<when test="type == 'Python'.toString()">(BOARDSKILL LIKE '%Python%')</when>
+							<when test="type == 'Perl'.toString()">(BOARDSKILL LIKE '%Perl%')</when>
+							<when test="type == 'php'.toString()">(BOARDSKILL LIKE '%php%')</when>
+							<when test="type == 'Ruby'.toString()">(BOARDSKILL LIKE '%Ruby%')</when>
+							<when test="type == 'Cotlin'.toString()">(BOARDSKILL LIKE '%Cotlin%')</when>
+							<when test="type == 'Swift'.toString()">(BOARDSKILL LIKE '%Swift%')</when>
+							<when test="type == 'Spring'.toString()">(BOARDSKILL LIKE '%Spring')</when>
+							<when test="type == 'Spring Boot'.toString()">(BOARDSKILL LIKE '%Spring Boot%')</when>
+							<when test="type == 'Vue'.toString()">(BOARDSKILL LIKE '%Vue%')</when>
+							<when test="type == 'React'.toString()">(BOARDSKILL LIKE '%React%')</when>
+							<when test="type == 'Angular'.toString()">(BOARDSKILL LIKE '%Angular%')</when>
+							<when test="type == 'JQuery'.toString()">(BOARDSKILL LIKE '%JQuery%')</when>
+							<when test="type == 'Django'.toString()">(BOARDSKILL LIKE '%Django%')</when>
+							<when test="type == 'Svelte'.toString()">(BOARDSKILL LIKE '%Svelte%')</when>
+							<when test="type == 'Nextjs'.toString()">(BOARDSKILL LIKE '%Nextjs%')</when>
+							<when test="type == 'Nodejs'.toString()">(BOARDSKILL LIKE '%Nodejs%')</when>
+							<when test="type == 'Go'.toString()">(BOARDSKILL LIKE '%Go%')</when>
+							<when test="type == 'Nestjs'.toString()">(BOARDSKILL LIKE '%Nestjs%')</when>
+							<when test="type == 'Express'.toString()">(BOARDSKILL LIKE '%Express%')</when>
+							<when test="type == 'MySQL'.toString()">(BOARDSKILL LIKE '%MySQL%')</when>
+							<when test="type == 'MongoDB'.toString()">(BOARDSKILL LIKE '%MongoDB%')</when>
+							<when test="type == 'Oracle'.toString()">(BOARDSKILL LIKE '%Oracle%')</when>
+							<when test="type == 'MariaDB'.toString()">(BOARDSKILL LIKE '%MariaDB%')</when>
+							<when test="type == 'JPA'.toString()">(BOARDSKILL LIKE '%JPA%')</when>
+							<when test="type == 'MyBatis'.toString()">(BOARDSKILL LIKE '%MyBatis%')</when>
+							<when test="type == 'GraphQl'.toString()">(BOARDSKILL LIKE '%GraphQl%')</when>
+							<when test="type == 'Firebase'.toString()">(BOARDSKILL LIKE '%Firebase%')</when>
+							<when test="type == 'Flutter'.toString()">(BOARDSKILL LIKE '%Flutter%')</when>
+							<when test="type == 'ReactNative'.toString()">(BOARDSKILL LIKE '%ReactNative%')</when>
+							<when test="type == 'Unity'.toString()">(BOARDSKILL LIKE '%Unity%')</when>
+							<when test="type == 'AWS'.toString()">(BOARDSKILL LIKE '%AWS%')</when>
+							<when test="type == 'Kubernetes'.toString()">(BOARDSKILL LIKE '%Kubernetes%')</when>
+							<when test="type == 'Docker'.toString()">(BOARDSKILL LIKE '%Docker%')</when>
+							<when test="type == 'Git'.toString()">(BOARDSKILL LIKE '%Git%')</when>
+							<when test="type == 'Figma'.toString()">(BOARDSKILL LIKE '%Figma%')</when>
+							<when test="type == 'Zeplin'.toString()">(BOARDSKILL LIKE '%Zeplin%')</when>
+							<when test="type == 'Jest'.toString()">(BOARDSKILL LIKE '%Jest%')</when>
+							<when test="type == 'Algorithm'.toString()">(BOARDSKILL LIKE '%Algorithm%')</when>
+							<when test="type == 'DataStructure'.toString()">(BOARDSKILL LIKE '%DataStructure%')</when>																																	
 						</choose>					
 					</trim>
 				</foreach>
@@ -30,9 +65,9 @@
 
 	<select id="boardList" resultType="BoardView">
 		<![CDATA[
-			SELECT USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
+			SELECT BOARDNUMBER, BOARDWRITER, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
 			FROM
-				(SELECT ROWNUM RN, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
+				(SELECT ROWNUM RN, BOARDNUMBER, BOARDWRITER, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
 				FROM USERS U, BOARD B WHERE
 		]]>
 		<include refid="cri"></include>

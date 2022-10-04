@@ -14,6 +14,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,22 +54,21 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public String boardList(Model model, Criteria cri) {
-		model.addAttribute("boardList", boardService.boardList(cri));		
-		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri));
+		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
+		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
 		model.addAttribute("skillList", usersService.skill());
 		return "/board/boardList";
 	}
 	
+//	게시글 리스트 받아오기(ajax)
 	@ResponseBody
 	@PostMapping(value = "/getList", consumes = "application/json")
-	public String getList(Model model, Criteria cri) {
-		log.info("cri={}",cri);
-		model.addAttribute("boardList", boardService.boardList(cri));		
-		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri));
-		model.addAttribute("skillList", usersService.skill());
-		return "/board/boardList";
+	public ResponseEntity<Page> getList(Model model, @RequestBody Criteria cri) {
+		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
+		log.info("cri : {}",cri);
+		return new ResponseEntity<Page>(new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)), HttpStatus.OK);
 	}
-	
+
 //	게시글 상세보기
 	@GetMapping("/view")
 	public String boardView(Model model, int boardnumber) {
