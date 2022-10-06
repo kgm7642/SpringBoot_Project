@@ -77,43 +77,19 @@
 </style>
 </head>
 <body>
-	<table>
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>작성자</th>
-			<th>스킬</th>
-		</tr>
-		<th:block th:if="${pageMaker != null}">
-			<tr th:each="board : ${pageMaker.boardList}">
-				<td><span th:text="${board.boardnumber}"></span></td>
-				<td><a th:href="@{/board/view(boardnumber=${board.boardnumber})}"><span th:text="${board.boardtitle}"></span></a></td>
-				<td><span th:text="${board.usersnickname}"></span></td>
-				<td><span th:text="${board.boardskill}"></span></td>
-			</tr>
-		</th:block>
-		<th:block th:if="${pageMaker == null}">
-			<div>게시글이 없음</div>
-		</th:block>
-	</table>
 	
-	<div class="listBox">
-		<div></div>
+	<h1>무한스크롤</h1>
+    <section class="section"></section>
+	
+	
 		
-	</div>
-	
-	
-	
 	<form action="/board/list" id="searchForm" method="get">
 		<div>
-		
-		<div class="skillContainer">
-			<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList choice"></div>
-		</div>
-		<div id="skillChoiceContainer"></div>
-		<div id="reset">필터 초기화</div>				
-
-
+			<div class="skillContainer">
+				<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList choice"></div>
+			</div>
+			<div id="skillChoiceContainer"></div>
+			<div id="reset">필터 초기화</div>				
 		</div>
 		<input type="hidden" name="pageNum" th:value="1"/>
 		<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}"/>
@@ -140,14 +116,101 @@
 	</form>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="/js/board/boardList.js"></script>
 <script>
+
+let scrollCnt = 1;
+window.onscroll = function (e) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      setTimeout(function () {
+    	scrollCnt++;
+    	let boardItemTag = document.querySelector(".boardItem");
+    	boardBoxScroll(scrollCnt, 30, selectArry);
+      }, 1000);
+    }
+  };
+
+let pageCnt = 0;
+let selectArry = [];
+
+function boardBoxScroll(pageNum, amount, selectArry) {
+	let json = {"pageNum":pageNum, "amount":amount, "selectArry":selectArry};
+	console.log("pageNum"+pageNum+"-------amount"+amount);
+    $.ajax({
+        type: "POST",
+        url: "/board/getList",
+		data:JSON.stringify(json),
+		contentType: "application/json"
+    })
+        .done(function (result) {
+            console.log(result);
+            pageCnt++;
+            $(".section").append("<div class=hhhhhh></div>");
+        })
+        .fail(function(jqXHR) {
+            console.log(jqXHR);
+        })
+        .always(function() {
+            console.log("요청, 응답 결과에 상관없이, 이건 항상 실행됩니다.");
+        })
+}
+
+
+function boardBox(selectArry) {
+	let json = {"selectArry":selectArry};
+    $.ajax({
+        type: "POST",
+        url: "/board/getList",
+		data:JSON.stringify(json),
+		contentType: "application/json"
+    })
+        .done(function (result) {
+            console.log(result);
+            console.log("리플레이스 되야함");
+            if(pageCnt==0){   
+            	console.log("처음 클릭");
+	            $(".section").append("<div class=boardBox></div>");
+	            $(".boardBox").replaceWith(result);
+	            pageCnt++;
+            } else {
+            	console.log("두번째 클릭");
+            	$(".boardBlock").remove();
+	            $(".section").append("<div class=boardBox></div>");
+	            $(".boardBox").replaceWith(result);
+            }
+        })
+        .fail(function(jqXHR) {
+            console.log(jqXHR);
+        })
+        .always(function() {
+            console.log("요청, 응답 결과에 상관없이, 이건 항상 실행됩니다.");
+        })
+}
+
+setTimeout(boardBox, 100);
+
+
+
+const searchForm = document.getElementById("searchForm");
+
+
+const pageForm = document.getElementById("pageForm");
+const changePage = document.querySelectorAll(".changePage");
+const pageFormPageNum = document.querySelector("#pageForm > input");
+
+for(let i=0; i<changePage.length; i++){
+	changePage[i].addEventListener("click", function(e){
+		e.preventDefault();
+		pageFormPageNum.value = changePage[i].getAttribute("href");
+		pageForm.submit();
+	})
+}
+
+
 let skillList = document.getElementsByClassName("skillList");
 let skillChoiceContainer = document.getElementById("skillChoiceContainer");
 let reset = document.getElementById("reset");
 let cnt = 0;
 let check = 0;
-let selectArry = [];
 
 // for문을 통해 필터를 모두 확인
 for(let i=0; i<skillList.length; i++){
@@ -166,26 +229,8 @@ for(let i=0; i<skillList.length; i++){
 			console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);	
 
 			// 서버에 데이터 전달
-			let json = {"selectArry":selectArry};
-			$.ajax(
-				{
-					type:"POST",
-					url:"/board/getList",
-					data:JSON.stringify(json),
-					contentType: "application/json",
-					success:function(result,status,xhr){
-						console.log(result);
-						if(result == "fail"){						
-							
-						}else{
-							
-						}
-					},
-					error:function(xhr,status,e){
-					}
-				}		
-			)			
-			
+			boardBox(selectArry);
+			scrollCnt = 0;
 			
 		// 만약 선택된 요소에 choice 클래스가 포함되어 있지 않으면
 		} else if(!skillList[i].classList.contains("choice")){
@@ -196,26 +241,8 @@ for(let i=0; i<skillList.length; i++){
 			console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);
 			
 			// 서버에 데이터 전달
-			let json = {"selectArry":selectArry};
-			$.ajax(
-				{
-					type:"POST",
-					url:"/board/getList",
-					data:JSON.stringify(json),
-					contentType: "application/json",
-					success:function(result,status,xhr){
-						console.log(result);
-						if(result == "fail"){						
-							
-						}else{
-							
-						}
-					},
-					error:function(xhr,status,e){
-					}
-				}		
-			)			
-			
+			boardBox(selectArry);
+			scrollCnt = 0;
 			
 		// 만약 선택된 요소에 choice 클래스가 포함되어 있다면 
 		} else if(skillList[i].classList.contains("choice")){
@@ -241,25 +268,8 @@ for(let i=0; i<skillList.length; i++){
 					check++;
 				// 만약 choice 클래스를 가진 요소가 있다면
 				} else {
-					let json = {"selectArry":selectArry};
-					$.ajax(
-						{
-							type:"POST",
-							url:"/board/getList",
-							data:JSON.stringify(json),
-							contentType: "application/json",
-							success:function(result,status,xhr){
-								console.log(result);
-								if(result == "fail"){						
-									
-								}else{
-									
-								}
-							},
-							error:function(xhr,status,e){
-							}
-						}		
-					)
+					boardBox(selectArry);
+					scrollCnt = 0;
 					return;
 				}
 			}
@@ -277,25 +287,8 @@ for(let i=0; i<skillList.length; i++){
 				selectArry = [];
 				selectArry[0] = "nothing";
 				console.log("selectArry 값 서버에 보내기 전 확인해보기 : "+selectArry);
-				let json = {"selectArry":selectArry};
-				$.ajax(
-					{
-						type:"POST",
-						url:"/board/getList",
-						data:JSON.stringify(json),
-						contentType: "application/json",
-						success:function(result,status,xhr){
-							console.log(result);
-							if(result == "fail"){						
-								
-							}else{
-								
-							}
-						},
-						error:function(xhr,status,e){
-						}
-					}		
-				)				
+				boardBox(selectArry);
+				scrollCnt = 0;
 			}			
 		}
 	};
@@ -303,13 +296,16 @@ for(let i=0; i<skillList.length; i++){
 reset.addEventListener('click', function(){
 	cnt = 0;
 	check = 0;
-	selectArry.length = 0;
+	selectArry = [];
+	selectArry[0] = "nothing";
 	while(skillChoiceContainer.hasChildNodes()) {			
 		skillChoiceContainer.removeChild(skillChoiceContainer.firstChild);
 	}
 	for(let i=0; i<skillList.length; i++){
 		skillList[i].className += " choice";
 	}
+	boardBox(selectArry);
+	scrollCnt = 0;
 });
 </script>
 </html>

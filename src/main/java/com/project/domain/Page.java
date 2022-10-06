@@ -16,8 +16,9 @@ public class Page {
 	private int total;
 	private Criteria cri;
 	private ArrayList<Integer> pages;
+	private ArrayList<BoardView> boardList;
 	
-	public Page(int total, Criteria cri) {
+	public Page(int total, Criteria cri, ArrayList<BoardView> boardList) {
 		this.total = total;
 		this.cri = cri;
 		this.amount = 10;
@@ -33,5 +34,7 @@ public class Page {
 		for(int i=startPage; i<endPage+1; i++) {
 			pages.add(i);
 		}
+		
+		this.boardList = boardList;
 	}
 }

@@ -61,12 +61,21 @@ public class BoardController {
 	}
 	
 //	게시글 리스트 받아오기(ajax)
-	@ResponseBody
+//	@ResponseBody
+//	@PostMapping(value = "/getList", consumes = "application/json")
+//	public ResponseEntity<Page> getList(Model model, @RequestBody Criteria cri) {
+//		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
+//		log.info("cri : {}",cri);
+//		return new ResponseEntity<Page>(new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)), HttpStatus.OK);
+//	}
+	
+//	게시글 리스트 받아오기(ajax)
 	@PostMapping(value = "/getList", consumes = "application/json")
-	public ResponseEntity<Page> getList(Model model, @RequestBody Criteria cri) {
+	public String getList(Model model, @RequestBody Criteria cri) {
 		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
 		log.info("cri : {}",cri);
-		return new ResponseEntity<Page>(new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)), HttpStatus.OK);
+		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
+		return "/board/boardReplace";
 	}
 
 //	게시글 상세보기

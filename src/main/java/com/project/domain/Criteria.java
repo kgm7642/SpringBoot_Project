@@ -11,12 +11,13 @@ public class Criteria {
 	private String skill;
 	
 	public Criteria() {
-		this(1, 10);
+		this(1, 30, "");
 	}
 	
-	public Criteria(int pageNum, int amount) {
+	public Criteria(int pageNum, int amount, String skill) {
 		this.pageNum = pageNum;
 		this.amount = amount;
+		this.skill = skill;
 	}
 	
 	public String getListLink() {
@@ -26,7 +27,20 @@ public class Criteria {
 		return builder.toUriString();
 	}
 	
-//	public String[] getTypeArr() {
-//		return type == null ? new String[] {} : type.split("");
-//	}
+	public void setSelectArry(String[] selectArry) {
+		for(String x : selectArry) {
+			if(x.equals("nothing")) {
+				this.skill = " ";
+			} else if(x!=null) this.skill += x + ",";
+		}
+		skill = skill.substring(0, skill.length() - 1);
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public String[] getSelectArry() {
+		return skill == null ? new String[] {} : this.skill.split(",");
+	}
 }
