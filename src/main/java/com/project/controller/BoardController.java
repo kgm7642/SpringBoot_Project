@@ -60,16 +60,7 @@ public class BoardController {
 		return "/board/boardList";
 	}
 	
-//	게시글 리스트 받아오기(ajax)
-//	@ResponseBody
-//	@PostMapping(value = "/getList", consumes = "application/json")
-//	public ResponseEntity<Page> getList(Model model, @RequestBody Criteria cri) {
-//		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
-//		log.info("cri : {}",cri);
-//		return new ResponseEntity<Page>(new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)), HttpStatus.OK);
-//	}
-	
-//	게시글 리스트 받아오기(ajax)
+//	게시글 리스트 받아오기(ajax, 첫 로딩, 필터)
 	@PostMapping(value = "/getList", consumes = "application/json")
 	public String getList(Model model, @RequestBody Criteria cri) {
 		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
@@ -77,15 +68,24 @@ public class BoardController {
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
 		return "/board/boardReplace";
 	}
+	
+//	게시글 리스트 받아오기(ajax, 스크롤 이벤트)
+	@PostMapping(value = "/getScroll", consumes = "application/json")
+	public String getScroll(Model model, @RequestBody Criteria cri) {
+		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
+		log.info("cri : {}",cri);
+		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
+		return "/board/boardScroll";
+	}
 
 //	게시글 상세보기
 	@GetMapping("/view")
-	public String boardView(Model model, int boardnumber) {
-		log.info("게시글 확인"+boardService.getBoard(boardnumber));
-		model.addAttribute("board",boardService.getBoard(boardnumber));
+	public String boardView(Model model, String boardnumber) {
+		log.info("게시글 확인"+boardService.getBoard(Integer.valueOf(boardnumber)));
+		model.addAttribute("board",boardService.getBoard(Integer.valueOf(boardnumber)));
 		return "/board/boardView";
 	}
-	
+
 //	게시글 작성하기 페이지 이동
 	@GetMapping("/write")
 	public String write(@ModelAttribute Board board, Model model) {
