@@ -21,7 +21,7 @@ public class Page {
 	public Page(int total, Criteria cri, ArrayList<BoardView> boardList) {
 		this.total = total;
 		this.cri = cri;
-		this.amount = 10;
+		this.amount = 30;
 		this.pages = new ArrayList<Integer>();
 		
 		this.endPage = (int)Math.ceil(cri.getPageNum()/10.0)*amount;

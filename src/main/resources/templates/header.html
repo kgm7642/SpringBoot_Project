@@ -7,7 +7,9 @@
 <body>
 	<header th:fragment="header" class="headerBox">
 		<div class="leftBox">
-			<img src="../images/spaceLogoText.PNG">
+			<a href="/">
+				<img src="../images/spaceLogoText.PNG">
+			</a>
 		</div>
 		<div class="rightBox">
 			<div th:if="${session.users != null}">

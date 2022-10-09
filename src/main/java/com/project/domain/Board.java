@@ -17,4 +17,5 @@ public class Board {
 	private String boardway;
 	private String boardtitle;
 	private String boardcontent;
+	private String boardview;
 }

@@ -92,7 +92,7 @@
 	
 	<insert id="writeBoard">
 		INSERT INTO BOARD
-		(BOARDNUMBER, BOARDWRITER, BOARDDATE, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT)
-		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, SYSDATE, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent})
+		(BOARDNUMBER, BOARDWRITER, BOARDDATE, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT, BOARDVIEW)
+		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, SYSDATE, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent}, '0')
 	</insert>
 </mapper>

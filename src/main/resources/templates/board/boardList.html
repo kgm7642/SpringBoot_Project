@@ -5,17 +5,25 @@
 <title>★SPACE★</title>
 <link rel="stylesheet" href="/css/main.css" />
 <link rel="stylesheet" href="/css/board/boardList.css" />
+<link rel="stylesheet" href="../css/header.css">
 <style>
+
+.box {
+	width: 70%;
+	margin: 0 auto;
+	margin-bottom: 200px;
+}
+
 .title {
 	text-align: center;
 	width: 100%;
 	height: 50px;
+	margin: 0 auto;
 }
 
 .skillContainer {
-	border: 1px solid black;
-	width: 80%;
-	height: 800px;
+	width: 100%;
+	height: 350px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
@@ -25,17 +33,37 @@
 }
 
 .skillList {
-	border: 1px solid black;
-	width: 150px;
+	border: 2px solid silver;
+	width: auto;
+	height: 50px;
 	border-radius: 50px;
 	text-align: center;
 	margin: 15px 15px;
+	padding: 13px;
 	cursor: pointer;
 	opacity: 0.2;
+	list-style: none;
 }
 
 .choice {
 	opacity: 1;
+}
+
+.choiceSkill {
+	display: inline-block;
+	float: left;
+}
+
+#reset {
+	width: 100px;
+	height: 30px;
+	display: inline-block;
+	border: 2px solid silver;
+	border-radius: 50px;
+	padding-left: 4px;
+	padding-top: 2px;
+	float: right;
+	cursor: pointer;
 }
 
 #skillChoiceContainer {
@@ -82,16 +110,22 @@
 </style>
 </head>
 <body>
-	
-	<div>
-		<div class="skillContainer">
-			<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList choice"></div>
+	<div th:replace="~{header :: header}"></div>
+	<div class="box">
+		<div>
+			<h1 class="title">프로젝트 인원 모집하기</h1>
 		</div>
-		<div id="skillChoiceContainer"></div>
-		<div id="reset">필터 초기화</div>				
+		<div>
+			<h3 class="choiceSkill">관심 있는 기술을 선택해주세요.</h3>
+			<div id="reset">필터 초기화</div>
+		</div>
+		<div>
+			<ul class="skillContainer">
+				<li th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList choice"></li>
+			</ul>				
+		</div>	
 	</div>	
 	
-	<h1>무한스크롤</h1>
     <section class="section"></section>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -106,7 +140,7 @@ window.onscroll = function (e) {
       setTimeout(function () {
     	scrollCnt++;
     	boardBoxScroll(scrollCnt, 30, selectArry);
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -120,8 +154,6 @@ function boardBoxScroll(pageNum, amount, selectArry) {
 	let json = {"pageNum":pageNum, "amount":amount, "selectArry":selectArry};
 	let boardItemTag = document.querySelector(".boardItem");
 	if(selectArry[0] == null) selectArry[0] = "nothing";
-	console.log("pageNum"+pageNum+"-------amount"+amount);
-	console.log("selectArry"+selectArry);
     $.ajax({
         type: "POST",
         url: "/board/getScroll",
@@ -129,10 +161,11 @@ function boardBoxScroll(pageNum, amount, selectArry) {
 		contentType: "application/json"
     })
         .done(function (result) {
-            console.log("결과 확인"+result);
             $(".boardNull").remove();
             $(".boardItem").append("<div class=boardScroll></div>");
             $(".boardScroll").replaceWith(result);
+            
+            // 일단은 게시글 리스트 한번 불러왔기 때문에 1 증가
             pageCnt++;
         })
         .fail(function(jqXHR) {
@@ -173,12 +206,17 @@ function boardBox(selectArry) {
         })
 }
 
+// 페이지 로딩시 딱 한번 실행 (게시글 리스트 보여줌)
 setTimeout(boardBox, 100);
 
 let skillList = document.getElementsByClassName("skillList");
 let skillChoiceContainer = document.getElementById("skillChoiceContainer");
 let reset = document.getElementById("reset");
+
+// 필터를 선택한 횟수
 let cnt = 0;
+
+// 필터를 모두 체크 해제하기 위해 필요
 let check = 0;
 
 // for문을 통해 필터를 모두 확인
@@ -262,14 +300,13 @@ for(let i=0; i<skillList.length; i++){
 		}
 	};
 }
+
 reset.addEventListener('click', function(){
 	cnt = 0;
 	check = 0;
 	selectArry = [];
 	selectArry[0] = "nothing";
-	while(skillChoiceContainer.hasChildNodes()) {			
-		skillChoiceContainer.removeChild(skillChoiceContainer.firstChild);
-	}
+
 	for(let i=0; i<skillList.length; i++){
 		skillList[i].className += " choice";
 	}

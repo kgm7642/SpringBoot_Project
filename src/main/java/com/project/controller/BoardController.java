@@ -98,7 +98,6 @@ public class BoardController {
 	public String writeFinish(BoardSaveForm form, Principal principal, Model model) {
 		form.setBoardwriter(principal.getName());
 		log.info("BoardSaveForm을 확인해보자"+form);
-		
 		boardService.writeBoard(form);
 		return "redirect:/";
 	}
