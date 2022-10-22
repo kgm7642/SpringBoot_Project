@@ -56,16 +56,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.anyRequest().permitAll()
 				.and()
 				.formLogin()
-				.successHandler(new LoginSuccessHandler(userService))
-				.loginPage("/login") // 로그인 페이지 주소
-				.loginProcessingUrl("/loginDo") // 로그인 확인을 실행 할 주소
-				.defaultSuccessUrl("/") // 로그인 성공 후 처음 접
+				// 로그인 성공시 이곳으로 이동
+				.successHandler(new LoginSuccessHandler())
+				// 로그인 페이지 주소
+				.loginPage("/login")
+				// 로그인 확인을 실행 할 주소
+				.loginProcessingUrl("/loginDo")
+				// 로그인 성공 후 이동 할 주소
+				.defaultSuccessUrl("/", false)
 				.and()
 				.oauth2Login()
-				.successHandler(new LoginSuccessHandler(userService))
-				.loginPage("/login") // 로그인 페이지 주소
+				.successHandler(new LoginSuccessHandler())
+				// 로그인 페이지 주소
+				.loginPage("/login")
 				.userInfoEndpoint()
-				.userService(principalOauth2UserService); // 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip. 코드x, (액세스토큰 + 사용자프로필정보 O)
+				// 구글 로그인이 완료된 뒤의 후처리가 필요함. Tip. 코드x, (액세스토큰 + 사용자프로필정보 O)
+				.userService(principalOauth2UserService);
+		http.logout()
+				// 로그아웃 url
+				.logoutUrl("/logout")
+				// 로그아웃 성공시 홈으로 이동
+				.logoutSuccessUrl("/");
 //				.and()
 //				.logout()
 //				.logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트 할 주소
