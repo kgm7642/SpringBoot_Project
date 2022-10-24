@@ -103,8 +103,8 @@
 <body>
 	<div th:replace="~{header :: header}"></div>
 	<div class="box">
-		<form action="/board/write" th:object="${board}" method="post" id="form" enctype="multipart/form-data"
-		 name="sendform" onsubmit="return sendmoim()">
+		<form action="/board/write" th:object="${board}" method="post" id="form"
+		 name="sendform" onsubmit="return sendboard()">
 			<p><span class="number">1</span><span class="subtitle">프로젝트(스터디)의 정보를 입력해주세요.</span></p>
 			<hr>
 			<div class="setContainer">
@@ -206,21 +206,25 @@
 			      	</div>
 			      	<div class="buttonbox">
 				      	<input type="hidden" id="boardcontent" name="boardcontent"/>
-				      	<button class="button">작성 취소</button>
-				     	<input class="button" type="button" value="등록" onclick="submitPost()"/>
-				     	<input type="submit" style="display:none"/>
+				     	<input class="button" type="submit" value="등록"/>
 			     	</div>
 		     	</div>
 	     	</div>
 	    </form>
+		<button class="button" onclick="index()">작성 취소</button>
     </div>
 </body>
 <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script>
 
-function sendmoim(){
+function index(){
+	location.href= "/";
+}
+
+function sendboard(){
 	let sendform = document.sendform;
 	let start = sendform.boardstart;
+	let boardtitle = sendform.boardtitle;
 	
 	// 오늘 날짜
 	let today = new Date();   
@@ -235,8 +239,19 @@ function sendmoim(){
 	let todate = new Date(year, month, date);
 	let startdate = new Date(startYear, startMonth, startDay);
 
-	if(todate > startdate){
+	if(start.value == "") {
+		alert("모임이 시작하는 날짜를 설정해주세요.");
+		return false;
+	}
+	
+	if(todate > startdate) {
 		alert("모임이 시작하는 날짜를 다시 확인해주세요.");
+		return false;
+	}
+	
+	if(boardtitle.value = "") {
+		alert("제목을 작성해 주세요.");
+		boardtitle.focus;
 		return false;
 	}
 	return true;
