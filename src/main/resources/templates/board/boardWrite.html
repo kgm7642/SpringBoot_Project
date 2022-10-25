@@ -46,7 +46,7 @@
 	}
 	
 	.ex {
-		width: 150px;
+		width: 300px;
 		margin: 5px;
 	}
 	
@@ -55,7 +55,7 @@
 		height: 50px;
 		font-size: 20px;
 		font-weight: bold;
-		color: silver;
+		color: #A9A9A9;
 	}
 	
 	select {
@@ -63,10 +63,8 @@
 		height: 50px;
 		font-size: 20px;
 		font-weight: bold;
-		color: silver;
+		color: #A9A9A9;
 	}
-	
-	
 	
 	.boardtitleinput {
 		width: 100%;
@@ -76,9 +74,21 @@
 		font-size: 20px;
 	}
 	
+	.boardtitleinput::placeholder {
+		font-size: 20px;
+		font-weight: bold;
+		color: #DCDCDC;
+	}
+	
 	.boardtitle {
 		width: 20%;
 		font-size: 18px;
+	}
+	
+	.boardcontent {
+		width: 20%;
+		font-size: 18px;
+		margin-bottom: 12px;
 	}
 	
 	.wbox {
@@ -91,12 +101,14 @@
 		width: 100%;
 	}
 	
-	.button {
-		width: 100px;
-		height: 50px;
-		float: right;
-		font-size: 20px;
-		margin: 5px;
+	#boardway::placeholder {
+		color: #DCDCDC;
+	}
+	
+	#editorTxt {
+		width: 100%;
+		height: 800px;
+		resize: none;
 	}
 </style>
 </head>
@@ -115,7 +127,6 @@
 						<select name="boardcategory">
 							<option value="project">프로젝트</option>
 							<option value="study">스터디</option>
-							<option value="volunteer">지원자</option>
 						</select>
 					</div>
 					
@@ -176,7 +187,7 @@
 				<div class="exbox box4">
 					<div class="inline-block">
 						<span class="ex block">소통 방법</span>
-						<select name="boardcommunication">
+						<select name="boardcommunication" onchange="showValue(this)">
 							<option value="kakao">오픈채팅</option>
 							<option value="email">이메일</option>
 							<option value="phone">전화or문자</option>
@@ -184,34 +195,34 @@
 					</div>
 				
 					<div class="inline-block">
-						<span class="ex block">주소를 입력해주세요</span>
-						<input class="add block" type="text" name="boardway" th:field="*{boardway}"/>
+						<span class="ex block" id="comu">오픈 채팅방 주소를 입력해주세요.</span>
+						<input class="add block" placeholder=" ex) https://open.kakao.com/123123" type="text" id="boardway" name="boardway" th:field="*{boardway}"/>
 					</div>
 				</div>
 			</div>
 
 			<div class="setContainer">
-		    	<p><span class="number">2</span><span class="subtitle">프로젝트 또는 자신을 소개해주세요.</span></p>
+		    	<p><span class="number">2</span><span class="subtitle">프로젝트(스터디)를 소개해주세요.</span></p>
 		    	<hr>
 		    	
 		    	<div class="wbox">
-		    		<span class="boardtitle">제목</span><input class="boardtitleinput" type="text" name="boardtitle" th:field="*{boardtitle}"/>
+		    		<span class="boardtitle">제목</span>
+		    		<input class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle" th:field="*{boardtitle}"/>
 		    	</div>
 		    	<div class="wbox">
 			      	<div id="smarteditor">
+			        	<span class="boardcontent block">내용</span>
 			        	<textarea name="editorTxt" id="editorTxt" 
-			                  rows="20" cols="10" 
-			                  placeholder="내용을 입력해주세요"
-			                  style="width: 500px"></textarea>
+			                  rows="20" cols="10"></textarea>
 			      	</div>
 			      	<div class="buttonbox">
 				      	<input type="hidden" id="boardcontent" name="boardcontent"/>
-				     	<input class="button" type="submit" value="등록"/>
+				     	<input class="button btn-gradient" type="submit" value="등록"/>
 			     	</div>
 		     	</div>
 	     	</div>
 	    </form>
-		<button class="button" onclick="index()">작성 취소</button>
+		<button class="button btn-gradient" onclick="index()">작성 취소</button>
     </div>
 </body>
 <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
@@ -221,69 +232,115 @@ function index(){
 	location.href= "/";
 }
 
+let comu = document.getElementById("comu");
+let boardway = document.getElementById("boardway");
+const showValue = (target) => {
+	const value = target.value;
+	if(value == "kakao") {
+		console.log(value);
+		comu.innerHTML = "오픈 채팅방 주소를 입력해주세요.";
+		boardway.placeholder = " ex) https://open.kakao.com/123123";
+	} else if(value == "email") {
+		comu.innerHTML = "이메일을 입력해주세요.";
+		boardway.placeholder = " ex) abc123@gmail.com";
+		console.log(value);  
+	} else if(value == "phone"){
+		comu.innerHTML = "전화번호를 입력해주세요.";
+		boardway.placeholder = " ex) 010-1234-5678";
+		console.log(value);  
+	}
+}
+
+let oEditors = []
+let boardcontent = document.getElementById("boardcontent");
+smartEditor = function() {
+  nhn.husky.EZCreator.createInIFrame({
+    oAppRef: oEditors,
+    elPlaceHolder: "editorTxt",
+    sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+    fCreator: "createSEditor2"
+  })
+}
+
+// 페이지 로딩 후 스마트 에디터 실행
+document.addEventListener("DOMContentLoaded", function(){
+	smartEditor();
+});
+
+// 유효성 검사
 function sendboard(){
 	let sendform = document.sendform;
 	let start = sendform.boardstart;
 	let boardtitle = sendform.boardtitle;
+	let content = document.getElementById("editorTxt");
+	let boardcontent = document.getElementById("boardcontent");
 	
 	// 오늘 날짜
 	let today = new Date();   
 	let year = today.getFullYear(); 	// 년도
 	let month = today.getMonth() + 1;  	// 월
 	let date = today.getDate();  		// 날짜
-	
+
 	let startYear = start.value.substr(0, 4); // 시작날짜 연도
 	let startMonth = start.value.substr(5, 2); // 시작날짜 월
 	let startDay = start.value.substr(8, 2); // 시작날짜 일
-	
+
 	let todate = new Date(year, month, date);
 	let startdate = new Date(startYear, startMonth, startDay);
-
+	
+	// 스마트 에디터의 textarea값을 가져오기 위해 필요함
+	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+	
 	if(start.value == "") {
 		alert("모임이 시작하는 날짜를 설정해주세요.");
 		return false;
 	}
-	
+
 	if(todate > startdate) {
 		alert("모임이 시작하는 날짜를 다시 확인해주세요.");
 		return false;
 	}
-	
-	if(boardtitle.value = "") {
-		alert("제목을 작성해 주세요.");
-		boardtitle.focus;
+
+	if(boardway.value == "") {
+		alert("소통 방법에 대한 상세정보를 입력해주세요.")
 		return false;
 	}
+
+	if(boardtitle.value == "") {
+		alert("제목을 작성해주세요.");
+		boardtitle.focus;
+		return false;
+	}	
+	
+	if(content.value == "<p>&nbsp;</p>") {
+		alert("내용을 입력해주세요.")
+		content.focus;
+		return false;
+	}
+	
+	if(content.value.length > 2000) {
+		alert("내용은 2000byte를 넘을 수 없습니다.")
+		content.focus;
+		return false;
+	}
+	boardcontent.value = content.value;
 	return true;
 }
 
-    let oEditors = []
-	let boardcontent = document.getElementById("boardcontent");
-    smartEditor = function() {
-      nhn.husky.EZCreator.createInIFrame({
-        oAppRef: oEditors,
-        elPlaceHolder: "editorTxt",
-        sSkinURI: "/smarteditor/SmartEditor2Skin.html",
-        fCreator: "createSEditor2"
-      })
-    }
-    
-    document.addEventListener("DOMContentLoaded", function(){
-		smartEditor()
-    });
-    
-    submitPost = function() {
-    	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", [])
-    	let content = document.getElementById("editorTxt").value
-
-		if(content == '') {
-			alert("내용을 입력해주세요.")
-    	    oEditors.getById["editorTxt"].exec("FOCUS")
-    	    return
-    	} else {
-    		boardcontent.setAttribute("value", content);
-    		document.getElementById("form").submit();
-    	}
-    }
-  </script>
+function checkLength(data) {
+	let text = data.value;
+	let testLength = text.length;
+	
+	let maxLength = 50;
+		
+	console.log("글자수체크중");
+	if(testLength > maxLength) {
+		console.log("글자수초과");
+		alert(maxLength+"자 이상 작성할 수 없습니다.");
+		text = text.substr(0, maxLength);
+		data.value = text;
+		data.focus();
+	}
+}
+</script>
 </html>
