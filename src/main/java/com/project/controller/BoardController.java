@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ import com.project.domain.BoardSaveForm;
 import com.project.domain.BoardView;
 import com.project.domain.Criteria;
 import com.project.domain.Page;
+import com.project.domain.Users;
 import com.project.domain.Smarteditor;
 import com.project.service.BoardService;
 import com.project.service.UsersService;
@@ -80,9 +82,15 @@ public class BoardController {
 
 //	게시글 상세보기
 	@GetMapping("/view")
-	public String boardView(Model model, String boardnumber) {
-		log.info("게시글 확인"+boardService.getBoard(Integer.valueOf(boardnumber)));
-		model.addAttribute("board",boardService.getBoard(Integer.valueOf(boardnumber)));
+	public String boardView(Model model, String boardnumber, HttpSession session) {		
+		Users users = (Users) session.getAttribute("users");
+		BoardView boardView = boardService.getBoard(boardnumber);
+		if(!(users.getUsersnickname().equals(boardService.getBoard(boardnumber).getUsersnickname()))) {
+			boardService.updateViewCnt(boardnumber);
+			boardView.setBoardview(boardView.getBoardview()+1);
+		}
+		log.info("게시글 확인"+boardView);
+		model.addAttribute("board", boardView);
 		return "/board/boardView";
 	}
 
