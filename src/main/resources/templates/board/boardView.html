@@ -6,42 +6,520 @@
 <link rel="stylesheet" href="../css/board/boardView.css">
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/header.css">
+<style>
+	.box {
+		width: 50%;
+		margin: 0 auto;
+		margin-bottom: 100px;
+	}
+	
+	.layer1 {
+		width: 100%;
+		text-align: center;
+		margin-bottom: 30px;
+		font-family: arial;
+	}
+	
+	.title {
+		font-size: 60px;
+		font-family: arial;
+	}
+	
+	.layer2 {
+		width: 100%;
+		text-align: left;
+		margin-bottom: 10px;
+		font-size: 20px;
+	}
+	
+	.layer2 p {
+		font-family: arial;
+		font-weight: bold;
+	}
+	
+	.st {
+		color: #DCDCDC;
+	}
+	
+	.date {
+		color: #A9A9A9;
+	}
+	
+	.layer3 {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		text-align: left;
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+	
+	.layer3 p {
+		width: 45%;
+		font-size: 25px;
+		margin: 10px;
+		text-align: left;
+	}
+	
+	.layer3 p span:nth-child(1) {
+		color: #696969;
+		margin-right: 25px;
+	}
+	
+	.category {
+		margin-left: -6px;
+	}
+	
+	.boardmeet {
+		margin-left: -6px;
+	}
+	
+	.boardway {
+		font-size: 20px;
+		color: black !important;
+		margin-left: -6px;
+		font-family: arial;
+		font-weight: bold;
+	}
+	
+	.kakao {
+		cursor: pointer;
+		text-decoration: underline;
+		background-color: #DCDCDC;
+		border-radius: 10px;
+	}
+	
+	.email {
+		cursor: pointer;
+		text-decoration: underline;
+		background-color: #DCDCDC;
+		border-radius: 10px;
+	}
+	
+	.phone {
+		cursor: pointer;
+		text-decoration: underline;
+		background-color: #DCDCDC;
+		border-radius: 10px;
+	}
+	
+	#linkImg {
+		width: 15px;
+		height: 15px;
+	}
+	
+	.boardcommunication {
+		margin-left: -6px;
+	}
+	
+	.layer4 {
+		width: 100%;
+		text-align: left;
+		margin-bottom: 30px;
+		margin-top: 100px;
+		font-size: 30px;
+	}
+	
+	.layer4 p {
+		text-align: center;
+	}
+	
+	.layer5 {
+		margin-top: 50px;
+		margin-bottom: 100px;
+	}
+	
+	#boardContent {
+		width: 80%;
+		height: 100%;
+		margin: 0 auto;
+		word-break:break-all;
+		padding: 20px;
+		font-family: arial;
+		font-size: 20px;
+	}
+	
+	.layer6 {
+	
+	}
+
+	#pre {
+		width: 85%;
+		height: 120px;
+		background-color: #E6E6FA;
+		overflow: auto;
+		white-space: pre-wrap;
+		word-break: break-all;
+	}
+	
+	.layer6 > p {
+		font-size: 20px;
+	}
+		
+	.registbox {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		margin-top: 10px;
+	}
+		
+	.replycontent {
+		width: 100%;
+		height: 80px;
+		resize: none;
+		background-color: #E6E6FA;
+		border: 1px solid #B0C4DE;
+	}
+	
+	.regist {
+		height: 30px;
+		padding-top: 10px;
+		margin-left: 30px;
+		text-decoration: none;
+	}
+	
+
+</style>
 </head>
 <body>
 	<div th:replace="~{header :: header}"></div>
-	<table>
-		<tr>
-			<th>작성자</th>
-			<th>모집구분</th>
-			<th>모집인원</th>
-			<th>진행방식</th>
-			<th>예상기간</th>
-			<th>사용기술</th>
-			<th>시작예정</th>
-			<th>연락방법</th>
-			<th>연락주소</th>
-			<th>제목</th>
-		</tr>
-		<tr>
-			<td th:text="${board.usersnickname}"></td>
-			<td th:text="${board.boardcategory}"></td>
-			<td th:text="${board.boardmembers}"></td>
-			<td th:text="${board.boardmeet}"></td>
-			<td th:text="${board.boardperiod}"></td>
-			<td th:text="${board.boardskill}"></td>
-			<td th:text="${board.boardstart}"></td>
-			<td th:text="${board.boardcommunication}"></td>
-			<td th:text="${board.boardway}"></td>
-			<td th:text="${board.boardtitle}"></td>
-		</tr>
-	</table>
-	<div id="boardContent">
+	<div class="box">
+	
+	
+		<div class="layer1">
+			<p class="title" th:text="${board.boardtitle}"></p>
+		</div>
 		
+		<div class="layer2">
+			<p class="inline-block" th:text="${board.usersnickname}"></p>
+			<p class="inline-block"> 님</p>
+			<p class="inline-block st"> | </p>
+			<p class="inline-block date">날짜</p>
+<!-- 			<p th:text="${board.boarddate}"></p> -->
+		</div>
+		<hr>
+		<div class="layer3">
+			<p>
+				<span class="inline-block">모집 구분</span>
+				<span th:if="${board.boardcategory == 'study'}" class="inline-block category">스터디</span>
+				<span th:if="${board.boardcategory == 'project'}" class="inline-block category">프로젝트</span>
+			</p>
+			<p>
+				<span class="inline-block">진행 방식</span>
+				<span th:if="${board.boardmeet == 'on'}" class="inline-block boardmeet">온라인</span>
+				<span th:if="${board.boardmeet == 'off'}" class="inline-block boardmeet">오프라인</span>
+			</p>
+			<p><span class="inline-block">모집 인원</span><span th:text="${board.boardmembers}" class="inline-block"></span><span>명</span></p>
+			<p><span class="inline-block">시작 예정</span><span th:text="${board.boardstart}" class="inline-block"></span></p>
+			<p>
+				<span class="inline-block">연락 방법</span>
+				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block boardcommunication">오픈 채팅</span>
+				<span th:if="${board.boardcommunication == 'email'}" class="inline-block boardcommunication">이메일</span>
+				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block boardcommunication">전화 or 문자</span>
+			</p>
+			<p>
+				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block">링크 연결</span>
+				<span th:if="${board.boardcommunication == 'email'}" class="inline-block">메일 작성</span>
+				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block">번호 확인</span>
+				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block boardway kakao"><a id="kakao">오픈 채팅방 이동하기</a><img id="linkImg" src="/img/link.png"/></span>
+				<span th:if="${board.boardcommunication == 'email'}" class="inline-block boardway email"><a id="email">이메일 작성하기</a><img id="linkImg" src="/img/link.png"/></span>
+				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block boardway phone"><a id="phone">전화 연결하기</a><img id="linkImg" src="/img/link.png"/></span>				
+			</p>
+			<p><span class="inline-block">예상 기간</span><span th:text="${board.boardperiod}" class="inline-block"></span><span>개월</span></p>
+			<p><span class="inline-block">사용 기술</span><span th:text="${board.boardskill}" class="inline-block"></span></p>
+		</div>
+	
+		<div class="layer4">
+			<p>프로젝트 소개</p>
+		</div>
+	
+		<hr>
+		<div class="layer5">
+			<p id="boardContent"></p>
+		</div>
+		<div class="layer6">			
+			<p>댓글</p>
+			<div class="registbox">
+				<pre id="pre">
+					<textarea placeholder="타인의 권리를 침해하거나 명예를 훼손하는 댓글은 제재를 받을 수 있습니다." class="replycontent "
+							name="replycontent"></textarea>
+				</pre>
+				<a href="#"	class="button regist">등록</a>
+			</div>
+			
+		</div>
+		<div>
+		
+			<!-- 댓글 띄우는 div -->
+			<div class="replies"></div>
+
+			<!-- 댓글 페이징 처리할 div -->
+			<div class="page" style="text-align: center;"></div>
+		</div>
 	</div>
 </body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script th:inline="javascript">
+
+$("#kakao").on("click", function(e) {
+	e.preventDefault();
+	window.open(/*[[${board.boardway}]]*/+"");
+});
+	
+$("#email").on("click", function(e) {
+	e.preventDefault();	
+	window.open(/*[[${board.boardway}]]*/);
+});
+
+$("#phone").on("click", function(e) {
+	e.preventDefault();
+	window.open(/*[[${board.boardway}]]*/+"");
+});
+
+// 페이지 로딩후 댓글 1페이지 리스트 보여줌
+$(document).ready(function() {
+	getList(1);
+});
+
+let usersnickname = /*[[${session.users.usersnickname}]]*/ "";
+let check = false;
+let replies = $(".replies");
+let page = $(".page");
+let pageNum = 1;
+
+
+// [[${board.boardcontent}]]
+// 댓글 리스트 불러오는 함수
+function getList(pageNum) {
+	let boardnumber = "[[${board.boardnumber}]]";
+
+	$.ajax({
+		url : "/reply/pages/" + boardnumber + "/" + pageNum,
+		type : "GET",
+		dataType : "json",
+		contentType : "application/json; charset=utf-8",
+		success : showList
+	});
+}
+
+function showList(data) {
+	//댓글 총 개수
+	let replyCnt = data.replyCnt;
+	//댓글 리스트
+	let list = data.list;
+	let str = "";
+
+	for (let i = 0, len = list.length; i < len; i++) {
+		str += "<table style='padding:0px;margin:0px;'>";
+		str += '<tr>';
+		str += '<td style="width:14%;">';
+		str += '<strong class="replyname'+list[i].replynumber+'">' + list[i].replyname + '</strong>';
+		str += '</td>';
+		str += '<td style="width:60%;">';
+		str += '<p class="reply'+ list[i].replynumber +'">' + list[i].replycontent + '</p>';
+		str += '</td>';
+		str += '<td style="width:25%;">';
+		str += replyTime(list[i]);
+		if (list[i].replyname == usersnickname) {
+			str += '<table style="padding:0px;">'
+			str += '<tr style="border:0px;">';
+			str += '<td>';
+			str += '<a href="'+list[i].replynumber+'" class="modify">수정</a>';
+			str += '<a href="'+list[i].replynumber+'" class="mfinish" style="display:none;">수정완료</a>&nbsp;&nbsp;';
+			str += '<a href="'+list[i].replynumber+'" class="remove">삭제</a></div>';
+			str += '</td>';
+			str += '</tr>';
+			str += '</table>';
+		}
+		str += '</td>';
+		str += '<tr>';
+		str += '</table>';
+	}
+
+	//댓글 시간
+	function replyTime(reply) {
+		let replydate = reply.replydate;
+		let updatedate = reply.updatedate;
+		let now = new Date();
+		let dateObj = new Date(check ? replydate : updatedate);
+
+		//true면 수정 안한거
+		let checkUpdate = replydate == updatedate;
+		let gap = now.getTime() - dateObj.getTime();
+
+		let str = "";
+		if (gap < 1000 * 60 * 60 * 24) {
+			let hh = dateObj.getHours();
+			let mi = dateObj.getMinutes();
+			let ss = dateObj.getSeconds();
+
+			str = (hh > 9 ? '' : '0') + hh + ":" + (mi > 9 ? '' : '0') + mi
+					+ ":" + (ss > 9 ? '' : '0') + ss;
+		} else {
+			let yy = dateObj.getFullYear();
+			let mm = dateObj.getMonth() + 1;
+			let dd = dateObj.getDate();
+
+			str = yy + '/' + (mm > 9 ? '' : '0') + mm + '/'
+					+ (dd > 9 ? '' : '0') + dd;
+		}
+		return (checkUpdate ? '' : '(수정됨)') + str;
+	}
+
+	//댓글 페이징 처리
+	showReplyPage(replyCnt);
+
+	replies.html(str);
+
+	//댓글 삭제
+	$(".remove").on("click", function(e) {
+		e.preventDefault();
+		let replynumber = $(this).attr("href");
+		$.ajax({
+			type : "DELETE",
+			url : "/reply/" + replynumber,
+			success : function(result, status, xhr) {
+				alert(replynumber + "번 댓글 삭제 완료!");
+			},
+			error : function(xhr, status, e) {
+				alert("댓글 삭제 실패");
+			}
+		})
+		check = false;
+		getList(pageNum)
+	})
+
+	//댓글 수정 시도
+	$(".modify").on("click", function(e) {
+		e.preventDefault();
+		
+		if (!check) {
+			let replynumber = $(this).attr("href");
+			let replytag = $(".reply" + replynumber);
+			replytag.html('<textarea class="'+replynumber+' mdf" style="resize:none;">'	+ replytag.text() + '</textarea>');
+			
+			$(this).hide();
+			$(this).next().show();
+			check = true;
+		} else {
+			alert("이미 수정중인 댓글이 있습니다!");
+		}
+	})
+
+	// 댓글 수정 완료
+	$(".mfinish").on("click", function(e) {
+		e.preventDefault();
+
+		let replynumber = $(this).attr("href");
+		let boardnumber = "[[${board.boardnumber}]]";
+		let replyname = $(".replyname" + replynumber).text();
+		let replycontent = $("." + replynumber).val();
+		let data = {
+			replynumber : replynumber,
+			boardnumber : boardnumber,
+			replyname : replyname,
+			replycontent : replycontent
+		};
+
+		$.ajax({
+			type : "PUT",
+			url : "/reply/" + data.replynumber,
+			data : JSON.stringify(data),
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr) {
+				alert("댓글 수정 완료");
+			},
+			error : function(xhr, status, e) {
+				alert("댓글 수정 실패");
+			}
+		})
+		check = false;
+		getList(pageNum);
+	})
+
+	function showReplyPage(replyCnt) {
+		let endPage = Math.ceil(pageNum / 5.0) * 5;
+		let startPage = endPage - 4;
+
+		let prev = startPage != 1;
+		let next = false;
+
+		if (endPage * 5 >= replyCnt) {
+			endPage = Math.ceil(replyCnt / 5);
+		}
+		if (endPage * 5 < replyCnt) {
+			next = true;
+		}
+
+		let str = "";
+		if (prev) {
+			str += "<a class='changePage' href='" + (startPage - 1)
+					+ "'><code>&lt;</code></a>";
+		}
+		for (let i = startPage; i <= endPage; i++) {
+			if (i == pageNum) {
+				str += "<code>" + i + "</code>";
+			} else {
+				str += "<a class='changePage' href='"+i+"'><code>" + i
+						+ "</code></a>"
+			}
+		}
+		if (next) {
+			str += "<a class='changePage' href='" + (endPage + 1)
+					+ "'><code>&gt;</code></a>";
+		}
+		page.html(str);
+
+		$(".changePage").on("click", function(e) {
+			e.preventDefault();
+			let goPage = $(this).attr("href");
+			pageNum = parseInt(goPage);
+			getList(pageNum);
+		})
+	}
+}
+
+//댓글 등록
+$(".regist").on("click", function(e) {
+
+	let boardnumber = "[[${board.boardnumber}]]";
+	let replyname = usersnickname;
+	let replycontent = $("textarea[name='replycontent']").val();
+	let data = {
+		boardnumber : boardnumber,
+		replyname : replyname,
+		replycontent : replycontent
+	};
+
+	if (replycontent == "") {
+		alert("내용을 작성 후 등록해주세요.");
+		return;
+	}
+
+	$.ajax({
+		type : "post",
+		url : "/reply/regist",
+		data : JSON.stringify(data),
+		contentType : "application/json; charset=utf-8",
+		success : function(result, status, xhr) {
+			alert("댓글 등록 완료");
+		},
+		error : function(xhr, status, e) {
+			alert("댓글 등록 실패");
+		}
+	})
+	$("textarea[name='replycontent']").val("");
+	getList(pageNum);
+})
+
+
 		let boardContent = document.getElementById("boardContent");
-		boardContent.innerHTML = [[${board.boardcontent}]];
+		boardContent.innerHTML = /*[[${board.boardcontent}]]*/"";
 		console.log(boardContent.innerHTML);
 </script>
 </html>
