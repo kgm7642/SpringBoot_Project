@@ -91,11 +91,10 @@
 		font-size: 18px;
 	}
 	
-	#boardcontent {
-		width: 100%;
+	.boardtitle {
+		width: 20%;
 		font-size: 18px;
 		margin-bottom: 12px;
-		resize: none;
 	}
 	
 	.wbox {
@@ -106,19 +105,27 @@
 	
 	.buttonbox {
 		width: 100%;
+		height: 20px;
 	}
 	
 	.submit {
 		float: right;
+		font-family: arial;
+	}
+	
+	.back {
+		text-decoration: none;
+		font-family: arial;
 	}
 	
 	#boardway::placeholder {
 		color: #DCDCDC;
 	}
 	
-	#editorTxt {
+	#boardcontent {
 		width: 100%;
-		height: 800px;
+		font-size: 18px;
+		margin-bottom: 12px;
 		resize: none;
 	}
 </style>
@@ -126,8 +133,10 @@
 <body>
 	<div th:replace="~{header :: header}"></div>
 	<div class="box">
-		<form action="/board/write" th:object="${board}" method="post" id="form"
+		<form action="/board/modify" th:object="${board}" method="post" id="form"
 		 name="sendform" onsubmit="return sendboard()">
+		 	<input type="hidden" th:field="${board.boardnumber}">
+		 	<input type="hidden" th:field="${board.boardwriter}">
 			<p><span class="number">1</span><span class="subtitle">프로젝트(스터디)의 정보를 입력해주세요.</span></p>
 			<hr>
 			<div class="setContainer">
@@ -135,7 +144,7 @@
 				<div class="exbox box1">
 					<div class="inline-block">
 						<span class="ex block">모집 구분</span>
-						<select name="boardcategory">
+						<select th:field="${board.boardcategory}" name="boardcategory">
 							<option value="project">프로젝트</option>
 							<option value="study">스터디</option>
 						</select>
@@ -143,7 +152,7 @@
 					
 					<div class="inline-block">
 						<span class="ex block">인원</span>
-						<select name="boardmembers">
+						<select th:field="${board.boardmembers}" name="boardmembers">
 							<option value="1">1명</option>
 							<option value="2">2명</option>
 							<option value="3">3명</option>
@@ -161,7 +170,7 @@
 				<div class="exbox box2">
 					<div class="inline-block">
 						<span class="ex block">진행 방식</span>
-						<select name="boardmeet">
+						<select th:field="${board.boardmeet}" name="boardmeet">
 							<option value="off">오프라인</option>
 							<option value="on">온라인</option>
 						</select>
@@ -169,7 +178,7 @@
 					
 					<div class="inline-block">
 						<span class="ex block">프로젝트 기간</span>
-						<select name="boardperiod">
+						<select th:field="${board.boardperiod}" name="boardperiod">
 							<option value="1">기간미정</option>
 							<option value="1">1개월</option>
 							<option value="2">2개월</option>
@@ -184,21 +193,21 @@
 				<div class="exbox box3">
 					<div class="inline-block">
 						<span class="ex block">주요 기술</span>
-						<select name="boardskill">
+						<select th:field="${board.boardskill}" name="boardskill">
 							<option th:each="list : ${skillList}" th:text="${list.skillname}" th:value="${list.skillname}"></option>
 						</select>
 					</div>
 						
 					<div class="inline-block">
 						<span class="ex block">시작일</span>
-						<input class="date block" type="date" name="boardstart" th:field="*{boardstart}"/>
+						<input th:field="${board.boardstart}" class="date block" type="date" name="boardstart"/>
 					</div>
 				</div>
 				
 				<div class="exbox box4">
 					<div class="inline-block">
 						<span class="ex block">소통 방법</span>
-						<select name="boardcommunication" onchange="showValue(this)">
+						<select th:field="${board.boardcommunication}" name="boardcommunication" onchange="showValue(this)">
 							<option value="kakao">오픈채팅</option>
 							<option value="email">이메일</option>
 							<option value="phone">전화or문자</option>
@@ -219,26 +228,26 @@
 		    	
 		    	<div class="wbox">
 		    		<span class="boardtitle">제목</span>
-		    		<input class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle" th:field="*{boardtitle}"/>
+		    		<input th:field="${board.boardtitle}" class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle"/>
 		    	</div>
 		    	<div class="wbox">
-			      	<div>
-			        	<span class="boardcontent block">내용</span>
-			        	<textarea name="boardcontent" id="boardcontent" rows="20" cols="10"></textarea>
+			      	<div id="smarteditor">
+			        	<span class="boardtitle block">내용</span>
+			        	<textarea th:field="${board.boardcontent}" rows="20" cols="10"></textarea>
 			      	</div>
 			      	<div class="buttonbox">
-				     	<input class="button btn-gradient submit" type="submit" value="등록"/>
+				     	<input class="button back" type="button" onclick="back()" value="돌아가기"/>
+				     	<input class="button submit" type="submit" value="등록"/>
 			     	</div>
 		     	</div>
 	     	</div>
 	    </form>
-		<button class="button btn-gradient" onclick="index()">작성 취소</button>
     </div>
 </body>
 <script>
 
-function index(){
-	location.href= "/";
+function back(){
+	location.href= "/board/view?boardnumber=[[${board.boardnumber}]]";
 }
 
 let comu = document.getElementById("comu");
@@ -265,7 +274,6 @@ function sendboard(){
 	let sendform = document.sendform;
 	let start = sendform.boardstart;
 	let boardtitle = sendform.boardtitle;
-	let content = document.getElementById("boardcontent");
 	let boardcontent = document.getElementById("boardcontent");
 	
 	// 오늘 날짜
@@ -280,7 +288,7 @@ function sendboard(){
 
 	let todate = new Date(year, month, date);
 	let startdate = new Date(startYear, startMonth, startDay);
-	
+
 	if(start.value == "") {
 		alert("모임이 시작하는 날짜를 설정해주세요.");
 		return false;
@@ -302,15 +310,15 @@ function sendboard(){
 		return false;
 	}	
 	
-	if(content.value == "") {
+	if(boardcontent.value == "") {
 		alert("내용을 입력해주세요.")
-		content.focus;
+		boardcontent.focus;
 		return false;
 	}
 	
-	if(content.value.length > 2000) {
+	if(boardcontent.value.length > 2000) {
 		alert("내용은 2000byte를 넘을 수 없습니다.")
-		content.focus;
+		boardcontent.focus;
 		return false;
 	}
 	return true;
@@ -326,10 +334,11 @@ function checkLength(data) {
 	if(testLength > maxLength) {
 		console.log("글자수초과");
 		alert(maxLength+"자 이상 작성할 수 없습니다.");
-		text = text.substr(0, maxLength);
+		text = text.substr(0, maxLength);boardContent
 		data.value = text;
 		data.focus();
 	}
 }
+
 </script>
 </html>

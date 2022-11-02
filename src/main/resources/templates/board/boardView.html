@@ -139,9 +139,28 @@
 		padding: 20px;
 		font-family: arial;
 		font-size: 20px;
+		white-space:pre-wrap;
 	}
 	
 	.layer6 {
+		width: 100%;
+		height: 100px;
+		margin-top: 100px;
+		margin-bottom: 100px;
+	}
+	
+	.boxContain {
+		width: 100%;
+		height: 100%;
+		text-align: right;
+	}
+	
+	.boxContain a {
+		text-decoration: none;
+		padding-top: 7px;
+	}
+	
+	.layer7 {
 	
 	}
 
@@ -152,9 +171,10 @@
 		overflow: auto;
 		white-space: pre-wrap;
 		word-break: break-all;
+		text-align: center;
 	}
 	
-	.layer6 > p {
+	.layer7 > p {
 		font-size: 20px;
 	}
 		
@@ -169,11 +189,15 @@
 	}
 		
 	.replycontent {
-		width: 100%;
+		width: 98%;
 		height: 80px;
 		resize: none;
 		background-color: #E6E6FA;
-		border: 1px solid #B0C4DE;
+		border: 0;
+	}
+	
+	.replycontent:focus {
+		outline: none;
 	}
 	
 	.regist {
@@ -183,7 +207,74 @@
 		text-decoration: none;
 	}
 	
+	.replies {
+		text-align: center;
+		margin-top: 50px;
+	}
 
+	.replytable {
+		width: 100%;
+		margin-top: 20px;
+		margin-bottom: 50px;
+	}
+	
+	.buttontable {
+		padding:0px;
+		width: 100%;
+		margin-top: 5px;
+	}
+
+	.mdf {
+		width: 98%;
+		height: 80px;
+		resize: none;
+		background-color: #E6E6FA;
+		border: 0;
+	}
+
+	.a {
+		border-radius: 10px;
+		text-decoration: none;
+	}
+	
+	.page {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;	
+	}
+	
+	.pageA  {
+		width: 25px;
+		height: 25px;
+		text-decoration: none;
+		margin: 10px;
+		color: white;
+	}
+	
+	.pageA > p {
+		width: 100%;
+		height: 100%;
+		font-weight: bold;	
+		border-radius: 5px;
+		padding-top: 3px;
+	}
+	
+	.plag {
+		border: 1px solid #87CEFA;
+		background-color: #87CEFA;
+	}
+	
+	.not {
+		border: 1px solid #87CEEB;
+		background-color: #87CEEB;
+	}
+	
+	.select {
+		border: 1px solid #4682B4;
+		background-color: #4682B4;
+	}
+	
 </style>
 </head>
 <body>
@@ -240,9 +331,20 @@
 	
 		<hr>
 		<div class="layer5">
-			<p id="boardContent"></p>
+			<p id="boardContent" th:text="${board.boardcontent}"></p>
 		</div>
-		<div class="layer6">			
+		
+		<div class="layer6">
+			<div class="boxContain">
+				<th:block th:if="${session.users.usersnickname == board.usersnickname}">
+					<a class="button" th:href="@{/board/remove(boardnumber=${board.boardnumber})}">삭제</a>
+					<a class="button" th:href="@{/board/modify(boardnumber=${board.boardnumber})}">수정</a>
+				</th:block>
+				<a class="button" href="/">목록</a>
+			</div>		
+		</div>
+		
+		<div class="layer7">			
 			<p>댓글</p>
 			<div class="registbox">
 				<pre id="pre">
@@ -315,23 +417,23 @@ function showList(data) {
 	let str = "";
 
 	for (let i = 0, len = list.length; i < len; i++) {
-		str += "<table style='padding:0px;margin:0px;'>";
+		str += '<table class="replytable">';
 		str += '<tr>';
 		str += '<td style="width:14%;">';
 		str += '<strong class="replyname'+list[i].replynumber+'">' + list[i].replyname + '</strong>';
 		str += '</td>';
 		str += '<td style="width:60%;">';
-		str += '<p class="reply'+ list[i].replynumber +'">' + list[i].replycontent + '</p>';
+		str += '<p class="reply'+ list[i].replynumber +'" style="white-space:pre-wrap">' + list[i].replycontent + '</p>';
 		str += '</td>';
 		str += '<td style="width:25%;">';
 		str += replyTime(list[i]);
 		if (list[i].replyname == usersnickname) {
-			str += '<table style="padding:0px;">'
+			str += '<table class="buttontable">'
 			str += '<tr style="border:0px;">';
 			str += '<td>';
-			str += '<a href="'+list[i].replynumber+'" class="modify">수정</a>';
-			str += '<a href="'+list[i].replynumber+'" class="mfinish" style="display:none;">수정완료</a>&nbsp;&nbsp;';
-			str += '<a href="'+list[i].replynumber+'" class="remove">삭제</a></div>';
+			str += '<a href="'+list[i].replynumber+'" class="a button modify">수정</a>';
+			str += '<a href="'+list[i].replynumber+'" class="a button mfinish" style="display:none;">수정완료</a>&nbsp;&nbsp;';
+			str += '<a href="'+list[i].replynumber+'" class="a button remove">삭제</a></div>';
 			str += '</td>';
 			str += '</tr>';
 			str += '</table>';
@@ -339,6 +441,9 @@ function showList(data) {
 		str += '</td>';
 		str += '<tr>';
 		str += '</table>';
+		if (i != list.length-1) {			
+			str += '<hr>';
+		}
 	}
 
 	//댓글 시간
@@ -384,10 +489,10 @@ function showList(data) {
 			type : "DELETE",
 			url : "/reply/" + replynumber,
 			success : function(result, status, xhr) {
-				alert(replynumber + "번 댓글 삭제 완료!");
+				alert(replynumber + "번 댓글이 삭제되었습니다.");
 			},
 			error : function(xhr, status, e) {
-				alert("댓글 삭제 실패");
+				alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
 			}
 		})
 		check = false;
@@ -407,7 +512,7 @@ function showList(data) {
 			$(this).next().show();
 			check = true;
 		} else {
-			alert("이미 수정중인 댓글이 있습니다!");
+			alert("이미 수정중인 댓글이 있습니다.");
 		}
 	})
 
@@ -432,16 +537,17 @@ function showList(data) {
 			data : JSON.stringify(data),
 			contentType : "application/json; charset=utf-8",
 			success : function(result, status, xhr) {
-				alert("댓글 수정 완료");
+				alert("댓글 수정을 완료했습니다.");
 			},
 			error : function(xhr, status, e) {
-				alert("댓글 수정 실패");
+				alert("댓글 수정을 실패했습니다.");
 			}
 		})
 		check = false;
 		getList(pageNum);
 	})
 
+	// 페이징 처리 함수
 	function showReplyPage(replyCnt) {
 		let endPage = Math.ceil(pageNum / 5.0) * 5;
 		let startPage = endPage - 4;
@@ -458,20 +564,17 @@ function showList(data) {
 
 		let str = "";
 		if (prev) {
-			str += "<a class='changePage' href='" + (startPage - 1)
-					+ "'><code>&lt;</code></a>";
+			str += "<a class='pageA changePage' href='" + (startPage - 1) + "'><p class='plag'>&lt;</p></a>";
 		}
 		for (let i = startPage; i <= endPage; i++) {
 			if (i == pageNum) {
-				str += "<code>" + i + "</code>";
+				str += "<a class='pageA'><p class='select'>" + i + "</p></a>";
 			} else {
-				str += "<a class='changePage' href='"+i+"'><code>" + i
-						+ "</code></a>"
+				str += "<a class='pageA changePage' href='"+i+"'><p class='not'>" + i + "</p></a>"
 			}
 		}
 		if (next) {
-			str += "<a class='changePage' href='" + (endPage + 1)
-					+ "'><code>&gt;</code></a>";
+			str += "<a class='pageA changePage' href='" + (endPage + 1) + "'><p class='plag'>&gt;</p></a>";
 		}
 		page.html(str);
 
@@ -507,19 +610,15 @@ $(".regist").on("click", function(e) {
 		data : JSON.stringify(data),
 		contentType : "application/json; charset=utf-8",
 		success : function(result, status, xhr) {
-			alert("댓글 등록 완료");
+			alert("댓글 등록을 완료했습니다.");
 		},
 		error : function(xhr, status, e) {
-			alert("댓글 등록 실패");
+			alert("댓글 등록을 실패했습니다.");
 		}
 	})
 	$("textarea[name='replycontent']").val("");
 	getList(pageNum);
 })
 
-
-		let boardContent = document.getElementById("boardContent");
-		boardContent.innerHTML = /*[[${board.boardcontent}]]*/"";
-		console.log(boardContent.innerHTML);
 </script>
 </html>

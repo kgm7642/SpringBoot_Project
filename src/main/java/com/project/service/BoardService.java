@@ -19,8 +19,14 @@ public interface BoardService {
 
 	public int getTotal(Criteria cri);
 	
-	public BoardView getBoard(int boardnumber);
+	public BoardView getBoard(String boardnumber);
 	
 	public void writeBoard(BoardSaveForm boardSaveForm);
 
+	public void updateViewCnt(String boardnumber);
+
+	public Board getBoardDetail(String boardnumber);
+	
+	public boolean updateBoard(Board board);
+	
 }
