@@ -56,7 +56,8 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public String boardList(Model model, Criteria cri) {
-		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
+		log.info("보드리스트 확인하기 : {}", boardService.boardList(cri));
+		log.info("스킬리스트 확인하기 : {}", usersService.skill());
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
 		model.addAttribute("skillList", usersService.skill());
 		return "/board/boardList";
@@ -85,7 +86,10 @@ public class BoardController {
 	public String boardView(Model model, String boardnumber, HttpSession session) {		
 		Users users = (Users) session.getAttribute("users");
 		BoardView boardView = boardService.getBoard(boardnumber);
+		
+		// 접속자 닉네임과 게시글 닉네임이 같은지 확인
 		if(!(users.getUsersnickname().equals(boardService.getBoard(boardnumber).getUsersnickname()))) {
+			// 같지 않으면 게시글 조회수 1증가
 			boardService.updateViewCnt(boardnumber);
 			boardView.setBoardview(boardView.getBoardview()+1);
 		}
@@ -110,92 +114,26 @@ public class BoardController {
 		return "redirect:/";
 	}
 	
-//	@PostMapping("/singleImage")
-//	public String singleImage(HttpServletRequest req, Smarteditor smarteditor) throws UnsupportedEncodingException{
-//		String callback = smarteditor.getCallback();
-//		String callback_func = smarteditor.getCallback_func();
-//		String file_result = "";
-//		String result = "";
-//		MultipartFile multiFile = smarteditor.getFiledata();
-//		try{
-//			if(multiFile != null && multiFile.getSize() > 0 && 
-//	        		StringUtils.isNotBlank(multiFile.getName())){
-//				if(multiFile.getContentType().toLowerCase().startsWith("image/")){
-//	            	String oriName = multiFile.getName();
-//	                String uploadPath = req.getServletContext().getRealPath("/img");
-//	                String path = uploadPath + "/smarteditor/";
-//	                File file = new File(path);
-//	                if(!file.exists()){
-//	                file.mkdirs();
-//	                }
-//	                String fileName = UUID.randomUUID().toString();
-//	                smarteditor.getFiledata().transferTo(new File(path + fileName));
-//	                file_result += "&bNewLine=true&sFileName=" + oriName + 
-//	                			   "&sFileURL=/img/smarteditor/" + fileName;
-//				}else{
-//					file_result += "&errstr=error";
-//				}
-//			}else{
-//				file_result += "&errstr=error";
-//			}
-//		} catch (Exception e){
-//			e.printStackTrace();
-//		}
-//		result = "redirect:" + callback + 
-//				 "?callback_func=" + URLEncoder.encode(callback_func,"UTF-8") + file_result;
-//		return result;
-//	}
-//	
-//	@PostMapping("/multiImage")
-//	public String multiImage(HttpServletRequest request, HttpServletResponse response, Smarteditor smarteditor) throws UnsupportedEncodingException {
-//	     try {
-//             //파일정보
-//             String sFileInfo = "";
-//             //파일명을 받는다 - 일반 원본파일명
-//             String filename = request.getHeader("file-name");
-//             //파일 확장자
-//             String filename_ext = filename.substring(filename.lastIndexOf(".")+1);
-//             //확장자를소문자로 변경
-//             filename_ext = filename_ext.toLowerCase();
-//             //파일 기본경로
-//             String dftFilePath = request.getSession().getServletContext().getRealPath("/");
-//             //파일 기본경로 _ 상세경로
-//             String filePath = dftFilePath + "resource" + File.separator + "photo_upload" + File.separator;
-//             File file = new File(filePath);
-//             if(!file.exists()) {
-//                file.mkdirs();
-//             }
-//             String realFileNm = "";
-//             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-//             String today= formatter.format(new java.util.Date());
-//             realFileNm = today+UUID.randomUUID().toString() + filename.substring(filename.lastIndexOf("."));
-//             String rlFileNm = filePath + realFileNm;
-//             ///////////////// 서버에 파일쓰기 ///////////////// 
-//             InputStream is = request.getInputStream();
-//             OutputStream os = new FileOutputStream(rlFileNm);
-//             int numRead;
-//             byte b[] = new byte[Integer.parseInt(request.getHeader("file-size"))];
-//             while((numRead = is.read(b,0,b.length)) != -1){
-//                os.write(b,0,numRead);
-//             }
-//             if(is != null) {
-//                is.close();
-//             }
-//             os.flush();
-//             os.close();
-//             ///////////////// 서버에 파일쓰기 /////////////////
-//             // 정보 출력
-//             sFileInfo += "&bNewLine=true";
-//             // img 태그의 title 속성을 원본파일명으로 적용시켜주기 위함
-//             sFileInfo += "&sFileName="+ filename;;
-//             sFileInfo += "&sFileURL="+"/resource/photo_upload/"+realFileNm;
-//             PrintWriter print = response.getWriter();
-//             print.print(sFileInfo);
-//             print.flush();
-//             print.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//		return null;
-//	}
+	@GetMapping("/modify")
+	public String boardModify(String boardnumber, Model model) {
+		model.addAttribute("board", boardService.getBoardDetail(boardnumber));
+		model.addAttribute("skillList", usersService.skill());
+		log.info("게시글 확인 {}", boardService.getBoardDetail(boardnumber));
+		log.info("게시글 수정 페이지 이동");
+		return "board/boardmodify";
+	}
+	
+	@PostMapping("/modify")
+	public String boardModify(Board board) {
+		boolean check = boardService.updateBoard(board);
+		log.info("게시글 수정 완료 했음");
+		return "redirect:/board/view?boardnumber="+board.getBoardnumber();
+	}
+	
+	@GetMapping("remove")
+	public String boardRemove(String boardnumber) {
+		boolean check = boardService.removeBoard(boardnumber);
+		log.info("게시글 삭제 완료 했음");
+		return "redirect:/board/list";
+	}
 }

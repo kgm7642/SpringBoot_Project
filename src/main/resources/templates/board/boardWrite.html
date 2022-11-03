@@ -104,6 +104,16 @@
 		margin-top: 15px;
 	}
 	
+	.bytesTc {
+		text-align: right;
+		margin: 10px;	
+	}
+
+	.wbox div div {
+		text-align: right;
+		margin: 10px;
+	}
+	
 	.buttonbox {
 		width: 100%;
 	}
@@ -219,12 +229,18 @@
 		    	
 		    	<div class="wbox">
 		    		<span class="boardtitle">제목</span>
-		    		<input class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle" th:field="*{boardtitle}"/>
+		    		<input id="boardtitleinput" class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle" th:field="*{boardtitle}"/>
+		           	<div class="bytesTc">
+			        	<span class="bytesT">0</span><span>/100 bytes</span>
+			        </div>
 		    	</div>
 		    	<div class="wbox">
 			      	<div>
 			        	<span class="boardcontent block">내용</span>
 			        	<textarea name="boardcontent" id="boardcontent" rows="20" cols="10"></textarea>
+			        	<div>
+			        		<span class="bytesC">0</span><span>/5000 bytes</span>
+			        	</div>
 			      	</div>
 			      	<div class="buttonbox">
 				     	<input class="button btn-gradient submit" type="submit" value="등록"/>
@@ -235,7 +251,73 @@
 		<button class="button btn-gradient" onclick="index()">작성 취소</button>
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+
+// 내용 byte 체크 함수
+$(function(){
+	$('#boardcontent').keyup(function(){
+		bytesHandlerC(this);
+	});
+});
+
+//제목 byte 체크 함수
+$(function(){
+	$('#boardtitleinput').keyup(function(){
+		bytesHandlerT(this);
+	});
+});
+
+// 내용 길이 체크
+function getTextLength(str) {
+	let len = 0;
+
+	for (let i = 0; i < str.length; i++) {
+		if (escape(str.charAt(i)).length == 6) {
+			len++;
+		}
+		len++;
+	}
+	return len;
+}
+
+// 내용 바이트 체크
+function bytesHandlerC(obj){
+	let text = $(obj).val();
+	let len = getTextLength(text);
+	let boardcontent = document.getElementById("boardcontent");
+	if(len > 5000) {
+		alert("5000byte를 넘을 수 없습니다.");
+		boardcontent.value = cutByLen(boardcontent.value, 5000);
+		console.log(boardcontent.value);
+		return;
+	}
+	$('.bytesC').text(len);
+}
+
+// 제목 바이트 체크
+function bytesHandlerT(obj){
+	let text = $(obj).val();
+	let len = getTextLength(text);
+	let boardtitleinput = document.getElementById("boardtitleinput");
+	if(len > 100) {
+		alert("100byte를 넘을 수 없습니다.");
+		boardtitleinput.value = cutByLen(boardtitleinput.value, 100);
+		console.log(boardtitleinput.value);
+		return;
+	}
+	$('.bytesT').text(len);
+}
+
+// 원하는 바이트만큼 문자열을 자르는 함수
+function cutByLen(str, maxByte) {
+	for(b=i=0;c=str.charCodeAt(i);) {
+		b+=c>>7?2:1;
+		if (b > maxByte) break;
+		i++;
+	}
+	return str.substring(0,i);
+}
 
 function index(){
 	location.href= "/";
@@ -304,12 +386,6 @@ function sendboard(){
 	
 	if(content.value == "") {
 		alert("내용을 입력해주세요.")
-		content.focus;
-		return false;
-	}
-	
-	if(content.value.length > 2000) {
-		alert("내용은 2000byte를 넘을 수 없습니다.")
 		content.focus;
 		return false;
 	}

@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.repository.BoardMapper">
+	
+	<!-- 게시글 스킬 필터 -->
 	<sql id="cri">
 		<if test="skill != null">
 			<trim prefixOverrides="or" prefix="(" suffix=") and">
@@ -63,6 +65,7 @@
 		</if>
 	</sql>
 
+	<!-- 게시글 리스트 -->
 	<select id="boardList" resultType="BoardView">
 		<![CDATA[
 			SELECT BOARDNUMBER, BOARDWRITER, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT, BOARDVIEW
@@ -77,19 +80,22 @@
 		]]>
 	</select>
 	
+	<!-- 게시글 전체 수 -->
 	<select id="getTotal" resultType="_int">
 		SELECT COUNT(*) FROM BOARD WHERE
 		<include refid="cri"></include>
 		BOARDNUMBER > 0
 	</select>
 	
+	<!-- 게시글 가져오기 -->
 	<select id="getBoard" resultType="BoardView">
-		SELECT BOARDNUMBER, USERNAME, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD,
+		SELECT BOARDNUMBER, USERNAME, BOARDDATE, USERSNICKNAME, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD,
 		BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT
 		FROM USERS U, BOARD B
 		WHERE U.USERNAME = B.BOARDWRITER AND BOARDNUMBER= #{boardnumber}
 	</select>
 	
+	<!-- 게시글 작성 -->
 	<insert id="writeBoard">
 		INSERT INTO BOARD
 		(BOARDNUMBER, BOARDWRITER, BOARDDATE, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT, BOARDVIEW)
@@ -109,8 +115,24 @@
 	<!-- 게시글 수정 -->
 	<update id="updateBoard">
 		UPDATE BOARD
-		SET BOARDDATE=SYSDATE, BOARDCATEGORY=#{boardcategory}, BOARDMEMBERS=#{boardmembers}, BOARDMEET=#{boardmeet}, BOARDPERIOD=#{boardperiod},
+		SET BOARDCATEGORY=#{boardcategory}, BOARDMEMBERS=#{boardmembers}, BOARDMEET=#{boardmeet}, BOARDPERIOD=#{boardperiod},
 		BOARDSKILL=#{boardskill}, BOARDSTART=#{boardstart}, BOARDCOMMUNICATION=#{boardcommunication}, BOARDWAY=#{boardway}, BOARDTITLE=#{boardtitle}, BOARDCONTENT=#{boardcontent}
 		WHERE BOARDNUMBER=#{boardnumber}
 	</update>	
+	
+ 	<!-- 게시글 삭제 -->
+	<delete id="removeBoard">
+		DELETE FROM BOARD WHERE BOARDNUMBER=#{boardnumber}
+	</delete>	
+	
+	<!-- 게시글 댓글 조회 -->
+	<select id="searchBoardReply" resultType="_int">
+		SELECT COUNT(*)
+		FROM REPLY WHERE BOARDNUMBER=#{boardnumber}
+	</select>
+	
+	<!-- 게시글 댓글 삭제 -->
+	<delete id="removeBoardReply">
+   		DELETE FROM REPLY WHERE BOARDNUMBER=#{boardnumber}
+   	</delete>	
 </mapper>

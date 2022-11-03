@@ -72,4 +72,17 @@ public class BoardServiceImpl implements BoardService{
 	public boolean updateBoard(Board board) {
 		return 1 == mapper.updateBoard(board);
 	}
+	
+	@Transactional
+	@Override
+	public boolean removeBoard(String boardnumber) {
+		boolean check = false;
+		if(mapper.searchBoardReply(boardnumber)>0) {
+			mapper.removeBoardReply(boardnumber);
+		}
+		if(mapper.removeBoard(boardnumber)==1) {
+			check = true;
+		}
+		return check;
+	}
 }

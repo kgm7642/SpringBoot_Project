@@ -103,6 +103,16 @@
 		margin-top: 15px;
 	}
 	
+	.bytesTc {
+		text-align: right;
+		margin: 10px;	
+	}
+
+	.wbox div div {
+		text-align: right;
+		margin: 10px;
+	}
+	
 	.buttonbox {
 		width: 100%;
 		height: 20px;
@@ -228,12 +238,18 @@
 		    	
 		    	<div class="wbox">
 		    		<span class="boardtitle">제목</span>
-		    		<input th:field="${board.boardtitle}" class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle"/>
+		    		<input id="boardtitleinput" th:field="${board.boardtitle}" class="boardtitleinput" placeholder=" 제목을 입력해주세요" type="text" name="boardtitle"/>
+		           	<div class="bytesTc">
+			        	<span class="bytesT">0</span><span>/100 bytes</span>
+			        </div>
 		    	</div>
 		    	<div class="wbox">
 			      	<div id="smarteditor">
 			        	<span class="boardtitle block">내용</span>
-			        	<textarea th:field="${board.boardcontent}" rows="20" cols="10"></textarea>
+			        	<textarea d="boardcontent" th:field="${board.boardcontent}" rows="20" cols="10"></textarea>
+			        	<div>
+			        		<span class="bytesC">0</span><span>/5000 bytes</span>
+			        	</div>
 			      	</div>
 			      	<div class="buttonbox">
 				     	<input class="button back" type="button" onclick="back()" value="돌아가기"/>
@@ -244,7 +260,81 @@
 	    </form>
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+
+// 페이지 로딩시 제목, 내용 byte 체크
+$(document).ready(function() {
+	console.log("ㅇㄴㄹㄴㅇㄹ");
+	bytesHandlerC($('#boardcontent'));	
+	bytesHandlerT($('#boardtitleinput'));
+}); 
+
+//내용 byte 체크 함수
+$(function(){
+	$('#boardcontent').keyup(function(){
+		bytesHandlerC(this);
+		console.log("this출력"+this);
+	});
+});
+
+//제목 byte 체크 함수
+$(function(){
+	$('#boardtitleinput').keyup(function(){
+		bytesHandlerT(this);
+	});
+});
+
+// 내용 길이 체크
+function getTextLength(str) {
+	let len = 0;
+
+	for (let i = 0; i < str.length; i++) {
+		if (escape(str.charAt(i)).length == 6) {
+			len++;
+		}
+		len++;
+	}
+	return len;
+}
+
+// 내용 바이트 체크
+function bytesHandlerC(obj){
+	let text = $(obj).val();
+	let len = getTextLength(text);
+	let boardcontent = document.getElementById("boardcontent");
+	if(len > 5000) {
+		alert("5000byte를 넘을 수 없습니다.");
+		boardcontent.value = cutByLen(boardcontent.value, 5000);
+		console.log(boardcontent.value);
+		return;
+	}
+	$('.bytesC').text(len);
+}
+
+// 제목 바이트 체크
+function bytesHandlerT(obj){
+	let text = $(obj).val();
+	let len = getTextLength(text);
+	let boardtitleinput = document.getElementById("boardtitleinput");
+	if(len > 100) {
+		alert("100byte를 넘을 수 없습니다.");
+		boardtitleinput.value = cutByLen(boardtitleinput.value, 100);
+		console.log(boardtitleinput.value);
+		return;
+	}
+	$('.bytesT').text(len);
+}
+
+// 원하는 바이트만큼 문자열을 자르는 함수
+function cutByLen(str, maxByte) {
+	for(b=i=0;c=str.charCodeAt(i);) {
+		b+=c>>7?2:1;
+		if (b > maxByte) break;
+		i++;
+	}
+	return str.substring(0,i);
+}
 
 function back(){
 	location.href= "/board/view?boardnumber=[[${board.boardnumber}]]";

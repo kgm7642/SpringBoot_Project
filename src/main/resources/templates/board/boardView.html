@@ -290,8 +290,7 @@
 			<p class="inline-block" th:text="${board.usersnickname}"></p>
 			<p class="inline-block"> 님</p>
 			<p class="inline-block st"> | </p>
-			<p class="inline-block date">날짜</p>
-<!-- 			<p th:text="${board.boarddate}"></p> -->
+ 			<p class="inline-block date" th:text="${board.boarddate}"></p>
 		</div>
 		<hr>
 		<div class="layer3">
@@ -340,7 +339,7 @@
 					<a class="button" th:href="@{/board/remove(boardnumber=${board.boardnumber})}">삭제</a>
 					<a class="button" th:href="@{/board/modify(boardnumber=${board.boardnumber})}">수정</a>
 				</th:block>
-				<a class="button" href="/">목록</a>
+				<a class="button" th:href="@{/board/list}">목록</a>
 			</div>		
 		</div>
 		

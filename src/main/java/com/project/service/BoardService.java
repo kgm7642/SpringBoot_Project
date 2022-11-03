@@ -28,5 +28,6 @@ public interface BoardService {
 	public Board getBoardDetail(String boardnumber);
 	
 	public boolean updateBoard(Board board);
-	
+
+	public boolean removeBoard(String boardnumber);
 }

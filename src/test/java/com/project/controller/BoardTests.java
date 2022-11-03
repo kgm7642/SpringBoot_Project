@@ -21,6 +21,6 @@ public class BoardTests {
 	@DisplayName("게시글 상세보기")
 	@Transactional
 	public void 게시판_상세보기_테스트() throws Exception {
-		assertNotNull(boardService.getBoard(1));
+		assertNotNull(boardService.getBoard("1"));
 	}
 }
