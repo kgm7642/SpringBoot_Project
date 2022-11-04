@@ -30,6 +30,8 @@ public interface UsersService extends UserDetailsService{
 	public ArrayList<Skill> skill();
 		
 	public UserDetails loadUserByUsername(String userid);
+
+	public boolean checkNick(Users users);
 	
 	
 }

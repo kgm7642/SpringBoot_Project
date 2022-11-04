@@ -5,79 +5,428 @@
 <title>★SPACE★</title>
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/header.css">
+<link rel="stylesheet" href="../css/index.css" />
 <style>
-
+	#bannerbox {
+		width: 100%;
+		height: 300px;
+	}
 	
+	#maincontent {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		align-items: center;
+	}
+	
+	#chatbox {
+		width: 500px;
+		height: 650px;
+		border: 1px solid black;
+	}
+	
+	#chattool {
+		width: 500px;
+		height: 5%;
+	}
+	
+	#chating {
+		width: 498px;
+	    height: 75%;
+	    overflow: auto;
+	    border: 1px solid black;
+	    overflow: scroll;
+	    overflow-x: hidden;
+	    border-top: 2px solid black;
+	    border-bottom: 2px solid black;
+	}
+	
+	#yourMsg {
+		width: 500px;
+		height: 20%;
+	}
+	
+	.chating{
+
+	}
+	
+	.chatUser {
+		font-weight: 900;
+		font-size: 15px;
+	}
+	
+	.chating p{
+	    color: black;
+	    text-align: left;
+	    white-space: normal;
+	    overflow-wrap: anywhere;
+	}
+	
+	#loginUsers {
+		display: none;
+	}
+	
+	#chatcontent {
+		width: 400px;
+		height: 120px;
+		font-size: 15px;
+		white-space: normal;
+		overflow-wrap: anywhere;
+		resize: none;
+	}
+	
+	#chatcontent::placeholder {
+		font-size: 15px;
+		padding-left: 10px;
+		padding-top: 10px;
+		word-wrap:break-word;
+	}
+	
+	#sendBtn {
+		width: 80px;
+		height: 80px;
+		font-size: 25px;
+		border-radius: 10px;
+		margin-bottom: 15px;
+		transition: all 0.1s linear;
+	}
+	
+	#sendBtn:hover {
+		transform: scale(1.05);
+	}
+	
+		.hotul {
+		transition: all 0.1s linear;
+	}
+	
+	.loginImg {
+		width: 60px;
+		height: 50px;
+	}
+	
+	#hotbox {
+		width: 700px;
+		height: 650px;
+		margin: 0 auto;
+		text-align: center;
+		background-color: #F0FFF0;
+	}
+	
+	#hotlist > div {
+		padding-top: 24px;
+		height: 98px;
+	}
+	
+	#hotlist > div > p {
+		width: 300px;
+		height: 40px;
+		font-weight: bold;
+		font-size: 35px;
+		color: #222222;
+		text-shadow: 2px 2px 3px rgba(255,255,255,0.2);
+	}
+	
+	#hotlist > div > img {
+		height: 40px;
+		width: 40px;
+	}
+	
+	.hotul, .titleul {
+		width: 100%;
+		height: 50px;
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		align-items: center;
+	}
+	
+	.hotul {
+		transition: all 0.1s linear;
+	}
+	
+	.hotul:hover {
+		transform: scale(1.02);
+		border-radius: 10px;
+		border: 1px solid #778899;
+		cursor: pointer;
+	}
+	
+	.titleul {
+		padding-top: 15px;
+	}
+	
+	.titleul {
+		background-color: #87CEFA;
+		border-bottom: 1px solid #4682B4;
+		border-top: 1px solid #4682B4;
+		font-size: 18px;
+	}
+	
+	.hotul li, .titleul li {
+		text-align: center;
+		height: 40px;
+	}
+	
+	.hotul:nth-child(2n) {
+		background-color: #AFEEEE;
+		border-bottom: 1px solid #B0C4DE;
+	}
+	
+	.hotul:nth-child(2n-1) {
+		background-color: #B0E0E6;
+		border-bottom: 1px solid #B0C4DE;
+	}
+	
+	.hotul li:nth-child(1), .hotul li:nth-child(3), 
+	.hotul li:nth-child(4), .hotul li:nth-child(5) {
+		padding-top: 15px;
+	}
+	
+	.hotul li:nth-child(1), .titleul li:nth-child(1) {
+	    overflow: hidden;
+    	text-overflow: ellipsis;
+    	white-space: nowrap;
+		width: 200px;
+	}
+	
+	.hotul li:nth-child(2), .titleul li:nth-child(2) {
+		width: 100px;
+	}
+	
+	.hotul li:nth-child(2) img {
+		width: 35px;
+		height: 35px;
+	}
+	
+	.hotul li:nth-child(3), .titleul li:nth-child(3) {
+		width: 120px;
+	}
+	
+	.hotul li:nth-child(4), .titleul li:nth-child(4) {
+		width: 120px;
+	}
+	
+	.hotul li:nth-child(5), .titleul li:nth-child(5) {
+		width: 100px;
+	}
+	
+	footer {
+		width: 100%;
+		height: 200px;
+		margin-top: 50px;
+		background-color: #C0C0C0;
+	}
 </style>
 </head>
 <body>
 	<div th:replace="~{header :: header}"></div>
-	<div>
-		<a href="/board/list">게시판 이동</a>
-		<a href="/logout">로그아웃</a>	
+
+
+	<div id="bannerbox">
+	    	
+	    	
 	</div>
 	
-	  
-    <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
-    <button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
-	<div>
-	    <span>메세지</span>
-	    <div class="msgArea"></div>
-	</div>	  
-	  
-	  
-	  
-	  
-    
+	<section id="section">		
+		<th:block th:if="${session.users != 'not'}">
+			<!-- 현재 로그인 유저의 정보 확인용 display는 none으로 줬음 -->			
+			<div id="loginUsers" th:text="${session.users.usersnickname}"></div>
+		</th:block>
+	    <div id="container" class="container">
+	    	<div id="maincontent">
+		    	<div id="chatbox">
+			        <div id="chattool" onclick="clearChat()">지우개</div>
+			        <div id="chating" class="chating"></div>
+			        <div id="yourMsg" th:if="${session.users != 'not'}">
+			            <table>
+			                <tr>
+			                    <th>
+			                    	<textarea id="chatcontent" placeholder="보내실 메시지를 입력하세요."></textarea>
+			                    	</th>
+			                    <th>
+			                    	<button class="button" onclick="send()" id="sendBtn">전송</button>
+			                    	<p>
+			                    		<span class="bytes">0</span><span>/500</span>
+			                    	</p>
+			                    </th>
+			                </tr>
+			            </table>
+			        </div>
+			        <div th:if="${session.users == 'not'}">
+			        	<table style="width: 100%; height: 100%; margin-top: 10px;">
+			        		<tr>
+			        			<th>로그인 후 채팅에 참여해주세요!</th>
+			        		</tr>
+			        		<tr>
+			        			<th>
+			        				<div>
+					        			<div>
+				        					<a href="/login" id="login">
+					        					<img style="margin-right: 5px;" class="loginImg" src="/img/login.png" />
+					        					<p style="text-decoration: noen; color: #483D8B;">로그인</p>
+					        				</a>
+					        			</div>
+				        			</div>
+			        			</th>
+			        		</tr>
+			        	</table>
+			        </div>
+				</div>
+				
+				<div id="hotbox">
+					<div id="hotlist">
+						<div>
+							<img class="inline-block" src="/img/hot.png"/>
+							<p class="inline-block">실시간 인기 게시글</p>
+							<img class="inline-block" src="/img/hot.png"/>
+						</div>
+						<ul class="titleul">
+							<li>제목</li>
+							<li>기술</li>
+							<li>시작 날짜</li>
+							<li>게시글 날짜</li>
+							<li>조회수</li>
+						</ul>
+						<th:block th:each="hot : ${hotList}">
+							<ul class="hotul block" th:onclick="hotBoardView(/*[[${hot.boardnumber}]]*/);">
+								<li th:text="${hot.boardtitle}"></li>												
+								<li>
+									<img th:src="${hot.skillimage}" />
+								</li>
+								<li th:text="${hot.boardstart}"></li>
+								<li th:text="${hot.boarddate}"></li>
+								<li th:text="${hot.boardview}"></li>
+							</ul>
+						</th:block>
+					</div>
+				</div>
+			</div>
+	    </div>
+    </section>
+    <footer>
+				
+	</footer>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script>
+<script th:inline="javascript">
+
+function hotBoardView(boardnumber) {
+	location.href = "/board/view?boardnumber="+boardnumber;
+}
+
+$(function(){
+	scrollMove();
+	$('#chatcontent').keyup(function(){
+		bytesHandler(this);
+	});
+});
+
+function getTextLength(str) {
+	let len = 0;
+
+	for (let i = 0; i < str.length; i++) {
+		if (escape(str.charAt(i)).length == 6) {
+			len++;
+		}
+		len++;
+	}
+	return len;
+}
+
+function bytesHandler(obj){
+	let text = $(obj).val();
+	let len = getTextLength(text);
+	let chatcontent = document.getElementById("chatcontent");
+	if(len > 500) {
+		alert("500byte를 넘을 수 없습니다.");
+		chatcontent.value = cutByLen(chatcontent.value, 500);
+		return;
+	}
+	$('.bytes').text(len);
+}
+
+// 원하는 바이트만큼 문자열을 자르는 함수
+function cutByLen(str, maxByte) {
+	for(b=i=0;c=str.charCodeAt(i);) {
+		b+=c>>7?2:1;
+		if (b > maxByte) break;
+		i++;
+	}
+	return str.substring(0,i);
+}
+
+// 소켓을 담을 변수
+let sock;
+
+// 페이지 로딩되면 바로 실행
+$(document).ready(function() {
+	// 소캣을 생성한 후 sock 변수에 소캣을 담는다.
+	sock = new WebSocket("ws://" + location.host + "/chating");
 	
-	let socket = new WebSocket("ws://localhost:8080/websocket");
+	// onOpen:소캣이 열렸을 때 실행될 함수, onClose:소캣이 닫힐 때 실행될 함수
+	// onMessage:메시지를 받을 때 실행될 함수, onError:오류가 발생했을 때 실행될 함수
+	sock.onopen = function(data) { onOpen(data) };
+	sock.onclose = function(data) { onClose(data) };
+	sock.onmessage = function(data) { onMessage(data) };
+	sock.onerror = function(data) { onError(data) };
+	console.log("소캣 실행");
+});
+
+// 채팅 리스트를 지우는 함수
+function clearChat() {
+	$("#chating").empty();
+}
+
+// 서버에서 받아온 채팅리스트를 화면에 보여줌
+function onMessage(data) {
 	
-	socket.onopen = function (e) {
-	    console.log('open server!')
-	};
+	const msg = JSON.parse(data.data);
 	
-	socket.onerror = function (e){
-	    console.log(e);
+	let userid = msg.userid;
+	let chatcontents = msg.chatcontents;
+	
+	console.log("msg " + msg);
+
+    if(msg != null){
+        $("#chating").append("<p><span style='font-weight: 900;'>" + userid + ": </span><span>" + chatcontents + "</span></p>");
+    }
+    scrollMove();
+}
+
+// 엔터키를 통해서도 채팅이 가능함
+document.addEventListener("keypress", function(e){
+    if(e.keyCode == 13){
+        send();
+    }
+});
+
+// 채팅을 보낼 때 실행되는 함수
+function send() {
+	let chatcontent = document.getElementById("chatcontent");
+	if(chatcontent.value.trim() == "") {
+		alert("보내실 메시지를 입력해주세요.");
+		chatcontent.value = "";
+		$('.bytes').text("0");
+		return;
 	}
 	
-	socket.onmessage = function (e) {
-	    console.log(e.data);
-	    let msgArea = document.querySelector('.msgArea');
-	    let newMsg = document.createElement('div');
-	    newMsg.innerText=e.data;
-	    msgArea.append(newMsg);
-	}
-	
-	function sendMsg() {
-	    let content=document.querySelector('.content').value;
-	    socket.send(content);
-	}	
-	
-	
-	function checkNickName() {
-		let json = {"page":1};
-		$.ajax(
-			{
-				type:"POST",
-				url:"/board/list",
-				data:JSON.stringify(json),
-				contentType: "application/json",
-				success:function(result,status,xhr){
-					console.log(result);
-					if(result == "fail"){						
-						
-					}else{
-						
-					}
-				},
-				error:function(xhr,status,e){
-				}
-			}
-		)
+	let uN
+	if($("#loginUsers").text!='not'){		
+		uN = $("#loginUsers").text();
 	}
 
+	let msg = $("#chatcontent").val();
+	// 유저 닉네임과 내용을 서버로 보내줌
+    sock.send(uN+":"+msg);
+	// 메시지 입력창은 비워주며 편의성을 높힘
+    $('#chatcontent').val("");
+    $('.bytes').text("0");
+}
+
+// 채팅 스크롤바 최 하단으로 위치시키는 함수
+function scrollMove() {
+	$("#chating").scrollTop($('#chating')[0].scrollHeight);
+}
 </script>
 </html>

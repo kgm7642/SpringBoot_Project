@@ -99,7 +99,7 @@
 	<insert id="writeBoard">
 		INSERT INTO BOARD
 		(BOARDNUMBER, BOARDWRITER, BOARDDATE, BOARDCATEGORY, BOARDMEMBERS, BOARDMEET, BOARDPERIOD, BOARDSKILL, BOARDSTART, BOARDCOMMUNICATION, BOARDWAY, BOARDTITLE, BOARDCONTENT, BOARDVIEW)
-		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, SYSDATE, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent}, '0')
+		VALUES(SEQ_BOARD.NEXTVAL, #{boardwriter}, SYSDATE, #{boardcategory}, #{boardmembers}, #{boardmeet}, #{boardperiod}, #{boardskill}, #{boardstart}, #{boardcommunication}, #{boardway}, #{boardtitle}, #{boardcontent}, 0)
 	</insert>
 	
 	<!-- 게시글 조회수 1증가 -->
@@ -134,5 +134,18 @@
 	<!-- 게시글 댓글 삭제 -->
 	<delete id="removeBoardReply">
    		DELETE FROM REPLY WHERE BOARDNUMBER=#{boardnumber}
-   	</delete>	
+   	</delete>
+   	
+   	<!-- 인덱스 인기 게시글 10개 -->
+   	<select id="hotBoardList" resultType="Board_Skill">
+   		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT * FROM BOARD, SKILL
+				WHERE BOARDSKILL = SKILLNAME
+				ORDER BY BOARDVIEW DESC
+			)
+			WHERE ROWNUM <=10
+		]]>
+   	</select>
 </mapper>

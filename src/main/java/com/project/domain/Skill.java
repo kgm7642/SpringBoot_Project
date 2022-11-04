@@ -7,4 +7,5 @@ public class Skill {
 	
 	private String skillnumber;
 	private String skillname;
+	private String skillimage;
 }

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,14 +82,28 @@ public class UsersController {
 	
 	@GetMapping("/loginNickname")
 	public String loginNickname(HttpServletRequest request, Model model) {
-		Users users = (Users) request.getSession().getAttribute("users");
-		if(users.getUsersnickname()==null) {
-//			닉네임이 null임(처음 접속한 유저)
-			model.addAttribute("users", users);
-			return "/users/loginNickname";
-		} else {
+		System.out.println("세션확인"+request.getSession().getAttribute("users"));
+		if(request.getSession().getAttribute("users") == null || request.getSession().getAttribute("users").equals("not")) {
+//			로그인 없이 loginNickname 주소로 다이렉트로 접속한 경우
 			return "redirect:/";
+		}  else {
+			if( ((Users) request.getSession().getAttribute("users")).getUsersnickname() == null ) {				
+				
+//			닉네임이 null임(처음 접속한 유저)
+				model.addAttribute("users", request.getSession().getAttribute("users"));
+				return "/users/loginNickname";
+			} else {
+				return "redirect:/";
+			}
 		}
+	}
+	
+	@ResponseBody
+	@PostMapping(value="checkNick",  consumes = "application/json")
+	public ResponseEntity<String> checkNick(@RequestBody Users users){
+		boolean check = usersService.checkNick(users);
+		log.info("닉네임 중복 체크 성공");
+		return check ? new ResponseEntity<String>("fail",HttpStatus.OK) : new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 	
 	@GetMapping("/loginSkill")
@@ -96,6 +113,7 @@ public class UsersController {
 	
 	@PostMapping("/loginSkill")
 	public String loginSkill(HttpServletRequest request, Model model, Users users) {
+		System.out.println("유저 확인 : " + users);
 		if(users.getSkill()!=null) {
 			return "redirect:/";
 		}

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.domain.Board;
 import com.project.domain.BoardSaveForm;
 import com.project.domain.BoardView;
+import com.project.domain.Board_Skill;
 import com.project.domain.Criteria;
 import com.project.repository.BoardMapper;
 import com.project.service.BoardService;
@@ -84,5 +85,11 @@ public class BoardServiceImpl implements BoardService{
 			check = true;
 		}
 		return check;
+	}
+
+	@Transactional
+	@Override
+	public ArrayList<Board_Skill> hotBoardList() {
+		return mapper.hotBoardList();
 	}
 }

@@ -9,16 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.project.domain.GoogleUsers;
 import com.project.domain.Users;
-import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
-
-	private final UsersService usersService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -27,6 +23,5 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 		request.getSession().setAttribute("users", users);
 		response.sendRedirect("/loginNickname");
 		System.out.println("로그인 성공 핸들러 입장");
-
 	}
 }

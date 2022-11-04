@@ -5,6 +5,23 @@
 	width: 80%;
 	height: 100px;
 	margin: 0 auto;
+	margin-bottom: 50px;
+}
+
+@font-face {
+    font-family: 'KOTRALEAP';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/KOTRALEAP.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.welcome {
+	font-family: 'KOTRALEAP';
+	font-weight: bold;
+}
+
+#nickname {
+	color: green;
 }
 
 .leftBox {

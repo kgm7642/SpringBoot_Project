@@ -15,5 +15,6 @@ public interface UsersMapper {
 	public Users getUsers(String userid);
 	public void joinOAuth(Users users);
 	public ArrayList<Skill> skill();
+	public int checkNick(Users users);
 
 }

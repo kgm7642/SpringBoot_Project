@@ -12,11 +12,19 @@
 			</a>
 		</div>
 		<div class="rightBox">
-			<div th:if="${session.users != null}">
-				로그인중임
-			</div>
 			<a href="/board/write">게시글 작성</a>
-			<a href="/login">로그인</a>
+			<div th:if="${session.users != 'not'}">
+				<span id="nickname" class="welcome" th:text="${session.users.usersnickname}"></span><span class="welcome"> 님 환영합니다!</span>
+			</div>
+			<div>
+				<a href="/board/list">게시판 이동</a>
+			</div>
+			<div th:if="${session.users == 'not'}">				
+				<a href="/login">로그인</a>
+			</div>
+			<div th:if="${session.users != 'not'}">
+				<a href="/logout">로그아웃</a>
+			</div>
 		</div>
 	</header>
 </body>

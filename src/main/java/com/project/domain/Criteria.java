@@ -14,6 +14,11 @@ public class Criteria {
 		this(1, 30, "");
 	}
 	
+	public Criteria(int pageNum, int amount) {
+		this.pageNum = pageNum;
+		this.amount = amount;
+	}
+	
 	public Criteria(int pageNum, int amount, String skill) {
 		this.pageNum = pageNum;
 		this.amount = amount;

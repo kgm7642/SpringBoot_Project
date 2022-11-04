@@ -7,22 +7,38 @@
 <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
-	<form th:action="@{/loginFinish}" method="post" th:object="${users}">
-		<p class="title">주력 기술</p>
-		<div class="skillContainer">
-			<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList"></div>
+	<div class="img">
+		<a href="/">
+			<img src="../images/spaceLogoText.PNG">
+		</a>
+		<a href="/">
+			<img src="../images/spaceLogo.PNG">
+		</a>
+	</div>
+	<div class="container">
+		<div class="box1">
+			<p><span th:text="${users.usersnickname}" class="cnt1"></span>님 반가워요~!!</p>
+			<P>아래 목록에서 관심있는 <span class="cnt2">분야</span>를 선택해 볼까요??</P>
+			<p><span class="cnt3">(최대 3개까지 선택 가능합니다.)</span></p>
 		</div>
-		<div id="skillChoiceContainer"></div>
-		<div id="reset">다시 선택하기</div>
-		<input type="hidden" th:field="*{username}" name="username"/>
-		<input type="hidden" th:field="*{userspw}" name="userspw"/>
-		<input type="hidden" th:field="*{usersemail}" name="usersemail"/>
-		<input type="hidden" th:field="*{usersnickname}" name="usersnickname"/>
-		<input type="hidden" th:field="*{Role}" name="Role"/>
-		<input type="hidden" th:field="*{provider}" name="provider"/>
-		<input type="hidden" th:field="*{providerid}" name="providerid"/>
-		<input type="submit" value="다음"/>
-	</form>
+		<div class="box2">
+			<form th:action="@{/loginFinish}" method="post" th:object="${users}">
+				<div class="skillContainer">
+					<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList"></div>
+				</div>
+				<div id="skillChoiceContainer"></div>
+				<input type="hidden" th:field="*{username}" name="username"/>
+				<input type="hidden" th:field="*{userspw}" name="userspw"/>
+				<input type="hidden" th:field="*{usersemail}" name="usersemail"/>
+				<input type="hidden" th:field="*{usersnickname}" name="usersnickname"/>
+				<input type="hidden" th:field="*{Role}" name="Role"/>
+				<input type="hidden" th:field="*{provider}" name="provider"/>
+				<input type="hidden" th:field="*{providerid}" name="providerid"/>
+				<div id="reset" class="inline-block">다시 선택할래요..</div>
+				<input type="submit" class="inline-block button submit" value="다음"/>
+			</form>	
+		</div>
+	</div>
 </body>
 <script src="../js/users/loginSkill.js"></script>
 </html>

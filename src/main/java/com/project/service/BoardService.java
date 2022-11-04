@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.domain.Board;
 import com.project.domain.BoardSaveForm;
 import com.project.domain.BoardView;
+import com.project.domain.Board_Skill;
 import com.project.domain.Criteria;
 import com.project.repository.BoardMapper;
 
@@ -30,4 +31,6 @@ public interface BoardService {
 	public boolean updateBoard(Board board);
 
 	public boolean removeBoard(String boardnumber);
+
+	public ArrayList<Board_Skill> hotBoardList();
 }

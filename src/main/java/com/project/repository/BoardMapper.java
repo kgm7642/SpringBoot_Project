@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.project.domain.Board;
 import com.project.domain.BoardSaveForm;
 import com.project.domain.BoardView;
+import com.project.domain.Board_Skill;
 import com.project.domain.Criteria;
 
 
@@ -43,4 +44,7 @@ public interface BoardMapper {
 	
 	// 댓글 모두 삭제
 	int removeBoardReply(String boardnum);
+	
+	// 인기 게시글 리스트
+	public ArrayList<Board_Skill> hotBoardList();
 }

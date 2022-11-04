@@ -1,65 +1,119 @@
 @charset "UTF-8";
 
-.title {
-	text-align: center;
-	width: 100%;
-	height: 50px;
-}
+	.img {
+		width: 80%;
+		margin: 0 auto;
+		padding: 10px;
+	}
+	
+	.img a:nth-child(1) img {
+		float: letf;
+	}
 
-.skillContainer {
-	border: 1px solid black;
-	width: 80%;
-	height: 800px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: center;
-	margin: 0 auto;
-	border-radius: 50px;
-}
-
-.skillList {
-	border: 1px solid black;
-	width: 150px;
-	border-radius: 50px;
-	text-align: center;
-	margin: 15px 15px;
-	cursor: pointer;
-}
-
-#skillChoiceContainer {
-	border: 1px solid black;
-	width: 80%;
-	height: 100px;
-	text-align: center;
-	margin: 0 auto;
-}
-
-.select {
-	position: relative;
-	display: inline-block;
-	border: 1px solid black;
-	width: 150px;
-	height: 30px;
-	text-align: left;
-	border-radius: 50px;
-	padding-left: 20px;
-	padding-top: 5px;
-	background-color: silver;
-	cursor: pointer;
-	margin: 20px;
-}
-
-.cancel_PTag {
-	position: absolute;
-	right: 2px;
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	text-align: center;
-	margin: 0px;
-	padding-top: 5px;
-	border-radius: 50px;
-	background-color: white;
-	cursor: pointer;
-}
+	.img a:nth-child(2) img {
+		float: right;
+		width: 50px;
+	}
+	
+	.container {
+		width: 70%;
+		margin: 0 auto;
+		margin-top: 50px;
+	}
+	
+	.box1 {
+		width: 70%;
+		margin: 0 auto;
+		margin-top: 50px;
+	}
+	
+	.box1 p {
+		text-align: center;
+		font-size: 30px;
+		font-weight: bold;
+	}
+	
+	.cnt1 {
+		color: #DA70D6;
+	}
+	
+	.cnt2 {
+		color: #FF1493;
+	}
+	
+	.cnt3 {
+		color: #D3D3D3;
+	}
+	
+	.title {
+		text-align: center;
+		width: 100%;
+		height: 50px;
+	}
+	
+	.box2 {
+		width: 80%;
+		margin: 0 auto;
+		margin-top: 20px;
+		margin-bottom: 150px;
+		text-align: center;
+	}
+	
+	.skillContainer {
+		width: 100%;
+		height: 600px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+		border-radius: 50px;
+		text-align: center;
+	}
+	
+	.skillList {
+		border: 1.5px solid #333333;
+		width: 150px;
+		border-radius: 50px;
+		text-align: center;
+		margin: 5px 5px;
+		cursor: pointer;
+		color: #E6E6FA;
+		background-color: #333333;
+		box-shadow: 2px -5px 5px 0px black;
+	}
+	
+	#skillChoiceContainer {
+		position: relative;
+		width: 80%;
+		height: 100px;
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 10px;
+	}
+	
+	.select {
+		display: inline-block;
+		border: 1px solid #9966CC;
+		width: 150px;
+		height: 30px;
+		text-align: center;
+		border-radius: 50px;
+		padding-top: 5px;
+		margin: 20px;
+		color: #E6E6FA;
+		background-color: #9966CC;
+	}
+	
+	#reset {
+		border: 2px dotted black;
+		border-radius: 50px;
+		padding: 5px;
+		width: 150px;
+		cursor: pointer;
+		float: left;
+	}
+	
+	.submit {
+		float: right;
+	}
