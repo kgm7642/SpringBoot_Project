@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>★SPACE★</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/header.css">
+<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	.container{
+		width: 500px;
+		margin: 0 auto;
+		padding: 25px
+	}
+	.container h1{
+		text-align: left;
+		padding: 5px 5px 5px 15px;
+		color: #FFBB00;
+		border-left: 3px solid #FFBB00;
+		margin-bottom: 20px;
+	}
+	.chating{
+		background-color: #000;
+		width: 500px;
+		height: 500px;
+		overflow: auto;
+	}
+	.chating p{
+		color: #fff;
+		text-align: left;
+	}
+	input{
+		width: 330px;
+		height: 25px;
+	}
+	#yourMsg{
+		display: none;
+	}
+</style>
+</head>
+<body>
+        <div class="container">
+            <div class="col-6">
+                <label><b>채팅방</b></label>
+            </div>
+            <div>
+                <div id="msgArea" class="col"></div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <input type="button" class="button" value="전송" onclick="sendMessage();"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>	
+	  
+    
+</body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+<script>
+
+
+let sock = new SockJS("http://localhost:8080/socket/");
+sock.onopen = onOpen;
+sock.onmessage = onMessage;
+sock.onclose = onClose;
+
+// 메시지 전송
+function sendMessage() {
+
+	
+	let chatcontents = $("#msg").val();
+	let userid = "${session.userid}";
+	let data = {
+		"chatcontents" : chatcontents,
+		"userid" : userid
+	};
+
+	sock.send(JSON.stringify(data));
+	console.log("메세지 전송 완료");
+	$('#msg').val('');
+}
+
+
+//서버로부터 메시지를 받았을 때
+// msg는 소켓에게 받은 메세지 데이터임
+function onMessage(msg) {
+	
+}
+
+
+//채팅창에 들어왔을 때(서버와 연결을 시작했을 때)
+function onOpen(evt) {
+	scrollMove();
+}
+
+//채팅창에서 나갈때(서버와 연결을 끊었을 때)
+function onClose(evt) {
+	scrollMove();
+}
+
+// 채팅 스크롤바 최 하단으로 위치시키는 함수
+function scrollMove() {
+	$("#chatting").scrollTop($('#chatting')[0].scrollHeight);
+}
+
+</script>
+</html>

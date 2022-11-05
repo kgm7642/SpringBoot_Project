@@ -7,9 +7,58 @@
 <link rel="stylesheet" href="../css/header.css">
 <link rel="stylesheet" href="../css/index.css" />
 <style>
-	#bannerbox {
-		width: 100%;
+	#banner {
+		width: 1900px;
 		height: 300px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 50px;
+	}
+	
+	#bannerBox {
+		width: 1900px;
+		overflow: hidden;
+	}
+	
+	#bannerBox > ul {
+	  list-style: none;
+	  width: 1900px;
+	  height: 30vh;
+	  transition: all 1s;
+	  display: inline-flex;
+	}
+	
+	#bannerBox > ul > li {
+	  min-width: 1900px;
+	  min-height: 30vh;
+	  text-align: center;
+	  color: #000;
+	}
+	
+	.banner_item img {
+		width: 1900px;
+		height: 100%;
+	}
+ 	
+	#bannerBox > ul > li:first-child {
+	  background-color: #ea1234;
+	}
+	
+	#bannerBox > ul > li:nth-child(2) {
+	  background-color: #ad3850;
+	}
+	
+	#bannerBox > ul > li:nth-child(3) {
+	  background-color: #cdccdb;
+	}
+	
+	#prevBtn, #nextBtn {
+		cursor: pointer;
+		border: 1px solid #adff2f;
+		width: 3rem;
+		height: 3rem;
+		z-index: 999;
 	}
 	
 	#maincontent {
@@ -28,6 +77,13 @@
 	#chattool {
 		width: 500px;
 		height: 5%;
+	}
+	
+	#chattool img {
+		width: 30px;
+		height: 30px;
+		margin-left: 10px;
+		cursor: pointer;
 	}
 	
 	#chating {
@@ -99,9 +155,20 @@
 		transition: all 0.1s linear;
 	}
 	
+	.loginImgbox {
+		width: 100%;
+		height: 90px;
+	}
+	
 	.loginImg {
-		width: 60px;
-		height: 50px;
+		width: 70px;
+		height: 70px;
+		margin-top: 10px;
+		transition: all 0.1s linear;
+	}
+	
+	.loginImg:hover {
+		transform: scale(1.05);
 	}
 	
 	#hotbox {
@@ -214,8 +281,40 @@
 	footer {
 		width: 100%;
 		height: 200px;
-		margin-top: 50px;
+		margin-top: 100px;
+		border-top: 1px solid black;
+		border-bottom: 1px solid black;
 		background-color: #C0C0C0;
+	}
+	
+	.copyright {
+		width: 100%;
+		height: 100px;
+		font-family: arial;
+		font-weight: 550;
+		text-align: center;
+		padding-top: 20px;
+	}
+	
+	.copyright p {
+		margin: 5px;
+	}
+	
+	.icon {
+		width: 100%;
+		height: 90px;
+		text-align: center;
+	}
+	
+	.icon a {
+		text-decoration: none;
+	}
+	
+	.icon a img {
+		width: 50px;
+		height: 50px;
+		border: 2.5px solid #ADD8E6;
+		border-radius: 10px;
 	}
 </style>
 </head>
@@ -223,9 +322,16 @@
 	<div th:replace="~{header :: header}"></div>
 
 
-	<div id="bannerbox">
-	    	
-	    	
+	<div id="banner">
+		<img id="prevBtn" style="display:none;" />
+        <div id="bannerBox">
+          <ul>
+            <li class="banner_item"><img src="/img/banner1.png" /></li>
+            <li class="banner_item"><img src="/img/banner2.png" /></li>
+            <li class="banner_item"><img src="/img/banner3.png" /></li>
+          </ul>
+        </div>	    	
+	    <img id="nextBtn" style="display:none;" />
 	</div>
 	
 	<section id="section">		
@@ -236,7 +342,7 @@
 	    <div id="container" class="container">
 	    	<div id="maincontent">
 		    	<div id="chatbox">
-			        <div id="chattool" onclick="clearChat()">지우개</div>
+			        <div id="chattool" onclick="clearChat()"><img src="/img/err.png" /></div>
 			        <div id="chating" class="chating"></div>
 			        <div id="yourMsg" th:if="${session.users != 'not'}">
 			            <table>
@@ -261,10 +367,9 @@
 			        		<tr>
 			        			<th>
 			        				<div>
-					        			<div>
+					        			<div class="loginImgbox">
 				        					<a href="/login" id="login">
 					        					<img style="margin-right: 5px;" class="loginImg" src="/img/login.png" />
-					        					<p style="text-decoration: noen; color: #483D8B;">로그인</p>
 					        				</a>
 					        			</div>
 				        			</div>
@@ -305,11 +410,72 @@
 	    </div>
     </section>
     <footer>
-				
+		<div class="copyright">
+			<p>Copyright 2022.강경민 all rights reserved.</p>
+			<p>오류 제보 email : <a href="mailto:kgm7642@gmail.com">kgm7642@gmail.com</a></p>
+		</div>
+		<div class="icon">
+			<a href="https://twitter.com/?lang=ko" target="_blank">
+				<img src="/img/twitter.png"/>
+			</a>
+			<a href="https://www.facebook.com/" target="_blank">
+				<img src="/img/facebook.png"/>
+			</a>
+			<a href="https://www.youtube.com/" target="_blank">
+				<img src="/img/youtube.png"/>
+			</a>
+			<a href="https://www.instagram.com/" target="_blank">
+				<img src="/img/instagram.png"/>
+			</a>
+		</div>
 	</footer>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script th:inline="javascript">
+
+
+let bannerBox = document.querySelector("#bannerBox > ul");
+let bannerItem = document.querySelectorAll(".banner_item");
+let bt = document.querySelectorAll(".bt");
+let counter = 0;
+let prevBtn = document.getElementById("prevBtn");
+let nextBtn = document.getElementById("nextBtn");
+let size = bannerItem[0].clientWidth;
+
+nextBtn.addEventListener("click", () => {
+	clearInterval(banner);
+	if (counter < bannerItem.length - 1) {
+		counter++;
+		bannerBox.style.transform = "translateX(" + -size * counter + "px)";
+	} else if (counter === bannerItem.length - 1) {
+		counter = 0;
+		bannerBox.style.transform = "translateX(" + -size * counter + "px)";
+	}
+});
+
+prevBtn.addEventListener("click", () => {
+	clearInterval(banner);
+	if (counter > 0) {
+		counter--;
+		bannerBox.style.transform = "translateX(" + -size * counter + "px)";
+	} else {
+		counter = bannerItem.length - 1;
+		bannerBox.style.transform =
+	    "translateX(" + -size * (bannerItem.length - 1) + "px)";
+	}
+});
+
+function setfunction() {
+	if (counter < bannerItem.length - 1) {
+	    counter++;
+	    bannerBox.style.transform = "translateX(" + -size * counter + "px)";
+	} else if (counter === bannerItem.length - 1) {
+		counter = 0;
+	    bannerBox.style.transform = "translateX(" + -size * counter + "px)";
+	}	
+}
+
+let banner = setInterval(setfunction, 5000);
 
 function hotBoardView(boardnumber) {
 	location.href = "/board/view?boardnumber="+boardnumber;
