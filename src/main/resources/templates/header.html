@@ -12,18 +12,38 @@
 			</a>
 		</div>
 		<div class="rightBox">
-			<a href="/board/write">게시글 작성</a>
-			<div th:if="${session.users != 'not'}">
-				<span id="nickname" class="welcome" th:text="${session.users.usersnickname}"></span><span class="welcome"> 님 환영합니다!</span>
+			<div class="inline-block write">
+				<a href="/board/write">게시글 작성</a>
 			</div>
-			<div>
+			<div class="inline-block list">
 				<a href="/board/list">게시판 이동</a>
 			</div>
-			<div th:if="${session.users == 'not'}">				
-				<a href="/login">로그인</a>
+			<div id="nick" class="inline-block" th:if="${session.users != 'not'}">
+				<span id="nickname" class="welcome inline-block" th:text="${session.users.usersnickname}"></span><span>님 ▾</span>
+				<div class="hideMenu" th:if="${session.users != 'not'}">
+					<div>
+						<ul>
+				      		<li>
+				      			<div>
+				      				<p><a class="hideA" href="/profile">프로필 관리</a></p>
+				      			</div>
+				      		</li>
+				      		<li>
+				      			<div>
+				      				<p><a class="hideA" href="/board/myboardList">내가 쓴 글</a></p>
+				      			</div>
+				      		</li>
+				      		<li>
+								<div>
+									<p><a class="hideA" href="/logout">로그아웃</a></p>
+								</div>		      
+				      		</li>
+				    	</ul>
+				  	</div>
+				</div>			
 			</div>
-			<div th:if="${session.users != 'not'}">
-				<a href="/logout">로그아웃</a>
+			<div class="inline-block" th:if="${session.users == 'not'}">				
+				<a href="/login">로그인</a>
 			</div>
 		</div>
 	</header>

@@ -5,7 +5,7 @@
 	width: 80%;
 	height: 100px;
 	margin: 0 auto;
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 
 @font-face {
@@ -21,15 +21,90 @@
 }
 
 #nickname {
-	color: green;
+	width: 95px;
+	margin-left: 10px;
+	color: #7B68EE;
 }
 
 .leftBox {
+	width: 200px;
+	height: 100px;
 	cursor: pointer;
 	float: left;
+	padding-top: 20px;
 }
 
 .rightBox {
+	width: 420px;
+	height: 100px;
 	float: right;
 	padding-right: 10px;
+	padding-top: 40px;
+}
+
+.rightBox > div > a {
+	text-decoration: none;
+	font-size: 18px;
+	margin-left: 5px;
+	color: black;
+	border: 2px solid #696969;
+	border-radius: 5px;
+	padding: 3px;
+}
+
+.write, list {
+	transition: all 0.1s linear;
+}
+
+.write:hover {
+	transform: scale(1.03);
+}
+
+.list:hover {
+	transform: scale(1.03);
+}
+
+.rightBox div:nth-child(3) {
+	cursor: pointer;
+}
+
+#nick {
+	position: relative;
+	width: 170px;
+	display: relative;
+}
+
+.hideMenu {
+	width: 120px;
+	height: 150px;
+	background-color: antiquewhite;
+	position: absolute;
+	z-index: 1000;
+	opacity: 0;
+	left: 12px;
+	top: 30px;
+}
+
+.hideMenu > div {
+	width: 120px;
+	height: 150px;
+}
+
+.hideMenu > div > ul {
+	width: 120px;
+	height: 150px;	
+}
+
+.hideMenu > div > ul > li {
+	list-style: none;
+	width: 120px;
+	height: 40px;
+	margin-top: 10px;
+	text-align: center;
+	border: 0px !important;
+}
+
+.hideA {
+	text-decoration: none;
+	color: black;
 }
