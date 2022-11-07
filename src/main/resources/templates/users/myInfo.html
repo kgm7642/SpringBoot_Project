@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>★SPACE★</title>
+</head>
+<body>
+	<form method="post" th:action="@{/joinDo}">
+		아이디 <input type="text" name="username"/>
+		비번 <input type="password" name="userspw"/>
+		닉네임 <input type="text" name="usersnickname"/>
+		이메일 <input type="text" name="usersemail"/>
+		<input type="radio" name="role" value="ROLE_ADMIN"> admin
+      	<input type="radio" name="role" value="ROLE_USER" checked="checked"> user <br>
+		<input type="submit" value="가입"/>
+	</form>
+</body>
+</html>

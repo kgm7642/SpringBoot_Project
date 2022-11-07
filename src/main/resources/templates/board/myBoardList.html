@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>★SPACE★</title>
+<link rel="stylesheet" href="/css/main.css" />
+<link rel="stylesheet" href="/css/board/boardList.css" />
+<link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+	<div th:replace="~{header :: header}"></div>
+	<div class="box">
+		<div>
+			<h1 class="title">내가 쓴 글</h1>
+		</div>
+		<div>
+			<div id="reset">필터 초기화</div>
+		</div>	
+	</div>	
+    <section class="section"></section>
+</body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/js/board/boardList.js"></script>
+</html>
