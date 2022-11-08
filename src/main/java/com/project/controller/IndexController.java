@@ -5,12 +5,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project.domain.PrincipalDetails;
 import com.project.domain.Users;
 import com.project.service.BoardService;
 
@@ -28,9 +31,6 @@ public class IndexController {
 	@GetMapping
 	public String index(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 처음 접속한(로그인 하지 않은) 유저는 session 값이 not 임
-		
-		System.out.println("세션확인"+session.getAttribute("users"));
-		System.out.println("boardService.hotBoardList()"+boardService.hotBoardList());
 		model.addAttribute("hotList", boardService.hotBoardList()); 
 		
 		// 로그인 하지 않은 상태

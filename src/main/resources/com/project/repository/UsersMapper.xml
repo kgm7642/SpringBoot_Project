@@ -25,4 +25,15 @@
 	<select id="checkNick" resultType="_int">
 		SELECT COUNT(*) FROM USERS WHERE USERSNICKNAME=#{usersnickname}
 	</select>
+	
+	<update id="updateInfo">
+		UPDATE USERS
+		SET USERSNICKNAME=#{usersnickname}, MODIFYDATE=SYSDATE, SKILL=#{skill}
+		WHERE USERSNUMBER=#{usersnumber}	
+	</update>
+	
+	<delete id="fire">
+		DELETE FROM USERS
+		WHERE USERSNUMBER=#{usersnumber};	
+	</delete>
 </mapper>

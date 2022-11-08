@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Skill;
+import com.project.domain.UpdateUsers;
 import com.project.domain.Users;
 import com.project.repository.UsersMapper;
 import com.project.service.UsersService;
@@ -64,5 +65,26 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 	@Transactional
 	public boolean checkNick(Users users) {
 		return 1 == mapper.checkNick(users);
+	}
+	
+	@Override
+	@Transactional
+	public void updateInfo(UpdateUsers updateUsers) {
+		String skill = "";
+		if(updateUsers.getSkillarry()==null) {
+			updateUsers.setSkill("선택안함");
+		} else {			
+			for(int i=0; i<updateUsers.getSkillarry().length; i++) {
+				skill+=updateUsers.getSkillarry()[i]+",";
+			}
+			updateUsers.setSkill(skill.substring(0, skill.length()-1));
+		}
+		mapper.updateInfo(updateUsers);
+	}
+
+	@Override
+	@Transactional
+	public void fire(String usersnumber) {
+		mapper.fire(usersnumber);
 	}
 }

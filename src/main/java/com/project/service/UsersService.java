@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Skill;
+import com.project.domain.UpdateUsers;
 import com.project.domain.Users;
 import com.project.domain.GoogleUsers;
 import com.project.repository.UsersMapper;
@@ -33,5 +34,7 @@ public interface UsersService extends UserDetailsService{
 
 	public boolean checkNick(Users users);
 	
-	
+	public void updateInfo(UpdateUsers updateUsers);
+
+	public void fire(String usersnumber);
 }
