@@ -1,6 +1,7 @@
 package com.project.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,9 @@ import com.project.repository.UsersMapper;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsersServiceImpl implements UserDetailsService, UsersService{
@@ -69,22 +72,33 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 	
 	@Override
 	@Transactional
-	public void updateInfo(UpdateUsers updateUsers) {
+	public void updateInfo(Users users) {
 		String skill = "";
-		if(updateUsers.getSkillarry()==null) {
-			updateUsers.setSkill("선택안함");
+		if(users.getSkillarry()==null) {
+			users.setSkill("선택안함");
 		} else {			
-			for(int i=0; i<updateUsers.getSkillarry().length; i++) {
-				skill+=updateUsers.getSkillarry()[i]+",";
+			for(int i=0; i<users.getSkillarry().length; i++) {
+				skill+=users.getSkillarry()[i]+",";
 			}
-			updateUsers.setSkill(skill.substring(0, skill.length()-1));
+			users.setSkill(skill.substring(0, skill.length()-1));
 		}
-		mapper.updateInfo(updateUsers);
+		mapper.updateInfo(users);
 	}
 
 	@Override
 	@Transactional
-	public void fire(String usersnumber) {
-		mapper.fire(usersnumber);
+	public void fire(String username, String usersnickname) {
+		List<String> boardnumbers = mapper.getBoardNumbers(username);
+		if(boardnumbers.size() > 0) {	
+			for(String boardnumber : boardnumbers) {
+				mapper.deleteBoardReply(usersnickname);
+				log.info("게시판 댓글 모두 삭제");
+				mapper.deleteMyBoardReply(boardnumber);
+				log.info("내가 작성한 게시판 댓글 삭제");
+				mapper.deleteBoard(boardnumber);
+				log.info("게시판 삭제");
+			}
+		}
+		mapper.fire(username);
 	}
 }

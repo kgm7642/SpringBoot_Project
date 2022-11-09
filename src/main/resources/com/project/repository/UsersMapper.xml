@@ -26,14 +26,39 @@
 		SELECT COUNT(*) FROM USERS WHERE USERSNICKNAME=#{usersnickname}
 	</select>
 	
+	<!-- 회원 정보 수정 -->
 	<update id="updateInfo">
 		UPDATE USERS
 		SET USERSNICKNAME=#{usersnickname}, MODIFYDATE=SYSDATE, SKILL=#{skill}
 		WHERE USERSNUMBER=#{usersnumber}	
 	</update>
 	
+	<!-- 유저의 게시글 번호 모두 검색 -->
+	<select id="getBoardNumbers" resultType="String">
+		SELECT * FROM BOARD WHERE BOARDWRITER = #{username}
+	</select>
+	
+   	<!-- 보드 댓글 삭제(내가 작성한 글의 댓글) -->
+   	<delete id="deleteMyBoardReply">
+   		DELETE FROM REPLY
+		WHERE BOARDNUMBER=#{boardnumber}
+   	</delete>
+   	
+   	<!-- 보드 삭제 -->
+   	<delete id="deleteBoard">
+   		DELETE FROM BOARD
+		WHERE BOARDNUMBER=#{boardnumber}
+   	</delete>   	
+   	
+   	<!-- 보드 댓글 삭제(내가 작성한 글 아니어도 일단 내가 쓴 댓글) -->
+   	<delete id="deleteBoardReply">
+   		DELETE FROM REPLY
+		WHERE REPLYNAME=#{usersnickname}
+   	</delete>	
+	
+	<!-- 유저 정보 삭제 -->
 	<delete id="fire">
 		DELETE FROM USERS
-		WHERE USERSNUMBER=#{usersnumber};	
+		WHERE USERNAME=#{username}	
 	</delete>
 </mapper>

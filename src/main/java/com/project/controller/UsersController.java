@@ -34,6 +34,7 @@ import com.project.domain.Skill;
 import com.project.domain.UpdateUsers;
 import com.project.domain.Users;
 import com.project.domain.GoogleUsers;
+import com.project.domain.JoinUsers;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
@@ -129,23 +130,31 @@ public class UsersController {
 	public String myInfo(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Users users =  (Users) session.getAttribute("users");
+		UpdateUsers updateUsers = new UpdateUsers();
+		updateUsers.setUsersnumber(users.getUsersnumber());
+		updateUsers.setSkill(users.getSkill());
+		updateUsers.setSkillarry(users.getSkillarry());
+		updateUsers.setUsersnickname(users.getUsersnickname());
+		updateUsers.setUsername(users.getUsername());
 		model.addAttribute("skillList", usersService.skill());
-		model.addAttribute("users", users);
+		model.addAttribute("updateUsers", updateUsers);
 		return "/users/myInfo";
 	}
 	
+//	회원 탈퇴
 	@GetMapping("/fire")
-	public String fire(@RequestParam(required = false) String usersnumber) {
-		usersService.fire(usersnumber);
-		return "/redirect:/?fire=t";
+	public String fire(@RequestParam(required = false) String username, @RequestParam(required = false) String usersnickname) {
+		usersService.fire(username, usersnickname);
+		return "redirect:/?fire=t";
 	}
 	
 //	유저 프로필 수정 완료
 	@PostMapping("/myInfo")
-	public String myInfo(UpdateUsers updateUsers, HttpServletRequest request) {
+	public String myInfo(Users users, HttpServletRequest request) {
+		System.out.println("updateUsers : " + users);
 		HttpSession session = request.getSession();
-		usersService.updateInfo(updateUsers);
-		session.setAttribute("users", usersService.getUsers(updateUsers.getUsersnumber()));
+		usersService.updateInfo(users);
+		session.setAttribute("users", usersService.getUsers(users.getUsersnumber()));
 		return "redirect:/?update=t";
 	}
 

@@ -1,6 +1,7 @@
 package com.project.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,7 +18,11 @@ public interface UsersMapper {
 	public void joinOAuth(Users users);
 	public ArrayList<Skill> skill();
 	public int checkNick(Users users);
-	public void updateInfo(UpdateUsers updateUsers);
-	public void fire(String usersnumber);
+	public void updateInfo(Users users);
+	public void fire(String username);
+	public List<String> getBoardNumbers(String username);
+	public void deleteBoardReply(String usersnickname);
+	public void deleteMyBoardReply(String boardnumber);
+	public void deleteBoard(String boardnumber);
 	
 }

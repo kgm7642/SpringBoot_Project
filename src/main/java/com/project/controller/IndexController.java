@@ -29,7 +29,7 @@ public class IndexController {
 	private final BoardService boardService;
 	
 	@GetMapping
-	public String index(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String index(@RequestParam(required = false) String fire, HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 처음 접속한(로그인 하지 않은) 유저는 session 값이 not 임
 		model.addAttribute("hotList", boardService.hotBoardList()); 
 		

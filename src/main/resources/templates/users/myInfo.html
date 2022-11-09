@@ -160,7 +160,7 @@
 	<div th:replace="~{header :: header}"></div>
 	<div id="container">
 		<section id="section">
-			<form method="post" th:action="@{/myInfo}" th:object="${users}" onsubmit="return send();">
+			<form method="post" th:action="@{/myInfo}" th:object="${updateUsers}" onsubmit="return send();">
 				<div id="nickbox">
 					<span class="block" id="ResultNickname" style="color:red; display:none;">사용할 수 있는 닉네임입니다.</span>
 					<span class="nick inline-block">닉네임 : </span><input type="text" readonly id="usersnickname" placeholder="2~6 글자" th:field=*{usersnickname}/>
@@ -186,13 +186,15 @@
 <script th:inline="javascript">
 
 function fireUsers() {
+	let username = /*[[${updateUsers.username}]]*/"";
+	let usersnick = /*[[${updateUsers.usersnickname}]]*/"";
     if (!confirm("정말 탈퇴하시겠습니다??")) {
         // 취소(아니오) 버튼 클릭 시 이벤트
         alert("감사합니다. 더 발전하는 space가 되기 위해 노력하겠습니다!!");
         return false;
     } else {
         // 확인(예) 버튼 클릭 시 이벤트
-        location.href = "/fire?fire="/*[[${users.usersnumber}]]*/;
+        location.href = "/fire?username="+username+"&usersnickname="+usersnick;
     }
 }
 
@@ -200,7 +202,7 @@ let usersnickname = document.getElementById("usersnickname");
 let resultNicknameTag = document.getElementById("ResultNickname");
 let overlap = document.getElementById("overlap");
 let retry = document.getElementById("retry");
-let un = /*[[${users.usersnickname}]]*/"";
+let un = /*[[${updateUsers.usersnickname}]]*/"";
 
 function retryNickName() {
 	usersnickname.readOnly = false;
@@ -269,8 +271,10 @@ let reset = document.getElementById("reset");
 let skillList = document.getElementsByClassName("skillList");
 let skillChoiceContainer = document.getElementById("skillChoiceContainer");
 let changebtn = document.getElementById("changebtn");
-let selectArr = /*[[${users.skill}]]*/"";
+let selectArr = /*[[${updateUsers.skill}]]*/"";
 let selectCnt = selectArr.length;
+
+console.log("숫자" + selectCnt);
 
 $(document).ready(function() {
 	if(selectCnt == 1) {

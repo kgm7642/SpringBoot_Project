@@ -34,7 +34,7 @@ public interface UsersService extends UserDetailsService{
 
 	public boolean checkNick(Users users);
 	
-	public void updateInfo(UpdateUsers updateUsers);
+	public void updateInfo(Users users);
 
-	public void fire(String usersnumber);
+	public void fire(String username, String usersnickname);
 }
