@@ -1,6 +1,7 @@
 package com.project.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,5 +92,11 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public ArrayList<Board_Skill> hotBoardList() {
 		return mapper.hotBoardList();
+	}
+
+	@Transactional
+	@Override
+	public ArrayList<BoardView> myBoardList(String username) {
+		return mapper.myBoardList(username);
 	}
 }

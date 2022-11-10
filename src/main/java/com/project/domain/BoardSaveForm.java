@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class BoardSaveForm {
 	
-	private int boardnumber;
+	private String boardnumber;
 	@NotNull
 	private String boardwriter;
 	@NotNull

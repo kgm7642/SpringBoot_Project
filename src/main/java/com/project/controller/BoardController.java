@@ -8,13 +8,16 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Principal;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +39,7 @@ import com.project.domain.BoardSaveForm;
 import com.project.domain.BoardView;
 import com.project.domain.Criteria;
 import com.project.domain.Page;
+import com.project.domain.ReplyPage;
 import com.project.domain.Users;
 import com.project.domain.Smarteditor;
 import com.project.service.BoardService;
@@ -53,7 +58,7 @@ public class BoardController {
 	private final BoardService boardService;
 	private final UsersService usersService;
 	
-	
+//	보드 리스트 페이지 이동
 	@GetMapping("/list")
 	public String boardList(Model model, Criteria cri) {
 		log.info("보드리스트 확인하기 : {}", boardService.boardList(cri));
@@ -111,18 +116,20 @@ public class BoardController {
 		form.setBoardwriter(principal.getName());
 		log.info("BoardSaveForm을 확인해보자"+form);
 		boardService.writeBoard(form);
-		return "redirect:/";
+		return "redirect:/board/list";
 	}
 	
+//	게시글 수정 페이지 이동
 	@GetMapping("/modify")
 	public String boardModify(String boardnumber, Model model) {
 		model.addAttribute("board", boardService.getBoardDetail(boardnumber));
 		model.addAttribute("skillList", usersService.skill());
 		log.info("게시글 확인 {}", boardService.getBoardDetail(boardnumber));
 		log.info("게시글 수정 페이지 이동");
-		return "board/boardmodify";
+		return "/board/boardmodify";
 	}
 	
+//	게시글 수정 완료 후 게시글 상세보기 페이지 이동
 	@PostMapping("/modify")
 	public String boardModify(Board board) {
 		boolean check = boardService.updateBoard(board);
@@ -130,10 +137,19 @@ public class BoardController {
 		return "redirect:/board/view?boardnumber="+board.getBoardnumber();
 	}
 	
-	@GetMapping("remove")
+//	게시글 삭제 후 게시글 리스트 페이지 이동
+	@GetMapping("/remove")
 	public String boardRemove(String boardnumber) {
 		boolean check = boardService.removeBoard(boardnumber);
 		log.info("게시글 삭제 완료 했음");
 		return "redirect:/board/list";
+	}
+	
+//	나의 게시글 리스트 페이지 이동
+	@GetMapping("/myBoardList")
+	public String myBoardList(Model model, HttpServletRequest req) {
+		Users users = (Users) req.getSession().getAttribute("users");
+		model.addAttribute("myBoardList", boardService.myBoardList(users.getUsername()));
+		return "/board/myBoardList";
 	}
 }

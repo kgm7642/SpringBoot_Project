@@ -5,7 +5,7 @@
 <title>★SPACE★</title>
 </head>
 <body>
-	<header th:fragment="header" class="headerBox">
+	<header th:fragment="header" class="headerBox" id="headerBox">
 		<div class="leftBox">
 			<a href="/">
 				<img src="../images/spaceLogoText.PNG">
@@ -23,21 +23,27 @@
 				<div class="hideMenu" th:if="${session.users != 'not'}">
 					<div>
 						<ul>
-				      		<li>
-				      			<div>
-				      				<p><a class="hideA" href="/myInfo">프로필 관리</a></p>
-				      			</div>
-				      		</li>
-				      		<li>
-				      			<div>
-				      				<p><a class="hideA" href="/board/myboardList">내가 쓴 글</a></p>
-				      			</div>
-				      		</li>
-				      		<li>
-								<div>
-									<p><a class="hideA" href="/logout">로그아웃</a></p>
-								</div>		      
-				      		</li>
+							<a class="hideA" href="/myInfo">
+					      		<li>
+					      			<div>
+					      				<p>프로필 관리</p>
+					      			</div>
+					      		</li>
+				      		</a>
+				      		<a class="hideA" href="/board/myBoardList">
+					      		<li>
+					      			<div>
+					      				<p>내가 쓴 글</p>
+					      			</div>
+					      		</li>
+				      		</a>
+				      		<a class="hideA" href="/logout">
+					      		<li>
+									<div>
+										<p>로그아웃</p>
+									</div>		      
+					      		</li>
+				      		</a>
 				    	</ul>
 				  	</div>
 				</div>			

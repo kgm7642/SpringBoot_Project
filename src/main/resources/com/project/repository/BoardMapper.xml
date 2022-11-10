@@ -148,4 +148,12 @@
 			WHERE ROWNUM <=10
 		]]>
    	</select>
+   	
+	<!-- 게시글 리스트 -->
+	<select id="myBoardList" resultType="BoardView">
+		SELECT BOARDNUMBER, BOARDWRITER, BOARDTITLE, BOARDDATE
+		FROM BOARD
+		WHERE BOARDWRITER = #{USERNAME} 
+	</select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.project.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -47,4 +48,7 @@ public interface BoardMapper {
 	
 	// 인기 게시글 리스트
 	public ArrayList<Board_Skill> hotBoardList();
+
+	// 나의 게시글 리스트
+	public ArrayList<BoardView> myBoardList(String username);
 }

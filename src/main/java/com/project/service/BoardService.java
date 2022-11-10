@@ -1,6 +1,7 @@
 package com.project.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,6 @@ public interface BoardService {
 	public boolean removeBoard(String boardnumber);
 
 	public ArrayList<Board_Skill> hotBoardList();
+
+	public ArrayList<BoardView> myBoardList(String username);
 }

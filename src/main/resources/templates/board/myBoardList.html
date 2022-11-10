@@ -6,19 +6,94 @@
 <link rel="stylesheet" href="/css/main.css" />
 <link rel="stylesheet" href="/css/board/boardList.css" />
 <link rel="stylesheet" href="../css/header.css">
+<style>
+	.box > div {
+		margin: 40px;
+	}
+
+	.listbox {
+		
+	}
+	
+	table {
+		width: 100%;
+		margin: 0 auto;
+	}
+	
+	th, td {
+		height: 70px;
+    	border: 1px solid #bcbcbc;
+	}
+	
+	td {
+		padding-left: 22px;
+	}
+	
+	.top {
+		width: 60px;
+		height: 60px;
+		background: #000;
+		position: fixed;
+		bottom: 30px;
+		right: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		border-radius: 50%;
+		transition: .2s;
+		color: #fff;
+	}
+</style>
 </head>
 <body>
 	<div th:replace="~{header :: header}"></div>
-	<div class="box">
+	<div id="box" class="box">
 		<div>
-			<h1 class="title">내가 쓴 글</h1>
+			<h1 class="title">내가 작성한 게시글</h1>
 		</div>
-		<div>
-			<div id="reset">필터 초기화</div>
-		</div>	
-	</div>	
-    <section class="section"></section>
+		<div class="listbox">
+			<table>
+				<tr style="color:#4682B4;font-size:20px;">
+					<th width="5%">번호</th>
+					<th width="75%">게시글 제목</th>
+					<th width="20%">작성 날짜</th>
+				</tr>
+				<th:block th:if="${myBoardList.size()>0}">
+					<th:block th:each="board : ${myBoardList}">
+						<tr
+							th:onClick="view([[${board.boardnumber}]]);"
+							onmouseover="this.style.background='#eeeeeb'"
+							onmouseout="this.style.background='white'"
+							style="cursor: pointer;"
+						>
+							<td>
+								<div class="inline-block" th:text="${board.boardnumber}"></div>
+							</td>
+							<td>
+								<div class="inline-block" th:text="${board.boardtitle}"></div>
+							</td>
+							<td>
+								<div class="inline-block" th:text="${board.boarddate}"></div>
+							</td>					
+						</tr>
+					</th:block>
+				</th:block>
+				<th:block th:if="${myBoardList.size()==0}">
+					<tr height="150px;">
+						<td colspan="3" style="text-align:center;color:#4682B4;font-size:25px;">작성한 게시글이 없습니다.</td>
+					</tr>
+				</th:block>
+			</table>
+		</div>
+	</div>
+	<a href="#headerBox"><p class="top">TOP</p></a>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="/js/board/boardList.js"></script>
+<script src="/js/header.js"></script>
+<script>
+	function view(boardnumber) {
+		location.href="/board/view?boardnumber="+boardnumber;
+	}
+</script>
 </html>

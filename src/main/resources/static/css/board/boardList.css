@@ -130,3 +130,19 @@
 	width: 300px;
 	margin: 0 auto;
 }
+
+.top {
+	width: 60px;
+	height: 60px;
+	background: #000;
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 50%;
+	transition: .2s;
+	color: #fff;
+}

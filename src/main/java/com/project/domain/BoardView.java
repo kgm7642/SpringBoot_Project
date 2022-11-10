@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BoardView {
 	
-	private int boardnumber;
+	private String boardnumber;
 	private String boardwriter;
 	private String boarddate;
 	private String usersnickname;

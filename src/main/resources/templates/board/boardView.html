@@ -275,6 +275,25 @@
 		background-color: #4682B4;
 	}
 	
+	.recommend {
+		width: 300px;
+		height: 350px;
+		position: fixed;
+		bottom: 370px;
+		right: 220px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		transition: .2s;
+		color: #fff;		
+	}
+	
+	.recommendT {
+		border: 1px solid black;
+		border-radius: 10px;
+	}
+	
 </style>
 </head>
 <body>
@@ -365,6 +384,7 @@
 	</div>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/js/header.js"></script>
 <script th:inline="javascript">
 
 $("#kakao").on("click", function(e) {
@@ -397,7 +417,7 @@ let pageNum = 1;
 // [[${board.boardcontent}]]
 // 댓글 리스트 불러오는 함수
 function getList(pageNum) {
-	let boardnumber = "[[${board.boardnumber}]]";
+	let boardnumber = /*[[${board.boardnumber}]]*/"";
 
 	$.ajax({
 		url : "/reply/pages/" + boardnumber + "/" + pageNum,
@@ -520,7 +540,7 @@ function showList(data) {
 		e.preventDefault();
 
 		let replynumber = $(this).attr("href");
-		let boardnumber = "[[${board.boardnumber}]]";
+		let boardnumber = /*[[${board.boardnumber}]]*/"";
 		let replyname = $(".replyname" + replynumber).text();
 		let replycontent = $("." + replynumber).val();
 		let data = {
@@ -589,7 +609,7 @@ function showList(data) {
 //댓글 등록
 $(".regist").on("click", function(e) {
 
-	let boardnumber = "[[${board.boardnumber}]]";
+	let boardnumber = /*[[${board.boardnumber}]]*/"";
 	let replyname = usersnickname;
 	let replycontent = $("textarea[name='replycontent']").val();
 	let data = {
