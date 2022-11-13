@@ -1,5 +1,37 @@
 @charset "UTF-8";
 
+	/* Mobile - Portrait */
+	@media (max-width: 619px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Mobile - Landscape */
+	@media (min-width: 620px) and (max-width: 767px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Tablet */
+	@media (min-width: 768px) and (max-width: 991px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Desktop */
+	@media (min-width: 992px) and (max-width: 1199px) {
+
+	}
+	
+	/* Desktop (Large) */
+	@media (min-width: 1200px) {
+
+	}
+
+
 .headerBox {
 	padding: 5px;
 	width: 80%;
@@ -31,6 +63,10 @@
 	cursor: pointer;
 	float: left;
 	padding-top: 20px;
+}
+
+.logo {
+	display: none;
 }
 
 .rightBox {

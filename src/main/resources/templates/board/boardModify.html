@@ -407,8 +407,8 @@ function sendboard(){
 		return false;
 	}
 	
-	if(boardcontent.value.length > 2000) {
-		alert("내용은 2000byte를 넘을 수 없습니다.")
+	if(boardcontent.value.length > 5000) {
+		alert("내용은 5000byte를 넘을 수 없습니다.")
 		boardcontent.focus;
 		return false;
 	}

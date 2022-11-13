@@ -7,9 +7,179 @@
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/header.css">
 <style>
+	/* Mobile - Portrait */
+	@media (max-width: 619px) {
+		.title {
+		    font-size: 35px;
+		}
+
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.layer3 p span {
+			font-size: 15px;
+		}
+		
+		.replies {
+			display: none;
+		}
+		
+		.page {
+			display: none;
+		}
+	}
+	
+	/* Mobile - Landscape */
+	@media (min-width: 620px) and (max-width: 767px) {
+		.title {
+		    font-size: 35px;
+		}
+
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.layer3 p span {
+			font-size: 15px;
+		}	
+		
+		.replies {
+			display: none;
+		}
+	}
+	
+	/* Tablet */
+	@media (min-width: 768px) and (max-width: 991px) {
+		.title {
+		    font-size: 35px;
+		}
+
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.layer3 p span {
+			font-size: 15px;
+		}
+		
+		.replyname {
+			font-size: 12px;
+		}
+		
+		.reply {
+			width: 200px;
+			font-size: 12px;
+		}
+		
+		.modify {
+			display: none;
+		}
+	}
+	
+	@media (min-width: 992px) and (max-width: 1150px) {
+		.title {
+		    font-size: 35px;
+		}
+
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.layer3 p span {
+			font-size: 15px;
+		}
+		
+		.replyname {
+			font-size: 14px;
+		}
+		
+		.reply {
+			width: 300px;
+			font-size: 12px;
+		}
+		
+		.modify {
+			display: none;
+		}	
+	}
+	
+	@media (min-width: 1151px) and (max-width: 1400px) {
+		.title {
+		    font-size: 35px;
+		}
+
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.layer3 p span {
+			font-size: 15px;
+		}
+		
+		.reply {
+			width: 350px;
+			font-size: 13px;
+		}
+		
+		.modify {
+			display: none;
+		}		
+	}
+	
+	/* Desktop */
+	@media (min-width: 1401px) and (max-width: 1509px) {
+		.title {
+		    font-size: 40px;
+		}
+
+		.layer3 p {
+			width: 40%;
+		}
+		
+		.layer3 p span {
+			font-size: 20px;
+		}
+		
+		.reply {
+			width: 400px;
+			font-size: 14px;
+		}
+	}
+	
+	/* Desktop (Large) */
+	@media (min-width: 1510px) and (max-width: 1649px) {
+		.title {
+		    font-size: 45px;
+		}
+	
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.reply {
+			width: 470px;
+		}
+	}
+	
+	@media (min-width: 1650px){
+		.title {
+		    font-size: 45px;
+		}
+	
+		.layer3 p {
+			width: 45%;
+		}
+		
+		.reply {
+			width: 500px;
+		}	
+	}
+
 	.box {
 		width: 50%;
 		margin: 0 auto;
+		margin-top: 50px;
 		margin-bottom: 100px;
 	}
 	
@@ -21,8 +191,10 @@
 	}
 	
 	.title {
-		font-size: 60px;
 		font-family: arial;
+		text-align: center;
+		margin: 0 auto;
+	    word-wrap: break-word;
 	}
 	
 	.layer2 {
@@ -57,7 +229,6 @@
 	}
 	
 	.layer3 p {
-		width: 45%;
 		font-size: 25px;
 		margin: 10px;
 		text-align: left;
@@ -218,6 +389,11 @@
 		margin-bottom: 50px;
 	}
 	
+	.reply {
+		font-family: arial;
+		font-weight: bold;
+	}
+	
 	.buttontable {
 		padding:0px;
 		width: 100%;
@@ -335,9 +511,9 @@
 				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block">링크 연결</span>
 				<span th:if="${board.boardcommunication == 'email'}" class="inline-block">메일 작성</span>
 				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block">번호 확인</span>
-				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block boardway kakao"><a id="kakao">오픈 채팅방 이동하기</a><img id="linkImg" src="/img/link.png"/></span>
-				<span th:if="${board.boardcommunication == 'email'}" class="inline-block boardway email"><a id="email">이메일 작성하기</a><img id="linkImg" src="/img/link.png"/></span>
-				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block boardway phone"><a id="phone">전화 연결하기</a><img id="linkImg" src="/img/link.png"/></span>				
+				<span th:if="${board.boardcommunication == 'kakao'}" class="inline-block boardway kakao"><a id="kakao">오픈 채팅방 이동</a><img id="linkImg" src="/img/link.png"/></span>
+				<span th:if="${board.boardcommunication == 'email'}" class="inline-block boardway email"><a id="email">이메일 작성</a><img id="linkImg" src="/img/link.png"/></span>
+				<span th:if="${board.boardcommunication == 'phone'}" class="inline-block boardway phone"><a id="phone">전화 연결</a><img id="linkImg" src="/img/link.png"/></span>				
 			</p>
 			<p><span class="inline-block">예상 기간</span><span th:text="${board.boardperiod}" class="inline-block"></span><span>개월</span></p>
 			<p><span class="inline-block">사용 기술</span><span th:text="${board.boardskill}" class="inline-block"></span></p>
@@ -438,13 +614,13 @@ function showList(data) {
 	for (let i = 0, len = list.length; i < len; i++) {
 		str += '<table class="replytable">';
 		str += '<tr>';
-		str += '<td style="width:14%;">';
-		str += '<strong class="replyname'+list[i].replynumber+'">' + list[i].replyname + '</strong>';
+		str += '<td style="width:20%;">';
+		str += '<strong class="replyname replyname'+list[i].replynumber+'">' + list[i].replyname + '</strong>';
 		str += '</td>';
-		str += '<td style="width:60%;">';
-		str += '<p class="reply'+ list[i].replynumber +'" style="white-space:pre-wrap">' + list[i].replycontent + '</p>';
+		str += '<td style="width:59%;">';
+		str += '<p class="reply reply'+ list[i].replynumber +'" style="word-wrap:break-word;">' + list[i].replycontent + '</p>';
 		str += '</td>';
-		str += '<td style="width:25%;">';
+		str += '<td style="width:30%;">';
 		str += replyTime(list[i]);
 		if (list[i].replyname == usersnickname) {
 			str += '<table class="buttontable">'

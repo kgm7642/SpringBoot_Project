@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>★SPACE★</title>
 <link rel="stylesheet" href="/css/main.css" />
 <link rel="stylesheet" href="/css/board/boardList.css" />
@@ -10,9 +11,12 @@
 <body>
 	<div th:replace="~{header :: header}"></div>
 	<div class="box">
-		<div>
-			<h1 class="title">프로젝트(스터디) 게시판</h1>
+		<div class="title">
+			<h1>프로젝트(스터디) 게시판</h1>
 		</div>
+		<div>
+			<div id="reset">필터 초기화</div>
+		</div>			
 		<div>
 			<ul class="skillContainer">
 				<li th:each="val : ${skillList}" class="skillList choice">
@@ -25,9 +29,6 @@
 				</li>
 			</ul>				
 		</div>
-		<div>
-			<div id="reset">필터 초기화</div>
-		</div>	
 	</div>	
     <section class="section"></section>
     <a href="#headerBox"><p class="top">TOP</p></a>

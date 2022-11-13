@@ -2,11 +2,165 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/header.css">
 <title>★SPACE★</title>
 <style>
+	/* Mobile - Portrait */
+	@media (max-width: 619px) {
+		#banner {
+			display: none;
+			margin-bottom: 0px;
+		}
+		
+		#bannerBox {
+			display: none;
+		}
+		
+		#bannerBox > ul {
+			display: none;
+		}
+		
+		#bannerBox > ul > li {
+			display: none;
+		}
+		
+		.banner_item img {
+			display: none;
+		}
+		
+		#hotlist {
+			font-size: 10px;
+		}
+		
+		#hotlist > div img {
+			display: none;
+		}
+		
+		.titleul li, .hotul li {
+			font-size: 15px;
+		}
+		
+		.titleul li:nth-child(2), .hotul li:nth-child(2),
+		.titleul li:nth-child(3), .hotul li:nth-child(3),
+		.titleul li:nth-child(5), .hotul li:nth-child(5) {
+			display: none;
+		}
+	}
 	
+	/* Mobile - Landscape */
+	@media (min-width: 620px) and (max-width: 767px) {
+		#banner {
+			display: none;
+			margin-bottom: 0px;
+		}
+		
+		#bannerBox {
+			display: none;
+		}
+		
+		#bannerBox > ul {
+			display: none;
+		}
+		
+		#bannerBox > ul > li {
+			display: none;
+		}
+		
+		.banner_item img {
+			display: none;
+		}		
+		
+		#hotlist {
+			font-size: 10px;
+		}
+		
+		#hotlist > div img {
+			display: none;
+		}
+		
+		.titleul li, .hotul li {
+			font-size: 15px;
+		}
+		
+		.titleul li:nth-child(2), .hotul li:nth-child(2),
+		.titleul li:nth-child(3), .hotul li:nth-child(3) {
+			display: none;
+		}		
+	}
+	
+	/* Tablet */
+	@media (min-width: 768px) and (max-width: 991px) {
+		#banner {
+			display: none;
+			margin-bottom: 0px;
+		}
+		
+		#bannerBox {
+			display: none;
+		}
+		
+		#bannerBox > ul {
+			display: none;
+		}
+		
+		#bannerBox > ul > li {
+			display: none;
+		}
+		
+		.banner_item img {
+			display: none;
+		}
+				
+		#hotlist {
+			font-size: 10px;
+		}
+		
+		#hotlist > div img {
+			display: none;
+		}
+		
+		.titleul li, .hotul li {
+			font-size: 15px;
+		}
+		
+		.titleul li:nth-child(2), .hotul li:nth-child(2),
+		.titleul li:nth-child(3), .hotul li:nth-child(3) {
+			display: none;
+		}	
+	}
+	
+	/* Desktop */
+	@media (min-width: 992px) and (max-width: 1199px) {
+		#banner {
+			display: none;
+			margin-bottom: 0px;
+		}
+		
+		#bannerBox {
+			display: none;
+		}
+		
+		#bannerBox > ul {
+			display: none;
+		}
+		
+		#bannerBox > ul > li {
+			display: none;
+		}
+		
+		.banner_item img {
+			display: none;
+		}	
+	}
+	
+	/* Desktop (Large) */
+	@media (min-width: 1200px) {
+
+	}
+
+
 	.box {
 		width: 60%;
 		margin: 0 auto;
@@ -23,7 +177,7 @@
 	}
 	
 	.box div {
-		width: 33%;
+		width: 300px;
 		height: 100%;
 	}
 	
