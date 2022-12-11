@@ -65,7 +65,7 @@ public class BoardController {
 		log.info("스킬리스트 확인하기 : {}", usersService.skill());
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
 		model.addAttribute("skillList", usersService.skill());
-		return "/board/boardList";
+		return "board/boardList";
 	}
 	
 //	게시글 리스트 받아오기(ajax, 첫 로딩, 필터)
@@ -74,7 +74,7 @@ public class BoardController {
 		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
 		log.info("cri : {}",cri);
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
-		return "/board/boardReplace";
+		return "board/boardReplace";
 	}
 	
 //	게시글 리스트 받아오기(ajax, 스크롤 이벤트)
@@ -83,7 +83,7 @@ public class BoardController {
 		log.info("보드리스트 확인하기 : {}",boardService.boardList(cri));
 		log.info("cri : {}",cri);
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
-		return "/board/boardScroll";
+		return "board/boardScroll";
 	}
 
 //	게시글 상세보기
@@ -100,14 +100,14 @@ public class BoardController {
 		}
 		log.info("게시글 확인"+boardView);
 		model.addAttribute("board", boardView);
-		return "/board/boardView";
+		return "board/boardView";
 	}
 
 //	게시글 작성하기 페이지 이동
 	@GetMapping("/write")
 	public String write(@ModelAttribute Board board, Model model) {
 		model.addAttribute("skillList", usersService.skill());
-		return "/board/boardWrite";
+		return "board/boardWrite";
 	}
 	
 //	게시글 작성 완료
@@ -126,7 +126,7 @@ public class BoardController {
 		model.addAttribute("skillList", usersService.skill());
 		log.info("게시글 확인 {}", boardService.getBoardDetail(boardnumber));
 		log.info("게시글 수정 페이지 이동");
-		return "/board/boardmodify";
+		return "board/boardmodify";
 	}
 	
 //	게시글 수정 완료 후 게시글 상세보기 페이지 이동
@@ -150,6 +150,6 @@ public class BoardController {
 	public String myBoardList(Model model, HttpServletRequest req) {
 		Users users = (Users) req.getSession().getAttribute("users");
 		model.addAttribute("myBoardList", boardService.myBoardList(users.getUsername()));
-		return "/board/myBoardList";
+		return "board/myBoardList";
 	}
 }

@@ -61,4 +61,9 @@
 		DELETE FROM USERS
 		WHERE USERNAME=#{username}	
 	</delete>
+	
+	<!-- 가장 마지막 유저의 인덱스 가져오기 -->
+	<select id="getLastIndex" resultType="_int">
+		SELECT COUNT(*) FROM USERS
+	</select>
 </mapper>

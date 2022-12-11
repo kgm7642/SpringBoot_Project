@@ -101,4 +101,10 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 		}
 		mapper.fire(username);
 	}
+	
+	@Override
+	@Transactional
+	public int getLastIndex() {
+		return mapper.getLastIndex();
+	}
 }

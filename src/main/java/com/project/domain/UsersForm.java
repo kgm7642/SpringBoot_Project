@@ -1,11 +1,11 @@
 package com.project.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @Data
-public class Users {
+public class UsersForm {
 	private String usersnumber; //DB에서 PK 값
 	private String username; // 로그인용 ID 값
 	private String userspw; // 비밀번호

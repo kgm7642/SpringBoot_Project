@@ -24,5 +24,5 @@ public interface UsersMapper {
 	public void deleteBoardReply(String usersnickname);
 	public void deleteMyBoardReply(String boardnumber);
 	public void deleteBoard(String boardnumber);
-	
+	public int getLastIndex();
 }

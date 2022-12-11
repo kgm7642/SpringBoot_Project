@@ -22,6 +22,6 @@ public class ChatController extends Socket{
     public String chatGET(){
         log.info("@ChatController, chat GET()");
         
-        return "/chat";
+        return "chat";
     }
 }

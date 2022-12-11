@@ -1,11 +1,9 @@
 package com.project.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
 
 @Data
-public class Users {
+public class UpdateUsers {
 	private String usersnumber; //DB에서 PK 값
 	private String username; // 로그인용 ID 값
 	private String userspw; // 비밀번호
@@ -18,5 +16,9 @@ public class Users {
 	private String providerid; // sub값
 	private String[] skillarry;	// 기술 스택
 	private String skill;
-	private MultipartFile image;
+	private String imagename; // 이미지 파일 이름
+	
+	public String[] getSkill() {
+		return this.skill.split(",");
+	}
 }

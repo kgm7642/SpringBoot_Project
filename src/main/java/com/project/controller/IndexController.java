@@ -32,6 +32,7 @@ public class IndexController {
 	public String index(@RequestParam(required = false) String fire, HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 처음 접속한(로그인 하지 않은) 유저는 session 값이 not 임
 		model.addAttribute("hotList", boardService.hotBoardList()); 
+		System.out.println("인덱스에 접속했습니다.");
 		
 		// 로그인 하지 않은 상태
 		if(session.getAttribute("users")==null || session.getAttribute("users").equals("not")) {	
@@ -51,5 +52,4 @@ public class IndexController {
 			}
 		return "index";
 	}
-	
 }

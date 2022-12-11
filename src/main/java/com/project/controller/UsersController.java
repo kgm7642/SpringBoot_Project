@@ -30,11 +30,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.domain.PrincipalDetails;
+import com.project.domain.SaveFile;
 import com.project.domain.Skill;
 import com.project.domain.UpdateUsers;
+import com.project.domain.UploadFile;
 import com.project.domain.Users;
+import com.project.domain.UsersForm;
+import com.project.file.FileStore;
 import com.project.domain.GoogleUsers;
 import com.project.domain.JoinUsers;
+import com.project.service.FileService;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
@@ -57,11 +62,13 @@ public class UsersController {
 	private String fileDir;
 	
 	private final UsersService usersService;
+	private final FileService service;
+	private final FileStore fileStore;
 	
 //	로그인 페이지 이동
 	@GetMapping("/login")
 	public String login() {
-		return "/users/login";
+		return "users/login";
 	}
 	
 //	간편 로그인 버튼 누르면 이동
@@ -92,6 +99,13 @@ public class UsersController {
 		return check ? new ResponseEntity<String>("fail",HttpStatus.OK) : new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 	
+//	프로필 사진 선택으로 이동
+	@PostMapping("/loginProfile")
+	public String loginProfile(Model model, Users users) {
+		 model.addAttribute("users", users);
+		 return "users/loginProfile";
+	}
+	
 //	기술 선택 페이지 직접적으로 접근시 홈으로 보내줌
 	@GetMapping("/loginSkill")
 	public String loginSkill() {
@@ -100,14 +114,36 @@ public class UsersController {
 	
 //	로그인 한 유저의 기술이 이미 있다면 홈으로 보내줌, 그렇지 않으면 기술 선택창으로 이동
 	@PostMapping("/loginSkill")
-	public String loginSkill(Model model, Users users) {
+	public String loginSkill(Model model, Users users) throws IOException {
 		System.out.println("유저 확인 : " + users);
 		if(users.getSkill()!=null) {
 			return "redirect:/";
 		}
+		log.info("1");
+		UploadFile image = fileStore.storeFile(users.getImage());
+		 
+		log.info("2");
+		//데이터베이스에 저장
+		log.info("item={}", users);
+		log.info("attachFile={}", image);
+		SaveFile imageFile = new SaveFile();
+		log.info("3");
+		 
+		// 이미지파일 객체에 저장
+		if(imageFile != null) {
+			log.info("4");
+			imageFile.setUsersnumber(""+usersService.getLastIndex()+1);
+			log.info("5");
+			imageFile.setSaveFile(image);
+			log.info("6");
+		}
+		 
+		log.info("7");
+		service.saveFile(imageFile);
+		log.info("8");
 		model.addAttribute("skillList", usersService.skill());
 		model.addAttribute("users", users);
-		return "/users/loginSkill";
+		return "users/loginSkill";
 
 	}
 	
@@ -138,7 +174,7 @@ public class UsersController {
 		updateUsers.setUsername(users.getUsername());
 		model.addAttribute("skillList", usersService.skill());
 		model.addAttribute("updateUsers", updateUsers);
-		return "/users/myInfo";
+		return "users/myInfo";
 	}
 	
 //	회원 탈퇴
@@ -156,14 +192,5 @@ public class UsersController {
 		usersService.updateInfo(users);
 		session.setAttribute("users", usersService.getUsers(users.getUsersnumber()));
 		return "redirect:/?update=t";
-	}
-
-	
-	public String getFullPath(Users users, String orgName) {
-		int idx = orgName.indexOf(".");
-		String imgName = orgName.substring(idx);
-		String fullPath = fileDir + users.getProviderid() + imgName;
-		users.setImagename(users.getProviderid() + imgName);
-		return fullPath;
 	}
 }
