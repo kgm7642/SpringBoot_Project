@@ -98,7 +98,7 @@
 			<p>먼저, 사용할 닉네임을 설정해 볼까요?</p>
 		</div>
 		<div class="box2">
-			<form th:action="@{/loginProfile}" class="form" onsubmit="return send()" th:object="${users}" method="post">
+			<form th:action="@{/loginSkill}" class="form" onsubmit="return send()" th:object="${users}" method="post">
 				<span class="nick">닉네임 : </span><input type="text" id="usersnickname" placeholder="2~6 글자" th:field=*{usersnickname}/>
 				<input type="hidden" th:field="*{username}" name="username"/>
 				<input type="hidden" th:field="*{userspw}" name="userspw"/>

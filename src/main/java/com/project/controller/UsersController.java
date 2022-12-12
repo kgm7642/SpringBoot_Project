@@ -35,7 +35,6 @@ import com.project.domain.Skill;
 import com.project.domain.UpdateUsers;
 import com.project.domain.UploadFile;
 import com.project.domain.Users;
-import com.project.domain.UsersForm;
 import com.project.file.FileStore;
 import com.project.domain.GoogleUsers;
 import com.project.domain.JoinUsers;
@@ -99,13 +98,6 @@ public class UsersController {
 		return check ? new ResponseEntity<String>("fail",HttpStatus.OK) : new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 	
-//	프로필 사진 선택으로 이동
-	@PostMapping("/loginProfile")
-	public String loginProfile(Model model, Users users) {
-		 model.addAttribute("users", users);
-		 return "users/loginProfile";
-	}
-	
 //	기술 선택 페이지 직접적으로 접근시 홈으로 보내줌
 	@GetMapping("/loginSkill")
 	public String loginSkill() {
@@ -114,43 +106,51 @@ public class UsersController {
 	
 //	로그인 한 유저의 기술이 이미 있다면 홈으로 보내줌, 그렇지 않으면 기술 선택창으로 이동
 	@PostMapping("/loginSkill")
-	public String loginSkill(Model model, Users users) throws IOException {
+	public String loginSkill(Model model, Users users) {
 		System.out.println("유저 확인 : " + users);
 		if(users.getSkill()!=null) {
 			return "redirect:/";
 		}
-		log.info("1");
-		UploadFile image = fileStore.storeFile(users.getImage());
-		 
-		log.info("2");
-		//데이터베이스에 저장
-		log.info("item={}", users);
-		log.info("attachFile={}", image);
-		SaveFile imageFile = new SaveFile();
-		log.info("3");
-		 
-		// 이미지파일 객체에 저장
-		if(imageFile != null) {
-			log.info("4");
-			imageFile.setUsersnumber(""+usersService.getLastIndex()+1);
-			log.info("5");
-			imageFile.setSaveFile(image);
-			log.info("6");
-		}
-		 
-		log.info("7");
-		service.saveFile(imageFile);
-		log.info("8");
 		model.addAttribute("skillList", usersService.skill());
 		model.addAttribute("users", users);
 		return "users/loginSkill";
 
 	}
 	
+	
+//	프로필 사진 선택으로 이동
+	@PostMapping("/loginProfile")
+	public String loginProfile(Model model, Users users) {
+		String skill = "";
+		if(users.getSkillarry()==null) {
+			users.setSkill("선택안함");
+		} else {			
+			for(int i=0; i<users.getSkillarry().length; i++) {
+				skill+=users.getSkillarry()[i]+",";
+			}
+			users.setSkill(skill.substring(0, skill.length()-1));
+		}
+		model.addAttribute("users", users);
+		return "users/loginProfile";
+	}
+	
 //	로그인 or 회원가입 성공 후 홈으로 이동
 	@PostMapping("/loginFinish")
-	public String loginFinish(Users users) {		
+	public String loginFinish(Users users) throws IOException {
 		usersService.joinOAuth(users);
+		UploadFile image = fileStore.storeFile(users.getImage());
+		 
+		//데이터베이스에 저장
+		log.info("item={}", users);
+		log.info("attachFile={}", image);
+		SaveFile imageFile = new SaveFile();
+		 
+		// 이미지파일 객체에 저장
+		if(imageFile != null) {
+			imageFile.setUsersnumber(""+usersService.getLastIndex());
+			imageFile.setSaveFile(image);
+		}
+		service.saveFile(imageFile);		
 		return "redirect:/";
 	}
 	

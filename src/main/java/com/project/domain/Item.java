@@ -6,10 +6,8 @@ import java.util.List;
 @Data
 public class Item {
 	
-	private String fileNumber;
-	private String boardNumber;
+	private String filenumber;
+	private String usersnumber;
 	private String uploadFileName;
 	private String storeFileName;
-	private String attach;
-	
 }

@@ -20,14 +20,19 @@ public class FileServiceImpl implements FileService{
 	
 	@Override
 	@Transactional
-	public void saveFile(SaveFile attach) { 
+	public void saveFile(SaveFile file) { 
 		Item item = new Item();
 		
 		// 첨부파일 저장
-		item.setBoardNumber(attach.getUsersnumber());
-		item.setUploadFileName(attach.getSaveFile().getUploadFileName());
-		item.setStoreFileName(attach.getSaveFile().getStoreFileName());
+		item.setUsersnumber(file.getUsersnumber());
+		item.setUploadFileName(file.getSaveFile().getUploadFileName());
+		item.setStoreFileName(file.getSaveFile().getStoreFileName());
 		mapper.saveFile(item);
+	}
+
+	@Override
+	public Item getFile(String usersnumber) {
+		return mapper.getFile(usersnumber);
 	}
 
 //	@Override

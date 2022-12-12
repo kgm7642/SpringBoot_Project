@@ -19,7 +19,7 @@
 	</div>
 	<div class="container">
 		<div class="box2">
-			<form th:action="@{/loginSkill}" class="form" onsubmit="return send()" th:object="${users}" method="post">
+			<form th:action="@{/loginFinish}" class="form" onsubmit="return send()" enctype="multipart/form-data" th:object="${users}" method="post">
 				<input type="file" name="image"/>
 				<input type="hidden" th:field="*{username}" name="username"/>
 				<input type="hidden" th:field="*{userspw}" name="userspw"/>
@@ -28,6 +28,7 @@
 				<input type="hidden" th:field="*{Role}" name="Role"/>
 				<input type="hidden" th:field="*{provider}" name="provider"/>
 				<input type="hidden" th:field="*{providerid}" name="providerid"/>
+				<input type="hidden" th:field="*{skill}" name="skill"/>
 				<input type="submit" class="button" value="다음"/>
 			</form>
 			<span class="inline-block" id="ResultNickname" style="color: red;"></span>

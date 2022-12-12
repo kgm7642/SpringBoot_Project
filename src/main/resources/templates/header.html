@@ -21,6 +21,9 @@
 				<a href="/board/list">게시판 이동</a>
 			</div>
 			<div id="nick" class="inline-block" th:if="${session.users != 'not'}">
+				<div class="inline-block">
+					<img th:src="|/image/${image.getStoreFileName()}|" width="50" height="50"/>
+				</div>
 				<span id="nickname" class="welcome inline-block" th:text="${session.users.usersnickname}"></span><span>님 ▾</span>
 				<div class="hideMenu" th:if="${session.users != 'not'}">
 					<div>

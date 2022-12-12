@@ -23,7 +23,7 @@
 			<p><span class="cnt3">(최대 3개까지 선택 가능합니다.)</span></p>
 		</div>
 		<div class="box2">
-			<form th:action="@{/loginFinish}" method="post" th:object="${users}">
+			<form th:action="@{/loginProfile}" method="post" th:object="${users}">
 				<div class="skillContainer">
 					<div th:each="val : ${skillList}" th:text="${val.skillname}" class="skillList"></div>
 				</div>

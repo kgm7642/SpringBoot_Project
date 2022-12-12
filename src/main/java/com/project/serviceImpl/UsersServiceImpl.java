@@ -28,16 +28,7 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 	
 	@Override
 	@Transactional
-	public void joinOAuth(Users users) {		
-		String skill = "";
-		if(users.getSkillarry()==null) {
-			users.setSkill("선택안함");
-		} else {			
-			for(int i=0; i<users.getSkillarry().length; i++) {
-				skill+=users.getSkillarry()[i]+",";
-			}
-			users.setSkill(skill.substring(0, skill.length()-1));
-		}
+	public void joinOAuth(Users users) {
 		mapper.joinOAuth(users);
 	}
 	

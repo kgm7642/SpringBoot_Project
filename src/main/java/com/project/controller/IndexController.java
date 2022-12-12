@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.project.domain.PrincipalDetails;
 import com.project.domain.Users;
 import com.project.service.BoardService;
+import com.project.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class IndexController {
 	
 	private final BoardService boardService;
+	private final FileService fileService;
 	
 	@GetMapping
 	public String index(@RequestParam(required = false) String fire, HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -49,6 +51,8 @@ public class IndexController {
 					new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 					return "redirect:/";
 				}
+			Users users = (Users) session.getAttribute("users");
+			model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 			}
 		return "index";
 	}
