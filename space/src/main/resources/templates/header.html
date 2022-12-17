@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>★SPACE★</title>
+</head>
+dd
+<body>
+	<header th:fragment="header" class="headerBox" id="headerBox">
+		<div class="leftBox">
+			<a href="/">
+				<img class="logoT" src="../images/spaceLogoText.PNG">
+				<img class="logo" src="../images/spaceLogo.PNG">
+			</a>
+		</div>
+		<div class="rightBox">
+			<div class="inline-block write">
+				<a href="/board/write">게시글 작성</a>
+			</div>
+			<div class="inline-block list">
+				<a href="/board/list">게시판 이동</a>
+			</div>
+			<div id="nick" class="inline-block" th:if="${session.users != 'not'}">
+				<div class="inline-block">
+					<img th:src="|/image/${image.getStoreFileName()}|" width="50" height="50"/>
+				</div>
+				<span id="nickname" class="welcome inline-block" th:text="${session.users.usersnickname}"></span><span>님 ▾</span>
+				<div class="hideMenu" th:if="${session.users != 'not'}">
+					<div>
+						<ul>
+							<a class="hideA" href="/myInfo">
+					      		<li>
+					      			<div>
+					      				<p>프로필 관리</p>
+					      			</div>
+					      		</li>
+				      		</a>
+				      		<a class="hideA" href="/board/myBoardList">
+					      		<li>
+					      			<div>
+					      				<p>내가 쓴 글</p>
+					      			</div>
+					      		</li>
+				      		</a>
+				      		<a class="hideA" href="/logout">
+					      		<li>
+									<div>
+										<p>로그아웃</p>
+									</div>		      
+					      		</li>
+				      		</a>
+				    	</ul>
+				  	</div>
+				</div>			
+			</div>
+			<div class="inline-block" th:if="${session.users == 'not'}">				
+				<a href="/login">로그인</a>
+			</div>
+		</div>
+	</header>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.repository.UsersMapper">
+		
+	<!-- 유저 정보 가져오기 -->
+	<select id="getUsers" resultType="Users">
+		SELECT * FROM USERS WHERE USERNAME=#{username}
+	</select>
+	
+	<!-- 스프링 시큐리티를 이용한 회원가입 -->
+	<insert id="joinOAuth">
+		INSERT INTO USERS
+		(USERSNUMBER, USERNAME, USERSPW, USERSNICKNAME, USERSEMAIL, ROLE, PROVIDER, PROVIDERID, SKILL)
+		VALUES(seq_users.nextVal, #{username}, #{userspw}, #{usersnickname}, #{usersemail}, #{role}, #{provider}, #{providerid}, #{skill})
+	</insert>
+	
+	<!-- 스킬 모두 가져오기 -->
+	<select id="skill" resultType="Skill">
+		SELECT * FROM SKILL
+	</select>
+	
+	<!-- 닉네임 중복 검사 -->
+	<select id="checkNick" resultType="_int">
+		SELECT COUNT(*) FROM USERS WHERE USERSNICKNAME=#{usersnickname}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateInfo">
+		UPDATE USERS
+		SET USERSNICKNAME=#{usersnickname}, MODIFYDATE=SYSDATE, SKILL=#{skill}
+		WHERE USERSNUMBER=#{usersnumber}	
+	</update>
+	
+	<!-- 유저의 게시글 번호 모두 검색 -->
+	<select id="getBoardNumbers" resultType="String">
+		SELECT * FROM BOARD WHERE BOARDWRITER = #{username}
+	</select>
+	
+   	<!-- 보드 댓글 삭제(내가 작성한 글의 댓글) -->
+   	<delete id="deleteMyBoardReply">
+   		DELETE FROM REPLY
+		WHERE BOARDNUMBER=#{boardnumber}
+   	</delete>
+   	
+   	<!-- 보드 삭제 -->
+   	<delete id="deleteBoard">
+   		DELETE FROM BOARD
+		WHERE BOARDNUMBER=#{boardnumber}
+   	</delete>   	
+   	
+   	<!-- 보드 댓글 삭제(내가 작성한 글 아니어도 일단 내가 쓴 댓글) -->
+   	<delete id="deleteBoardReply">
+   		DELETE FROM REPLY
+		WHERE REPLYNAME=#{usersnickname}
+   	</delete>	
+	
+	<!-- 유저 정보 삭제 -->
+	<delete id="fire">
+		DELETE FROM USERS
+		WHERE USERNAME=#{username}	
+	</delete>
+	
+	<!-- 가장 마지막 유저의 인덱스 가져오기 -->
+	<select id="getLastIndex" resultType="_int">
+		SELECT USERSNUMBER 
+		FROM
+		(
+		    SELECT * FROM USERS ORDER BY ROWNUM DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+</mapper>

@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+	/* Mobile - Portrait */
+	@media (max-width: 619px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Mobile - Landscape */
+	@media (min-width: 620px) and (max-width: 767px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Tablet */
+	@media (min-width: 768px) and (max-width: 991px) {
+		.leftBox {
+			display: none;
+		}
+	}
+	
+	/* Desktop */
+	@media (min-width: 992px) and (max-width: 1199px) {
+
+	}
+	
+	/* Desktop (Large) */
+	@media (min-width: 1200px) {
+
+	}
+
+
+.headerBox {
+	padding: 5px;
+	width: 80%;
+	height: 100px;
+	margin: 0 auto;
+}
+
+@font-face {
+    font-family: 'KOTRALEAP';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/KOTRALEAP.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.welcome {
+	font-family: 'KOTRALEAP';
+	font-weight: bold;
+}
+
+#nickname {
+	width: 95px;
+	margin-left: 10px;
+	color: #7B68EE;
+}
+
+.leftBox {
+	width: 200px;
+	height: 100px;
+	cursor: pointer;
+	float: left;
+	padding-top: 20px;
+}
+
+.logo {
+	display: none;
+}
+
+.rightBox {
+	width: 420px;
+	height: 100px;
+	float: right;
+	padding-right: 10px;
+	padding-top: 40px;
+	font-family: arial;
+	font-weight: 900;
+}
+
+.rightBox > div > a {
+	text-decoration: none;
+	font-size: 18px;
+	margin-left: 5px;
+	color: black;
+	border: 2px solid #696969;
+	border-radius: 5px;
+	padding: 3px;
+}
+
+.write, list {
+	transition: all 0.1s linear;
+}
+
+.write:hover {
+	transform: scale(1.03);
+}
+
+.list:hover {
+	transform: scale(1.03);
+}
+
+.rightBox div:nth-child(3) {
+	cursor: pointer;
+}
+
+#nick {
+	position: relative;
+	width: 170px;
+	display: relative;
+}
+
+.hideMenu {
+	width: 150px;
+	height: 150px;
+	background-color: white;
+	position: absolute;
+	z-index: 1000;
+	opacity: 0;
+	left: 12px;
+	top: 60px;
+	font-family: arial;
+	font-weight: 900;
+}
+
+.hideMenu > div {
+	width: 150px;
+	height: 150px;
+}
+
+.hideMenu > div > ul {
+	width: 150px;
+	height: 150px;	
+}
+
+.hideMenu > div > ul > a > li {
+	list-style: none;
+	width: 150px;
+	height: 40px;
+	margin-top: 10px;
+	padding-top: 7px;
+	text-align: center;
+	border: 0px !important;
+}
+
+.hideMenu > div > ul > a > li:hover {
+	background-color: #B0E0E6;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.hideA {
+	text-decoration: none;
+	color: black;
+}
