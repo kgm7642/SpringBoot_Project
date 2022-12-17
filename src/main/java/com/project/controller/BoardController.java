@@ -43,6 +43,7 @@ import com.project.domain.ReplyPage;
 import com.project.domain.Users;
 import com.project.domain.Smarteditor;
 import com.project.service.BoardService;
+import com.project.service.FileService;
 import com.project.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
@@ -57,14 +58,17 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final UsersService usersService;
+	private final FileService fileService;
 	
 //	보드 리스트 페이지 이동
 	@GetMapping("/list")
-	public String boardList(Model model, Criteria cri) {
+	public String boardList(Model model, HttpSession session, Criteria cri) {
 		log.info("보드리스트 확인하기 : {}", boardService.boardList(cri));
 		log.info("스킬리스트 확인하기 : {}", usersService.skill());
 		model.addAttribute("pageMaker", new Page(boardService.getTotal(cri), cri, boardService.boardList(cri)));
 		model.addAttribute("skillList", usersService.skill());
+		Users users = (Users) session.getAttribute("users");
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		return "board/boardList";
 	}
 	
@@ -100,20 +104,29 @@ public class BoardController {
 		}
 		log.info("게시글 확인"+boardView);
 		model.addAttribute("board", boardView);
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		return "board/boardView";
 	}
 
 //	게시글 작성하기 페이지 이동
 	@GetMapping("/write")
-	public String write(@ModelAttribute Board board, Model model) {
+	public String write(@ModelAttribute Board board, Model model, HttpSession session) {
 		model.addAttribute("skillList", usersService.skill());
+		Users users = (Users) session.getAttribute("users");
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		return "board/boardWrite";
 	}
 	
 //	게시글 작성 완료
 	@PostMapping("/write")
-	public String writeFinish(BoardSaveForm form, Principal principal, Model model) {
+	public String writeFinish(BoardSaveForm form, Principal principal, Model model, HttpSession session) {
+		Users users = (Users) session.getAttribute("users");
+		log.info("1");
 		form.setBoardwriter(principal.getName());
+		log.info("2");
+		form.setStorefilename(fileService.getStorefilename(users.getUsersnumber()));
+		log.info(fileService.getStorefilename(users.getUsersnumber()));
+		log.info("3");
 		log.info("BoardSaveForm을 확인해보자"+form);
 		boardService.writeBoard(form);
 		return "redirect:/board/list";
@@ -121,9 +134,11 @@ public class BoardController {
 	
 //	게시글 수정 페이지 이동
 	@GetMapping("/modify")
-	public String boardModify(String boardnumber, Model model) {
+	public String boardModify(String boardnumber, Model model, HttpSession session) {
 		model.addAttribute("board", boardService.getBoardDetail(boardnumber));
 		model.addAttribute("skillList", usersService.skill());
+		Users users = (Users) session.getAttribute("users");
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		log.info("게시글 확인 {}", boardService.getBoardDetail(boardnumber));
 		log.info("게시글 수정 페이지 이동");
 		return "board/boardmodify";
@@ -147,9 +162,10 @@ public class BoardController {
 	
 //	나의 게시글 리스트 페이지 이동
 	@GetMapping("/myBoardList")
-	public String myBoardList(Model model, HttpServletRequest req) {
-		Users users = (Users) req.getSession().getAttribute("users");
+	public String myBoardList(Model model, HttpSession session) {
+		Users users = (Users) session.getAttribute("users");
 		model.addAttribute("myBoardList", boardService.myBoardList(users.getUsername()));
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		return "board/myBoardList";
 	}
 }

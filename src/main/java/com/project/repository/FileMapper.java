@@ -13,4 +13,5 @@ public interface FileMapper {
 //	public Item findAttach(String boardNumber);
 //	public LinkedList<Item> findImages(String boardNumber);
 	public Item getFile(String usersnumber);
+	public String getstorefilename(String usersnumber);
 }

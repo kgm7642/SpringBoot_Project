@@ -22,4 +22,5 @@ public class BoardView {
 	private String boardcontent;
 	private String boardview;
 	private String boardreplycnt;
+	private String storefilename;
 }

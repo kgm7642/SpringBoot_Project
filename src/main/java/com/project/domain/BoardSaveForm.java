@@ -32,4 +32,6 @@ public class BoardSaveForm {
 	private String boardcontent;
 	@NotNull
 	private String boardview;
+	@NotNull
+	private String storefilename;
 }

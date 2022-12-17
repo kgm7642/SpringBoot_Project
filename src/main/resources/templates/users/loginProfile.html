@@ -5,7 +5,57 @@
 <title>★SPACE★</title>
 <link rel="stylesheet" href="/css/main.css" />
 <style>
+	.img {
+		width: 80%;
+		margin: 0 auto;
+		padding: 10px;
+	}
+	
+	.img a:nth-child(1) img {
+		float: letf;
+	}
 
+	.img a:nth-child(2) img {
+		float: right;
+		width: 50px;
+	}
+
+	.container {
+		width: 70%;
+		margin: 0 auto;
+		margin-top: 200px;
+	}
+
+	.box1 {
+		width: 70%;
+		margin: 0 auto;
+		margin-top: 200px;
+	}
+	
+	.box1 p {
+		text-align: center;
+		font-size: 30px;
+		font-weight: bold;
+	}
+	
+	.space {
+		color: #4682B4;
+	}
+	
+	.box2 {
+		width: 80%;
+		margin: 0 auto;
+		margin-top: 200px;
+		text-align: center;
+	}
+	
+	.form {
+		text-align: center;
+	}
+	
+	.nick {
+		font-size: 20px;
+	}
 </style>
 </head>
 <body>
@@ -20,7 +70,7 @@
 	<div class="container">
 		<div class="box2">
 			<form th:action="@{/loginFinish}" class="form" onsubmit="return send()" enctype="multipart/form-data" th:object="${users}" method="post">
-				<input type="file" name="image"/>
+				<input type="file" name="image" accept="image/*" id="image"/>
 				<input type="hidden" th:field="*{username}" name="username"/>
 				<input type="hidden" th:field="*{userspw}" name="userspw"/>
 				<input type="hidden" th:field="*{usersnickname}" name="usersnickname"/>
@@ -31,13 +81,23 @@
 				<input type="hidden" th:field="*{skill}" name="skill"/>
 				<input type="submit" class="button" value="다음"/>
 			</form>
+			<button ></button>
 			<span class="inline-block" id="ResultNickname" style="color: red;"></span>
 		</div>
 	</div>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
+let image = $('#image');
 
+function send() {
+	if(image.val() == "") {
+		alert("이미지 설정은 필수입니다.");
+		image.focus();
+	    return false;
+	}
+	return true;
+}
 
 </script>
 </html>

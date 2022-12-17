@@ -23,4 +23,8 @@
 	<select id="getFile" resultType="ITEM">
 		SELECT * FROM FILES WHERE USERSNUMBER = #{usersnumber}
 	</select>
+	
+	<select id="getstorefilename" resultType="String">
+		SELECT STOREFILENAME FROM FILES WHERE USERSNUMBER = #{usersnumber}
+	</select>
 </mapper>

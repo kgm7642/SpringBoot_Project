@@ -31,8 +31,15 @@ public class FileServiceImpl implements FileService{
 	}
 
 	@Override
+	@Transactional
 	public Item getFile(String usersnumber) {
 		return mapper.getFile(usersnumber);
+	}
+
+	@Override
+	@Transactional
+	public String getStorefilename(String usersnumber) {
+		return mapper.getstorefilename(usersnumber);
 	}
 
 //	@Override
