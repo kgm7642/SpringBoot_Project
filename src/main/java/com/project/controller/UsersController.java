@@ -61,8 +61,8 @@ public class UsersController {
 	private String fileDir;
 	
 	private final UsersService usersService;
-	private final FileService service;
 	private final FileStore fileStore;
+	private final FileService fileService;
 	
 //	로그인 페이지 이동
 	@GetMapping("/login")
@@ -150,7 +150,7 @@ public class UsersController {
 			imageFile.setUsersnumber(""+usersService.getLastIndex());
 			imageFile.setSaveFile(image);
 		}
-		service.saveFile(imageFile);		
+		fileService.saveFile(imageFile);		
 		return "redirect:/";
 	}
 	
@@ -163,8 +163,7 @@ public class UsersController {
 
 //	유저 프로필 수정 페이지 이동
 	@GetMapping("/myInfo")
-	public String myInfo(Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String myInfo(Model model, HttpSession session) {
 		Users users =  (Users) session.getAttribute("users");
 		UpdateUsers updateUsers = new UpdateUsers();
 		updateUsers.setUsersnumber(users.getUsersnumber());
@@ -172,6 +171,7 @@ public class UsersController {
 		updateUsers.setSkillarry(users.getSkillarry());
 		updateUsers.setUsersnickname(users.getUsersnickname());
 		updateUsers.setUsername(users.getUsername());
+		model.addAttribute("image", fileService.getFile(users.getUsersnumber()));
 		model.addAttribute("skillList", usersService.skill());
 		model.addAttribute("updateUsers", updateUsers);
 		return "users/myInfo";
@@ -179,18 +179,19 @@ public class UsersController {
 	
 //	회원 탈퇴
 	@GetMapping("/fire")
-	public String fire(@RequestParam(required = false) String username, @RequestParam(required = false) String usersnickname) {
-		usersService.fire(username, usersnickname);
+	public String fire(@RequestParam(required = false) String username, @RequestParam(required = false) String usersnickname,
+			@RequestParam(required = false) String usersnumber, HttpSession session) {
+		usersService.fire(username, usersnickname, usersnumber);
+		session.invalidate();
 		return "redirect:/?fire=t";
 	}
 	
 //	유저 프로필 수정 완료
 	@PostMapping("/myInfo")
-	public String myInfo(Users users, HttpServletRequest request) {
+	public String myInfo(Users users, HttpSession session) {
 		System.out.println("updateUsers : " + users);
-		HttpSession session = request.getSession();
 		usersService.updateInfo(users);
-		session.setAttribute("users", usersService.getUsers(users.getUsersnumber()));
+		session.invalidate();
 		return "redirect:/?update=t";
 	}
 }

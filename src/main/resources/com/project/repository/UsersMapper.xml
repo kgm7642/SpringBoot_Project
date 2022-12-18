@@ -54,7 +54,13 @@
    	<delete id="deleteBoardReply">
    		DELETE FROM REPLY
 		WHERE REPLYNAME=#{usersnickname}
-   	</delete>	
+   	</delete>
+   	
+   	<!-- 파일 삭제 -->
+   	<delete id="deleteFile">
+   		DELETE FROM FILES
+   		WHERE USERSNUMBER=#{usersnumber}
+   	</delete>
 	
 	<!-- 유저 정보 삭제 -->
 	<delete id="fire">

@@ -78,7 +78,7 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 
 	@Override
 	@Transactional
-	public void fire(String username, String usersnickname) {
+	public void fire(String username, String usersnickname, String usersnumber) {
 		List<String> boardnumbers = mapper.getBoardNumbers(username);
 		if(boardnumbers.size() > 0) {	
 			for(String boardnumber : boardnumbers) {
@@ -90,6 +90,8 @@ public class UsersServiceImpl implements UserDetailsService, UsersService{
 				log.info("게시판 삭제");
 			}
 		}
+		mapper.deleteFile(usersnumber);
+		log.info("파일 삭제");
 		mapper.fire(username);
 	}
 	

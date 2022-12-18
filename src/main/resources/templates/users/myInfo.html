@@ -275,13 +275,14 @@
 function fireUsers() {
 	let username = /*[[${updateUsers.username}]]*/"";
 	let usersnick = /*[[${updateUsers.usersnickname}]]*/"";
+	let usersnumber = /*[[${updateUsers.usersnumber}]]*/"";
     if (!confirm("정말 탈퇴하시겠습니다??")) {
         // 취소(아니오) 버튼 클릭 시 이벤트
         alert("감사합니다. 더 발전하는 space가 되기 위해 노력하겠습니다!!");
         return false;
     } else {
         // 확인(예) 버튼 클릭 시 이벤트
-        location.href = "/fire?username="+username+"&usersnickname="+usersnick;
+        location.href = "/fire?username="+username+"&usersnickname="+usersnick+"&usersnumber="+usersnumber;
     }
 }
 
@@ -300,7 +301,15 @@ function retryNickName() {
 	usersnickname.value = null;
 }
 
+let image = $('#image');
+
 function send() {
+	if(image.val() == "") {
+		alert("이미지 설정은 필수입니다.");
+		image.focus();
+	    return false;
+	}
+	
 	if (usersnickname.value == "") {
 		alert("닉네임을 입력해주세요.");
 		usersnickname.focus();

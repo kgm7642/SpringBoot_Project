@@ -36,7 +36,7 @@ public interface UsersService extends UserDetailsService{
 	
 	public void updateInfo(Users users);
 
-	public void fire(String username, String usersnickname);
+	public void fire(String username, String usersnickname, String usersnumber);
 	
 	public int getLastIndex();
 }

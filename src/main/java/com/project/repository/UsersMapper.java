@@ -25,4 +25,5 @@ public interface UsersMapper {
 	public void deleteMyBoardReply(String boardnumber);
 	public void deleteBoard(String boardnumber);
 	public int getLastIndex();
+	public void deleteFile(String usersnumber);
 }

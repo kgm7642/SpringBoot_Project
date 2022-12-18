@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>★SPACE★</title>
 </head>
-dd
 <body>
 	<header th:fragment="header" class="headerBox" id="headerBox">
 		<div class="leftBox">
@@ -14,7 +13,7 @@ dd
 				<img class="logo" src="../images/spaceLogo.PNG">
 			</a>
 		</div>
-		<div class="rightBox">
+		<div class="rightBox In">
 			<div class="inline-block write">
 				<a href="/board/write">게시글 작성</a>
 			</div>
@@ -23,7 +22,7 @@ dd
 			</div>
 			<div id="nick" class="inline-block" th:if="${session.users != 'not'}">
 				<div class="inline-block">
-					<img th:src="|/image/${image.getStoreFileName()}|" width="50" height="50"/>
+					<img th:src="|/image/${image.getStoreFileName()}|" width="50" height="50" class="proimage"/>
 				</div>
 				<span id="nickname" class="welcome inline-block" th:text="${session.users.usersnickname}"></span><span>님 ▾</span>
 				<div class="hideMenu" th:if="${session.users != 'not'}">
